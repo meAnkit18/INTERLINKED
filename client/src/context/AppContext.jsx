@@ -1,4 +1,7 @@
 import { createContext, useContext, useReducer } from "react";
+import React from 'react'
+import { useEffect, useState } from "react";
+import axios from "axios";
 
 const AppContext = createContext();
 
@@ -24,9 +27,38 @@ function appReducer(state, action) {
 
 export function AppProvider({ children }) {
   const [state, dispatch] = useReducer(appReducer, initialState);
+     const [user, setUser] = useState(null);
+    const backendURL = import.meta.env.VITE_BACKEND_PORT
+
+  useEffect(() => {
+    const fetchUser = async () => {
+      const token = localStorage.getItem("token");
+
+      if (!token) {
+        alert("Please login first");
+        window.location.href = "/login";
+        return;
+      }
+
+      try {
+        const res = await axios.get(`${backendURL}/api/auth/account`, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+
+        setUser(res.data);
+      } catch (err) {
+        console.error("Error fetching user:", err);
+        alert("Session expired. Login again.");
+        localStorage.removeItem("token");
+        window.location.href = "/login";
+      }
+    };
+
+    fetchUser();
+  }, []);
 
   return (
-    <AppContext.Provider value={{ state, dispatch }}>
+    <AppContext.Provider value={{ state, dispatch,user }}>
       {children}
     </AppContext.Provider>
   );

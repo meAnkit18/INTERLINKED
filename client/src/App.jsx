@@ -2,6 +2,7 @@ import { Routes, Route } from "react-router-dom";
 import LandingPage from "./pages/LandingPage";
 import Login from "./pages/Login";
 import Not404Pg from "./pages/Not404Pg";
+import AccoutDetails from "./pages/AccoutDetails";
 
 
 function App() {
@@ -10,6 +11,7 @@ function App() {
       <Routes>
         <Route path="/" element={<LandingPage />} />
         <Route path="/login" element={<Login/>} />
+        <Route path="/account" element={<AccoutDetails/>} />
         <Route path="*" element={<Not404Pg/>} />
       </Routes>
     </>

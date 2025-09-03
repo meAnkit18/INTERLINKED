@@ -62,7 +62,6 @@ const Login = () => {
              className="w-full my-3 bg-gray-800 active:scale-95 transition py-2.5 rounded text-white"
              onClick={sendOtp}
              >Send OTP</button>
-            <p className="text-center mt-4">Don’t have an account? <span className="text-blue-500 underline">Signup Now</span></p>
         </div>
             </>
 
