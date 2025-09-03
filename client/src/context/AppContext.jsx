@@ -1,6 +1,4 @@
-import { createContext, useContext, useReducer } from "react";
-import React from 'react'
-import { useEffect, useState } from "react";
+import { createContext, useContext, useReducer, useEffect } from "react";
 import axios from "axios";
 
 const AppContext = createContext();
@@ -8,15 +6,23 @@ const AppContext = createContext();
 const initialState = {
   user: null,
   isAuthenticated: false,
-  theme: "light"
+  loading: true,
+  theme: "light",
 };
 
 function appReducer(state, action) {
   switch (action.type) {
     case "SET_USER":
-      return { ...state, user: action.payload, isAuthenticated: true };
+      return {
+        ...state,
+        user: action.payload,
+        isAuthenticated: true,
+        loading: false,
+      };
     case "LOGOUT":
-      return { ...state, user: null, isAuthenticated: false };
+      return { ...state, user: null, isAuthenticated: false, loading: false };
+    case "AUTH_ERROR":
+      return { ...state, user: null, isAuthenticated: false, loading: false };
     case "TOGGLE_THEME":
       return { ...state, theme: state.theme === "light" ? "dark" : "light" };
     default:
@@ -24,19 +30,16 @@ function appReducer(state, action) {
   }
 }
 
-
 export function AppProvider({ children }) {
   const [state, dispatch] = useReducer(appReducer, initialState);
-     const [user, setUser] = useState(null);
-    const backendURL = import.meta.env.VITE_BACKEND_PORT
+  const backendURL = import.meta.env.VITE_BACKEND_PORT;
 
   useEffect(() => {
     const fetchUser = async () => {
       const token = localStorage.getItem("token");
 
       if (!token) {
-        alert("Please login first");
-        window.location.href = "/login";
+        dispatch({ type: "AUTH_ERROR" });
         return;
       }
 
@@ -45,12 +48,11 @@ export function AppProvider({ children }) {
           headers: { Authorization: `Bearer ${token}` },
         });
 
-        setUser(res.data);
+        dispatch({ type: "SET_USER", payload: res.data });
       } catch (err) {
         console.error("Error fetching user:", err);
-        alert("Session expired. Login again.");
         localStorage.removeItem("token");
-        window.location.href = "/login";
+        dispatch({ type: "AUTH_ERROR" });
       }
     };
 
@@ -58,12 +60,11 @@ export function AppProvider({ children }) {
   }, []);
 
   return (
-    <AppContext.Provider value={{ state, dispatch,user }}>
+    <AppContext.Provider value={{ ...state, dispatch }}>
       {children}
     </AppContext.Provider>
   );
 }
-
 
 export function useAppContext() {
   return useContext(AppContext);
