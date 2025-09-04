@@ -8,6 +8,7 @@ const router = express.Router();
 const upload = multer({ storage });
 
 router.post('/', requireAuth, upload.single('image'), postController.createPost);
+router.get('/', postController.getAllPosts);
 router.get('/user/:userId', postController.getUserPosts);
 
 export default router;

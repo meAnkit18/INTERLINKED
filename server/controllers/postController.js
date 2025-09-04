@@ -31,3 +31,13 @@ export const getUserPosts = async (req, res) => {
     res.status(500).json({ message: 'Failed to get user posts', error: error.message });
   }
 };
+
+export const getAllPosts = async (req, res) => {
+  try {
+    const posts = await Post.find().populate('user', 'username');
+    res.status(200).json(posts);
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: 'Failed to get all posts', error: error.message });
+  }
+};

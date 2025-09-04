@@ -46,7 +46,7 @@ function AccoutDetails() {
           },
         }
       );
-      fetchUserPosts(); // Refresh posts after successful upload
+      fetchUserPosts(); 
       setTitle('');
       setDescription('');
       setImage(null);
@@ -96,7 +96,7 @@ function AccoutDetails() {
 
       <div style={{ marginTop: '20px' }}>
         <h2>My Posts</h2>
-        {posts.map((post) => (
+        {posts.reverse().map((post) => (
           <div key={post._id} style={{ border: '1px solid #ccc', padding: '10px', margin: '10px 0' }}>
             <h3>{post.title}</h3>
             <p>{post.description}</p>
