@@ -67,7 +67,7 @@ export const verifyOtp = async (req, res) => {
 
 export const account =async (req, res) => {
   try {
-    const user = await User.findById(req.userId)
+    const user = await User.findById(req.user.id)
     res.status(200).json(user);
   } catch (err) {
     res.status(500).json({ message: "Failed to fetch user" });
