@@ -36,7 +36,7 @@ export default function Home() {
         <p>Loading posts...</p>
       ) : (
         <div>
-          {posts.map((post) => (
+          {posts.reverse().map((post) => (
             <div key={post._id}>
               <h2>{post.title}</h2>
               <p>{post.description}</p>

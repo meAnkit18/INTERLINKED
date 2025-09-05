@@ -18,6 +18,14 @@ const postSchema = new mongoose.Schema({
     ref: 'User',
     required: true,
   },
+  confidence:{
+    type: Number,
+    required: true,
+  },
+  category:{
+    type: String,
+    required: true,
+  },
 }, { timestamps: true });
 
 export default mongoose.model('Post', postSchema);
