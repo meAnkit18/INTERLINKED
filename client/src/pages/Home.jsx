@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import Post from '../../../server/models/Post';
 import PostCard from '../components/PostCard';
 
 export default function Home() {
