@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useAppContext } from '../context/AppContext';
+import PostCard from '../components/PostCard';
 
 function AccoutDetails() {
   const { user } = useAppContext();
@@ -28,41 +29,12 @@ function AccoutDetails() {
     }
   };
 
-  // const handlePostSubmit = async (e) => {
-  //   e.preventDefault();
-  //   const formData = new FormData();
-  //   formData.append('title', title);
-  //   formData.append('description', description);
-  //   formData.append('image', image);
-
-  //   try {
-  //     const token = localStorage.getItem('token');
-  //     await axios.post(`${backendURL}/api/posts`,
-  //       formData,
-  //       {
-  //         headers: {
-  //           'Content-Type': 'multipart/form-data',
-  //           Authorization: `Bearer ${token}`,
-  //         },
-  //       }
-  //     );
-  //     fetchUserPosts(); 
-  //     setTitle('');
-  //     setDescription('');
-  //     setImage(null);
-  //   } catch (err) {
-  //     console.error('Error creating post:', err);
-  //   }
-  // };
-
   const handlePostSubmit = async (e) => {
   e.preventDefault();
 
-  // Default coordinates in case user denies permission
   let latitude = null;
   let longitude = null;
 
-  // Get user location (browser)
   const getLocation = () =>
     new Promise((resolve) => {
       if (navigator.geolocation) {
@@ -111,10 +83,11 @@ function AccoutDetails() {
   if (!user) return <p>Loading user info...</p>;
 
   return (
-    <div style={{ padding: '20px' }}>
+    <div className='container mx-auto px-4 sm:px-6 md:px-10 lg:px-20'>
       <h1>User Profile</h1>
+    <img src={user.profilePicture} alt="" srcset="" className='h-10'/>
+      <p><strong>Username:</strong> {user.username}</p>
       <p><strong>Email:</strong> {user.email}</p>
-
       <div style={{ marginTop: '20px' }}>
         <h2>Create a new post</h2>
         <form onSubmit={handlePostSubmit}>
@@ -146,15 +119,12 @@ function AccoutDetails() {
           <button type="submit">Post</button>
         </form>
       </div>
-
-      <div style={{ marginTop: '20px' }}>
         <h2>My Posts</h2>
+    <div
+        className='grid sm:grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4'
+        >
         {posts.reverse().map((post) => (
-          <div key={post._id} style={{ border: '1px solid #ccc', padding: '10px', margin: '10px 0' }}>
-            <h3>{post.title}</h3>
-            <p>{post.description}</p>
-            <img src={post.imageUrl} alt={post.title} style={{ maxWidth: '200px' }} />
-          </div>
+      <PostCard key={post._id} prop={post}/>
         ))}
       </div>
     </div>

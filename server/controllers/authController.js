@@ -38,11 +38,16 @@ export const verifyOtp = async (req, res) => {
   if (OTPStorage[email] !== otp) {
     return res.status(400).json({ error: 'Invalid OTP' })
   }
-
+  const username = "Guest18"
+  const profilePicture = "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjWHVaY-wRjLvQDY-FhyphenhyphenPKYH9Gb1Kz9nUz2Bu4zeEpRXDCfjBE7jyANtu_ZOxpzZD6tMoG3H62XDO5IrYZhPqBn3E0nnuD6IRvA6AcdNHHNsN3h_A6FsU0s4D7XSi8NzxIi50CHKrk_p4xVT1K4fgyDhIp1b9RycsVAd7-KrmbzXCzdcA7D2CDf3eocDwQ/s512/profile-user.png"
   try {
     let user = await User.findOne({ email })
     if (!user) {
-      user = new User({ email })
+      user = new User({ 
+        username,
+        profilePicture,
+        email,
+       })
       await user.save()
     }
 

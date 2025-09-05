@@ -12,9 +12,7 @@ export const createPost = async (req, res) => {
 
     try {
       const response = await axios.get(
-        `https://ayushg2500-ai-model.hf.space/predict_get?complaint=${encodeURIComponent(
-          title
-        )}`
+        `https://ayushg2500-ai-model.hf.space/predict_get?complaint=${title}&api=${process.env.MODEL_URL}`
       );
 
       const data = response.data;
@@ -52,7 +50,7 @@ export const createPost = async (req, res) => {
 export const getUserPosts = async (req, res) => {
   try {
     const { userId } = req.params;
-    const posts = await Post.find({ user: userId }).populate('user', 'username');
+    const posts = await Post.find({ user: userId }).populate('user', 'username profilePicture');
     res.status(200).json(posts);
   } catch (error) {
     console.log(error);
@@ -62,7 +60,7 @@ export const getUserPosts = async (req, res) => {
 
 export const getAllPosts = async (req, res) => {
   try {
-    const posts = await Post.find().populate('user', 'username');
+    const posts = await Post.find().populate('user', 'username profilePicture');
     res.status(200).json(posts);
   } catch (error) {
     console.log(error);

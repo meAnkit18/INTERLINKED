@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import Post from '../../../server/models/Post';
+import PostCard from '../components/PostCard';
 
 export default function Home() {
   const navigate = useNavigate();
@@ -28,22 +30,17 @@ export default function Home() {
   }, []);
 
   return (
-    <div>
-      <h1 className='text-center mt-5 text-amber-800 text-3xl font-bold'>Home</h1>
+    <div className='container mx-auto px-4 sm:px-6 md:px-10 lg:px-20'>
       <button onClick={() => navigate('/account')}>Account</button>
       <h1>All Posts</h1>
       {loading ? (
         <p>Loading posts...</p>
       ) : (
-        <div>
+        <div
+        className='grid sm:grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4'
+        >
           {posts.reverse().map((post) => (
-            <div key={post._id}>
-              <h2>{post.title}</h2>
-              <p>{post.description}</p>
-              <p>{post.category}</p>
-              <img src={post.imageUrl} alt={post.title} />
-              {/* <p>Posted by: {post.user.username}</p> */}
-            </div>
+            <PostCard key={post._id} prop={post}/>
           ))}
         </div>
       )}
