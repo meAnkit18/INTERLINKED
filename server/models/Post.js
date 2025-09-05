@@ -26,6 +26,14 @@ const postSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  latitude:{
+    type: Number,
+    required: true,
+  },
+  longitude:{
+    type: Number,
+    required: true,
+  },
 }, { timestamps: true });
 
 export default mongoose.model('Post', postSchema);

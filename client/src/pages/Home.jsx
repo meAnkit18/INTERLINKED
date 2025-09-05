@@ -40,6 +40,7 @@ export default function Home() {
             <div key={post._id}>
               <h2>{post.title}</h2>
               <p>{post.description}</p>
+              <p>{post.category}</p>
               <img src={post.imageUrl} alt={post.title} />
               {/* <p>Posted by: {post.user.username}</p> */}
             </div>

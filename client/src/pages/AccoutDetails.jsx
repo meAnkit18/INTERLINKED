@@ -28,32 +28,85 @@ function AccoutDetails() {
     }
   };
 
-  const handlePostSubmit = async (e) => {
-    e.preventDefault();
-    const formData = new FormData();
-    formData.append('title', title);
-    formData.append('description', description);
-    formData.append('image', image);
+  // const handlePostSubmit = async (e) => {
+  //   e.preventDefault();
+  //   const formData = new FormData();
+  //   formData.append('title', title);
+  //   formData.append('description', description);
+  //   formData.append('image', image);
 
-    try {
-      const token = localStorage.getItem('token');
-      await axios.post(`${backendURL}/api/posts`,
-        formData,
-        {
-          headers: {
-            'Content-Type': 'multipart/form-data',
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-      fetchUserPosts(); 
-      setTitle('');
-      setDescription('');
-      setImage(null);
-    } catch (err) {
-      console.error('Error creating post:', err);
-    }
-  };
+  //   try {
+  //     const token = localStorage.getItem('token');
+  //     await axios.post(`${backendURL}/api/posts`,
+  //       formData,
+  //       {
+  //         headers: {
+  //           'Content-Type': 'multipart/form-data',
+  //           Authorization: `Bearer ${token}`,
+  //         },
+  //       }
+  //     );
+  //     fetchUserPosts(); 
+  //     setTitle('');
+  //     setDescription('');
+  //     setImage(null);
+  //   } catch (err) {
+  //     console.error('Error creating post:', err);
+  //   }
+  // };
+
+  const handlePostSubmit = async (e) => {
+  e.preventDefault();
+
+  // Default coordinates in case user denies permission
+  let latitude = null;
+  let longitude = null;
+
+  // Get user location (browser)
+  const getLocation = () =>
+    new Promise((resolve) => {
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+          (pos) => resolve({ lat: pos.coords.latitude, lon: pos.coords.longitude }),
+          () => resolve({ lat: null, lon: null }) // fallback if denied
+        );
+      } else {
+        resolve({ lat: null, lon: null });
+      }
+    });
+
+  const { lat, lon } = await getLocation();
+  latitude = lat;
+  longitude = lon;
+
+  // Prepare FormData
+  const formData = new FormData();
+  formData.append("title", title);
+  formData.append("description", description);
+  formData.append("image", image);
+  formData.append("latitude", latitude);
+  formData.append("longitude", longitude);
+
+  try {
+    const token = localStorage.getItem("token");
+    await axios.post(`${backendURL}/api/posts`, formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    fetchUserPosts();
+    setTitle("");
+    setDescription("");
+    setImage(null);
+  } catch (err) {
+    console.error("Error creating post:", err);
+  }
+};
+
+
+
 
   if (!user) return <p>Loading user info...</p>;
 

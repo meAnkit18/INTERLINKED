@@ -3,7 +3,7 @@ import axios from "axios";
 
 export const createPost = async (req, res) => {
   try {
-    const { title, description } = req.body;
+    const { title, description,longitude,latitude } = req.body;
     const imageUrl = req.file.path;
     const user = req.user.id;
 
@@ -35,6 +35,9 @@ export const createPost = async (req, res) => {
       user,
       confidence,
       category,
+      latitude,
+      longitude,
+
     });
 
     await newPost.save();
