@@ -86,3 +86,37 @@ export const account =async (req, res) => {
     res.status(500).json({ message: "Failed to fetch user" });
   }
 }
+
+export const updateUser = async (req, res) => {
+  try {
+    const { id } = req.user;
+    const { username } = req.body;
+    const user = await User.findById(id);
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    if (username) {
+      user.username = username;
+    }
+
+    if (req.file) {
+      user.profilePicture = req.file.path;
+    }
+
+    await user.save();
+
+    res.status(200).json({
+      message: "Profile updated successfully",
+      user: {
+        id: user._id,
+        email: user.email,
+        username: user.username,
+        profilePicture: user.profilePicture,
+      },
+    });
+  } catch (err) {
+    res.status(500).json({ message: "Failed to update profile", error: err.message });
+  }
+};

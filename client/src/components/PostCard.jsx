@@ -22,7 +22,7 @@ export default function PostCard({prop}) {
                 <h3 className="text-base text-slate-900 font-medium ">{prop.title}</h3>
                 <h3 className="text-blue-500 ">{prop.category}</h3>
                 <div className="flex items-center gap-4 mt-3">
-                <img src={prop.user.profilePicture} className="h-7" alt="" />
+                <img src={prop.user.profilePicture} className="h-7 rounded-full" alt="" />
                 <div>
                 <h3 className="text-base text-slate-900 font-medium ">{prop.user.username}</h3>
                 </div>

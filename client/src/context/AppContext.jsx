@@ -19,6 +19,11 @@ function appReducer(state, action) {
         isAuthenticated: true,
         loading: false,
       };
+    case "UPDATE_USER":
+      return {
+        ...state,
+        user: action.payload,
+      };
     case "LOGOUT":
       return { ...state, user: null, isAuthenticated: false, loading: false };
     case "AUTH_ERROR":

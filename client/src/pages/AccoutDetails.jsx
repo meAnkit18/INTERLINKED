@@ -4,13 +4,16 @@ import { useAppContext } from '../context/AppContext';
 import PostCard from '../components/PostCard';
 
 function AccoutDetails() {
-  const { user } = useAppContext();
+  const { user, dispatch } = useAppContext();
   const [posts, setPosts] = useState([]);
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [image, setImage] = useState(null);
   const backendURL = import.meta.env.VITE_BACKEND_PORT;
   const [udet, setUdet] = useState(null);
+  const [isEditMode, setIsEditMode] = useState(false);
+  const [newUsername, setNewUsername] = useState(user ? user.username : '');
+  const [newProfilePicture, setNewProfilePicture] = useState(null);
 
   useEffect(() => {
     if (user) {
@@ -82,6 +85,29 @@ function AccoutDetails() {
   }
 };
 
+const handleProfileUpdate = async () => {
+    const formData = new FormData();
+    formData.append('username', newUsername);
+    if (newProfilePicture) {
+      formData.append('profilePicture', newProfilePicture);
+    }
+
+    try {
+      const token = localStorage.getItem('token');
+      const res = await axios.put(`${backendURL}/api/auth/user/update`, formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      dispatch({ type: 'UPDATE_USER', payload: res.data.user });
+      setUdet(res.data.user);
+      setIsEditMode(false);
+    } catch (err) {
+      console.error('Error updating profile:', err);
+    }
+  };
+
 
 
 
@@ -91,11 +117,53 @@ function AccoutDetails() {
     <div className='container mt-22 mx-auto px-4 sm:px-6 md:px-10 lg:px-20'>
       <h1 className='text-2xl font-semibold mb-4 text-center'>Profile</h1>
       <div className='flex items-center gap-4 mb-4 '>
-        {udet && <img src={udet.profilePicture} alt="Profile" className="h-30" />}
+        {udet && <img src={udet.profilePicture} alt="Profile" className="h-30 rounded-full" />}
+        {isEditMode ? (
           <div>
-          <p><strong>Username:</strong> {user.username}</p>
-          <p><strong>Email:</strong> {user.email}</p>
+            <input
+              type="text"
+              placeholder='New Username'
+              value={newUsername}
+              onChange={(e) => setNewUsername(e.target.value)}
+              className="border p-2 mb-2 w-full"
+            />
+             <label
+                htmlFor="file-upload"
+                className="cursor-pointer flex justify-center items-center gap-2 px-5 py-2.5 rounded-lg bg-gradient-to-r from-indigo-500 to-purple-600 text-white font-medium shadow-md hover:brightness-110 transition duration-150"
+              >
+                {/* 👉 Custom SVG or Icon */}
+                <img
+                  src="https://blogger.googleusercontent.com/img/a/AVvXsEi9UwU3oG7bGPK-_qdLHroYP9B2eKA6Ql5GVt1r4OZbZCbszaoJTDgdo4rvR19drU7H1uwIWf3uc1CgFmPZNoj2W3Bwkcbf_ErcNKbnm-aX6s1WzS4PUeZO5eW2FnfcScBm6BXiyd5Z0sa4d2HSIbIlAFs1AGi9SQJRTYTsefAStZyTR6RgTRl65ciOI3Q"
+                  className="w-6 h-6"
+                  alt="upload-icon"
+                />
+                Upload Image
+              </label>
+
+              <input
+                id="file-upload"
+                type="file"
+                accept="image/*"
+                onChange={(e) => setNewProfilePicture(e.target.files[0])}
+                className="hidden"
+              />
+
+            <button onClick={handleProfileUpdate} className="bg-slate-800 text-white px-4 py-2 rounded mt-2 mr-2">
+              Save
+            </button>
+            <button onClick={() => setIsEditMode(false)} className="bg-gray-500 text-white px-4 py-2 rounded">
+              Cancel
+            </button>
           </div>
+        ) : (
+          <div>
+            <p><strong>Username:</strong> {user.username}</p>
+            <p><strong>Email:</strong> {user.email}</p>
+            <button onClick={() => setIsEditMode(true)} className="bg-slate-700 text-white px-4 py-2 rounded mt-2">
+              Edit Profile
+            </button>
+          </div>
+        )}
       </div>
       
         <h2 className='text-2xl font-semibold mb-4 text-center'>My Reported Issues</h2>
