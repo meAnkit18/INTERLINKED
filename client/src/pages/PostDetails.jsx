@@ -1,0 +1,67 @@
+import React, { useState, useEffect } from 'react';
+import { useParams } from 'react-router-dom';
+import axios from 'axios';
+
+const PostDetails = () => {
+  const { id } = useParams();
+  const [post, setPost] = useState(null);
+  const backendURL = import.meta.env.VITE_BACKEND_PORT;
+
+  useEffect(() => {
+    const fetchPost = async () => {
+      try {
+        const response = await axios.get(`${backendURL}/api/posts/${id}`);
+        setPost(response.data);
+      } catch (error) {
+        console.error('Error fetching post:', error);
+      }
+    };
+
+    fetchPost();
+  }, [id]);
+
+  if (!post) {
+    return <div>Loading...</div>;
+  }
+
+  const formattedDate = new Date(post.createdAt).toLocaleDateString('en-US', {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+  });
+
+  return (
+    <div className="container mx-auto px-4 py-8 mt-22">
+      <div className="flex max-w-4xl mx-auto bg-white rounded-lg overflow-hidden">
+        <img src={post.imageUrl} alt={post.title} className="w-96 h-96 object-cover" />
+        <div className="p-6">
+           <div className="flex items-center mb-5">
+            <img
+              src={post.user.profilePicture}
+              alt={post.user.username}
+              className="w-10 h-10 rounded-full mr-4"
+            />
+            <div>
+              <p className="font-semibold">{post.user.username}</p>
+              <p className="text-gray-500 text-sm">Posted on {formattedDate}</p>
+            </div>
+          </div>
+          <h1 className="text-3xl font-bold mb-2">{post.title}</h1>
+          <div className="flex items-center mb-4">
+            <span className="bg-gray-200 text-gray-800 text-sm font-semibold mr-2 px-2.5 py-0.5 rounded">
+              {post.category}
+            </span>
+          </div>
+          <div className="flex items-center mb-4">
+            <p className="text-gray-600 mr-4">Latitude: {post.latitude}</p>
+            <p className="text-gray-600">Longitude: {post.longitude}</p>
+          </div>
+          <p className="text-gray-700 mb-4">{post.description}</p>
+         
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default PostDetails;

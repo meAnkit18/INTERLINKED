@@ -1,3 +1,5 @@
+import { Link } from 'react-router-dom';
+
 export default function PostCard({prop}) {
     return (
         <>
@@ -10,8 +12,10 @@ export default function PostCard({prop}) {
             `}</style>
            
      
-
-               <div className="max-w-72 w-full hover:-translate-y-0.5 transition duration-300 mb-10">
+                
+            <Link to={`/post/${prop._id}`}
+            >
+               <div className=" max-w-72 w-full hover:-translate-y-0.5 transition duration-300 mb-10">
                 <div className="h-80 w-80 overflow-hidden">
                     <img
                     className="h-full w-full object-cover rounded-xl"
@@ -29,6 +33,7 @@ export default function PostCard({prop}) {
                 </div>
                
                 </div>
+            </Link>
 
             
         
