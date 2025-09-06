@@ -103,7 +103,6 @@ function CreatePost({ fetchUserPosts }) {
           <textarea
             value={description}
             onChange={(e) => setDescription(e.target.value)}
-            required
             className="w-full border rounded px-2 py-1"
           />
         </div>
