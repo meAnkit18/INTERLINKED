@@ -10,6 +10,7 @@ function AccoutDetails() {
   const [description, setDescription] = useState('');
   const [image, setImage] = useState(null);
   const backendURL = import.meta.env.VITE_BACKEND_PORT;
+  const [udet, setUdet] = useState(null);
 
   useEffect(() => {
     if (user) {
@@ -23,6 +24,10 @@ function AccoutDetails() {
       const res = await axios.get(`${backendURL}/api/posts/user/${user._id}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
+       const rese = await axios.get(`${backendURL}/api/auth/account`, {
+              headers: { Authorization: `Bearer ${token}` },
+            });
+            setUdet(rese.data);
       setPosts(res.data);
     } catch (err) {
       console.error('Error fetching user posts:', err);
@@ -85,7 +90,8 @@ function AccoutDetails() {
   return (
     <div className='container mx-auto px-4 sm:px-6 md:px-10 lg:px-20'>
       <h1>User Profile</h1>
-    <img src={user.profilePicture} alt="" srcset="" className='h-10'/>
+    {udet && <img src={udet.profilePicture} alt="Profile" className="h-10" />}
+
       <p><strong>Username:</strong> {user.username}</p>
       <p><strong>Email:</strong> {user.email}</p>
       <div style={{ marginTop: '20px' }}>

@@ -30,7 +30,6 @@ export default function Home() {
 
   return (
     <div className='container mx-auto px-4 sm:px-6 md:px-10 lg:px-20'>
-      <button onClick={() => navigate('/account')}>Account</button>
       <h1>All Posts</h1>
       {loading ? (
         <p>Loading posts...</p>
