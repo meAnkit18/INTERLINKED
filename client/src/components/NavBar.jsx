@@ -36,7 +36,7 @@ export  function NavBar() {
 
 
     return (
-        <nav className="flex items-center justify-between px-6 md:px-16 lg:px-24 xl:px-32 py-4 border-b border-gray-300 bg-white relative transition-all">
+        <nav className="fixed top-0 left-0 w-full z-50 flex items-center justify-between px-6 md:px-16 lg:px-24 xl:px-32 py-4 border-b border-gray-300 bg-white shadow transition-all">
 
             <a href="#">
                <h1 className='text-3xl font-bold'>Jan Samadhan</h1>
@@ -46,7 +46,7 @@ export  function NavBar() {
             <div className="hidden sm:flex items-center gap-8">
                 <Link to="/home">Home</Link>
                 <Link to="/">Trending</Link>
-                <Link to="/">about</Link>
+                <Link to="/">Leaderboard</Link>
 
                 <div className="hidden lg:flex items-center text-sm gap-2 border border-gray-300 px-3 rounded-full">
                     <input className="py-1.5 w-full bg-transparent outline-none placeholder-gray-500" type="text" placeholder="Search products" />
@@ -55,6 +55,18 @@ export  function NavBar() {
                         <path clip-rule="evenodd" d="M9.141 11.738c2.729-1.136 4.001-4.224 2.841-6.898S7.67.921 4.942 2.057C2.211 3.193.94 6.281 2.1 8.955s4.312 3.92 7.041 2.783" stroke="#7A7B7D" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" />
                     </svg>
                 </div>
+                 <button class="button-85 relative px-6 py-2 rounded-lg text-white bg-[#111] cursor-pointer"
+                    onClick={() => {
+                        if(user){
+                            navigate('/createpost')
+                        } else {
+                            navigate('/login')
+                        }
+                    }
+                        }>
+                   Report Issue
+                    </button>
+
                     {udet ? (
                         <img
                             src={udet.profilePicture || "/default-avatar.png"}
@@ -65,7 +77,7 @@ export  function NavBar() {
                         ) : (
                         <button
                             onClick={() => navigate('/login')}
-                            className="cursor-pointer px-8 py-2 bg-indigo-500 hover:bg-indigo-600 transition text-white rounded-full"
+                            className="cursor-pointer px-8 py-2 bg-slate-800 hover:bg-slate-900 transition text-white rounded-full"
                         >
                             Login
                         </button>

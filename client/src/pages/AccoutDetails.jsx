@@ -88,43 +88,13 @@ function AccoutDetails() {
   if (!user) return <p>Loading user info...</p>;
 
   return (
-    <div className='container mx-auto px-4 sm:px-6 md:px-10 lg:px-20'>
+    <div className='container mt-22 mx-auto px-4 sm:px-6 md:px-10 lg:px-20'>
       <h1>User Profile</h1>
     {udet && <img src={udet.profilePicture} alt="Profile" className="h-10" />}
 
       <p><strong>Username:</strong> {user.username}</p>
       <p><strong>Email:</strong> {user.email}</p>
-      <div style={{ marginTop: '20px' }}>
-        <h2>Create a new post</h2>
-        <form onSubmit={handlePostSubmit}>
-          <div>
-            <label>Title:</label>
-            <input
-              type="text"
-              value={title}
-              onChange={(e) => setTitle(e.target.value)}
-              required
-            />
-          </div>
-          <div>
-            <label>Description:</label>
-            <textarea
-              value={description}
-              onChange={(e) => setDescription(e.target.value)}
-              required
-            />
-          </div>
-          <div>
-            <label>Image:</label>
-            <input
-              type="file"
-              onChange={(e) => setImage(e.target.files[0])}
-              required
-            />
-          </div>
-          <button type="submit">Post</button>
-        </form>
-      </div>
+      
         <h2>My Posts</h2>
     <div
         className='grid sm:grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4'

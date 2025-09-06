@@ -6,6 +6,7 @@ import AccoutDetails from "./pages/AccoutDetails";
 import Home from "./pages/Home";
 import { NavBar } from "./components/NavBar";
 import Footer from "./components/Footer";
+import CreatePost from "./components/CreatePost";
 
 
 function App() {
@@ -17,6 +18,7 @@ function App() {
         <Route path="/login" element={<Login/>} />
         <Route path="/account" element={<AccoutDetails/>} />
         <Route path="/home" element={<Home/>} />
+        <Route path="/createpost" element={<CreatePost/>} />
         <Route path="*" element={<Not404Pg/>} />
       </Routes>
       <Footer/>
