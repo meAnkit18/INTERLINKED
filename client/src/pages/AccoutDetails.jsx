@@ -89,13 +89,16 @@ function AccoutDetails() {
 
   return (
     <div className='container mt-22 mx-auto px-4 sm:px-6 md:px-10 lg:px-20'>
-      <h1>User Profile</h1>
-    {udet && <img src={udet.profilePicture} alt="Profile" className="h-10" />}
-
-      <p><strong>Username:</strong> {user.username}</p>
-      <p><strong>Email:</strong> {user.email}</p>
+      <h1 className='text-2xl font-semibold mb-4 text-center'>Profile</h1>
+      <div className='flex items-center gap-4 mb-4 '>
+        {udet && <img src={udet.profilePicture} alt="Profile" className="h-30" />}
+          <div>
+          <p><strong>Username:</strong> {user.username}</p>
+          <p><strong>Email:</strong> {user.email}</p>
+          </div>
+      </div>
       
-        <h2>My Posts</h2>
+        <h2 className='text-2xl font-semibold mb-4 text-center'>My Reported Issues</h2>
     <div
         className='grid sm:grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4'
         >

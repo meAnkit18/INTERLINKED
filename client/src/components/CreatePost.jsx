@@ -149,7 +149,7 @@ function CreatePost({ fetchUserPosts }) {
           className={`px-4 py-2 rounded ${
             !image || loading
               ? "bg-gray-400 cursor-not-allowed"
-              : "bg-blue-500 hover:bg-blue-600 text-white"
+              : "bg-slate-700 hover:bg-slate-800 text-white"
           }`}
         >
           {loading ? `Uploading... ${progress}%` : "Post"}
