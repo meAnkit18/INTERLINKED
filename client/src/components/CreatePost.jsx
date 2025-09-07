@@ -10,13 +10,14 @@ function CreatePost({ fetchUserPosts }) {
   const [preview, setPreview] = useState(null);
   const [loading, setLoading] = useState(false);
   const [progress, setProgress] = useState(0);
-  const [useCamera, setUseCamera] = useState(false); // 👈 toggle upload vs camera
+  const [useCamera, setUseCamera] = useState(false);
+  const [facingMode, setFacingMode] = useState("user"); // 👈 front camera default
 
   const webcamRef = useRef(null);
   const backendURL = import.meta.env.VITE_BACKEND_PORT;
   const navigate = useNavigate();
 
-  // 📸 Capture photo from webcam
+  // 📸 Capture photo
   const capture = () => {
     const imageSrc = webcamRef.current.getScreenshot();
     if (imageSrc) {
@@ -30,6 +31,11 @@ function CreatePost({ fetchUserPosts }) {
     }
   };
 
+  // 🔄 Switch front ↔ back camera
+  const switchCamera = () => {
+    setFacingMode((prev) => (prev === "user" ? { exact: "environment" } : "user"));
+  };
+
   const handlePostSubmit = async (e) => {
     e.preventDefault();
     if (!image) return;
@@ -37,7 +43,6 @@ function CreatePost({ fetchUserPosts }) {
     setLoading(true);
     setProgress(0);
 
-    // Get location
     const getLocation = () =>
       new Promise((resolve) => {
         if (navigator.geolocation) {
@@ -76,7 +81,6 @@ function CreatePost({ fetchUserPosts }) {
 
       if (fetchUserPosts) fetchUserPosts();
 
-      // Reset form
       setTitle("");
       setDescription("");
       setImage(null);
@@ -91,39 +95,28 @@ function CreatePost({ fetchUserPosts }) {
     }
   };
 
-  const handleImageChange = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      setImage(file);
-      setPreview(URL.createObjectURL(file));
-    }
-  };
-
   return (
     <div className="container mt-22 mx-auto px-4 sm:px-6 md:px-10 lg:px-20">
       <h2 className="text-2xl font-semibold mb-4 text-center">
         Report Issues That You Are Facing
       </h2>
-      <form onSubmit={handlePostSubmit} className="space-y-4">
-        <div>
-          <label>Title:</label>
-          <input
-            type="text"
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
-            required
-            className="w-full border rounded px-2 py-1"
-          />
-        </div>
 
-        <div>
-          <label>Description:</label>
-          <textarea
-            value={description}
-            onChange={(e) => setDescription(e.target.value)}
-            className="w-full border rounded px-2 py-1"
-          />
-        </div>
+      <form onSubmit={handlePostSubmit} className="space-y-4">
+        <input
+          type="text"
+          value={title}
+          onChange={(e) => setTitle(e.target.value)}
+          placeholder="Title"
+          required
+          className="w-full border rounded px-2 py-1"
+        />
+
+        <textarea
+          value={description}
+          onChange={(e) => setDescription(e.target.value)}
+          placeholder="Description"
+          className="w-full border rounded px-2 py-1"
+        />
 
         {/* Toggle Upload vs Camera */}
         <div className="flex gap-3">
@@ -147,47 +140,50 @@ function CreatePost({ fetchUserPosts }) {
           </button>
         </div>
 
-        {/* Upload option */}
-        {!useCamera && (
-          <div>
-            <label
-              htmlFor="file-upload"
-              className="cursor-pointer flex justify-center items-center gap-2 px-5 py-2.5 rounded-lg bg-gradient-to-r from-indigo-500 to-purple-600 text-white font-medium shadow-md hover:brightness-110 transition duration-150"
-            >
-              <img
-                src="https://blogger.googleusercontent.com/img/a/AVvXsEi9UwU3oG7bGPK-_qdLHroYP9B2eKA6Ql5GVt1r4OZbZCbszaoJTDgdo4rvR19drU7H1uwIWf3uc1CgFmPZNoj2W3Bwkcbf_ErcNKbnm-aX6s1WzS4PUeZO5eW2FnfcScBm6BXiyd5Z0sa4d2HSIbIlAFs1AGi9SQJRTYTsefAStZyTR6RgTRl65ciOI3Q"
-                className="w-6 h-6"
-                alt=""
-              />
-              Upload Image
-            </label>
-            <input
-              id="file-upload"
-              type="file"
-              accept="image/*"
-              onChange={handleImageChange}
-              required={!image}
-              className="hidden"
-            />
-          </div>
-        )}
-
-        {/* Camera option */}
+        {/* Camera Mode */}
         {useCamera && (
-          <div className="flex flex-col items-center">
+          <div className="flex flex-col items-center gap-2">
             <Webcam
               ref={webcamRef}
               screenshotFormat="image/jpeg"
+              videoConstraints={{ facingMode }}
               className="rounded-lg border"
             />
-            <button
-              type="button"
-              onClick={capture}
-              className="mt-2 px-4 py-2 bg-green-600 text-white rounded"
-            >
-              Capture Photo
-            </button>
+
+            <div className="flex gap-3 mt-2">
+              <button
+                type="button"
+                onClick={capture}
+                className="px-4 py-2 bg-green-600 text-white rounded"
+              >
+                Capture
+              </button>
+              <button
+                type="button"
+                onClick={switchCamera}
+                className="px-4 py-2 bg-yellow-600 text-white rounded"
+              >
+                Switch Camera
+              </button>
+            </div>
           </div>
+        )}
+
+        {/* Upload Mode */}
+        {!useCamera && (
+          <input
+            type="file"
+            accept="image/*"
+            onChange={(e) => {
+              const file = e.target.files[0];
+              if (file) {
+                setImage(file);
+                setPreview(URL.createObjectURL(file));
+              }
+            }}
+            required={!image}
+            className="w-full border rounded px-2 py-1"
+          />
         )}
 
         {/* Preview */}
