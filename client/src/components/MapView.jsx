@@ -2,6 +2,12 @@ import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 
 export default function MapView({ posts }) {
+     const customIcon = L.icon({
+    iconUrl: "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEghQQ40jhTVcKfUFthmdOAtFiAaYVqEJG9M_4HKbi61cYlMhnhPn4JKHO-L-0DUGELJStUbd6TdMjivzbz6fEx3QoRfBN3HSDzoSJjA_Vl15Slhyphenhyphencx_0dQz0d7tPizjmlyukXvA9yJ6fVBKSkMazeCug29YUFbbJcSyGxfMYXzOVZtgRPif5cPpZKbt-oA/s512/placeholder.png", 
+    iconSize: [30, 30],    
+    iconAnchor: [20, 40],  
+    popupAnchor: [0, -40], 
+  });
   return (
     <MapContainer
       center={[28.6139, 77.2090]}
@@ -25,7 +31,7 @@ export default function MapView({ posts }) {
         }
 
         return (
-          <Marker key={i} position={[lat, lng]}>
+          <Marker key={i} position={[lat, lng]} icon={customIcon}>
             <Popup>
               {post.user && (
                 <div className="flex items-center gap-2 mt-3 mr-10 mb-5">
