@@ -1,145 +1,122 @@
-import React, { use } from 'react'
-import {useNavigate, Link} from 'react-router-dom'
-import { useAppContext } from '../context/AppContext'
-import { useEffect, useState } from 'react';
-import axios from 'axios';
+import React, { useState, useEffect } from "react";
+import { useNavigate, Link } from "react-router-dom";
 
+const NavBar = () => {
+  const [open, setOpen] = useState(false);
+  const navigate = useNavigate();
 
-export  function NavBar() {
-    const [open, setOpen] = React.useState(false)
-    const {user} = useAppContext()
-    const navigate = useNavigate()
-    const backendURL = import.meta.env.VITE_BACKEND_PORT;
-    const [udet, setUdet] = useState(null);
-    
+  const [taglineIndex, setTaglineIndex] = useState(0);
+  const taglines = [
+    "Your Voice, Your Right, Your Solution",
+    "आपकी आवाज, आपका अधिकार, आपका समाधान",
+  ];
 
-    useEffect(() => {
-    if (user) {
-      fetchUserPosts();
-    }
-  }, [user]);
+  // Rotate tagline
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setTaglineIndex((prev) => (prev + 1) % taglines.length);
+    }, 4000);
+    return () => clearInterval(interval);
+  }, []);
 
-  const fetchUserPosts = async () => {
-    try {
-      const token = localStorage.getItem('token');
-      const res = await axios.get(`${backendURL}/api/auth/account`, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-      setUdet(res.data);
-    } catch (err) {
-      console.error('Error fetching user posts:', err);
-    }
-  };
+  return (
+    <nav className="fixed top-0 left-0 w-full z-50 flex items-center justify-between px-6 md:px-16 lg:px-24 py-4 shadow-md bg-sky-500 text-white transition-all">
+      {/* Logo + Tagline */}
+      <div className="flex items-center gap-3">
+        <img
+          src="https://www.pngmart.com/files/7/Community-PNG-Clipart.png"
+          alt="Jan Samadhan Logo"
+          className="h-14 w-14 object-contain rounded-full shadow-sm bg-white p-1"
+        />
+        <div className="flex flex-col">
+          <Link
+            to="/"
+            className="text-2xl md:text-3xl font-bold text-white hover:text-sky-200 transition"
+          >
+            Jan Samadhan
+          </Link>
+          <span className="text-sm italic">{taglines[taglineIndex]}</span>
+        </div>
+      </div>
 
+      {/* Desktop Links */}
+      <div className="hidden md:flex items-center gap-8 font-medium">
+        <Link to="/" className="hover:text-sky-200 transition">
+          Home
+        </Link>
+        <Link to="/about" className="hover:text-sky-200 transition">
+          About Us
+        </Link>
+        <Link to="/contact" className="hover:text-sky-200 transition">
+          Contact
+        </Link>
+        <Link to="/faqs" className="hover:text-sky-200 transition">
+          FAQs
+        </Link>
 
-  
+        {/* ✅ Always Login Button */}
+        <button
+          onClick={() => navigate("/login")}
+          className="px-6 py-2 bg-white text-sky-600 rounded-full font-semibold hover:bg-sky-100 transition"
+        >
+          Login
+        </button>
+      </div>
 
+      {/* Mobile Menu Button */}
+      <button
+        onClick={() => setOpen(!open)}
+        className="md:hidden text-white focus:outline-none"
+      >
+        ☰
+      </button>
 
-    return (
-        <nav className="fixed top-0 left-0 w-full z-9999 flex items-center justify-between px-6 md:px-16 lg:px-24 xl:px-32 py-4 border-b border-gray-300 bg-white shadow transition-all">
+      {/* Mobile Dropdown */}
+      {open && (
+        <div className="absolute top-full left-0 w-full bg-sky-500 text-white flex flex-col gap-4 px-6 py-4 shadow-md md:hidden">
+          <Link
+            to="/"
+            className="hover:text-sky-200"
+            onClick={() => setOpen(false)}
+          >
+            Home
+          </Link>
+          <Link
+            to="/about"
+            className="hover:text-sky-200"
+            onClick={() => setOpen(false)}
+          >
+            About Us
+          </Link>
+          <Link
+            to="/contact"
+            className="hover:text-sky-200"
+            onClick={() => setOpen(false)}
+          >
+            Contact
+          </Link>
+          <Link
+            to="/faqs"
+            className="hover:text-sky-200"
+            onClick={() => setOpen(false)}
+          >
+            FAQs
+          </Link>
 
-            <a href="#">
-               <h1 className='text-3xl font-bold'>Jan Samadhan</h1>
-            </a>
+          {/* ✅ Always Login Button on Mobile */}
+          <button
+            onClick={() => {
+              navigate("/login");
+              setOpen(false);
+            }}
+            className="px-6 py-2 bg-white text-sky-600 rounded-full font-semibold hover:bg-sky-100 transition"
+          >
+            Login
+          </button>
+        </div>
+      )}
+    </nav>
+  );
+};
 
-            {/* Desktop Menu */}
-            <div className="hidden sm:flex items-center gap-8">
-                <Link to="/home">Home</Link>
-                <Link to="/">Trending</Link>
-                <Link to="/">Leaderboard</Link>
-
-                <div className="hidden lg:flex items-center text-sm gap-2 border border-gray-300 px-3 rounded-full">
-                    <input className="py-1.5 w-full bg-transparent outline-none placeholder-gray-500" type="text" placeholder="Search products" />
-                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M10.836 10.615 15 14.695" stroke="#7A7B7D" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" />
-                        <path clip-rule="evenodd" d="M9.141 11.738c2.729-1.136 4.001-4.224 2.841-6.898S7.67.921 4.942 2.057C2.211 3.193.94 6.281 2.1 8.955s4.312 3.92 7.041 2.783" stroke="#7A7B7D" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" />
-                    </svg>
-                </div>
-                 <button class="button-85 relative px-6 py-2 rounded-lg text-white bg-[#111] cursor-pointer"
-                    onClick={() => {
-                        if(user){
-                            navigate('/createpost')
-                        } else {
-                            navigate('/login')
-                        }
-                    }
-                        }>
-                   Report Issue
-                    </button>
-
-                    {udet ? (
-                        <img
-                            src={udet.profilePicture || "/default-avatar.png"}
-                            alt="Profile"
-                            className="w-10 h-10 rounded-full cursor-pointer"
-                            onClick={() => navigate('/account')}
-                        />
-                        ) : (
-                        <button
-                            onClick={() => navigate('/login')}
-                            className="cursor-pointer px-8 py-2 bg-slate-800 hover:bg-slate-900 transition text-white rounded-full"
-                        >
-                            Login
-                        </button>
-                        )}
-
-
-                {/* <button
-                onClick={() => navigate('/login')}
-                className="cursor-pointer px-8 py-2 bg-indigo-500 hover:bg-indigo-600 transition text-white rounded-full">
-                    Login
-                </button> */}
-            </div>
-
-            <button onClick={() => open ? setOpen(false) : setOpen(true)} aria-label="Menu" className="sm:hidden">
-                {/* Menu Icon SVG */}
-                <svg width="21" height="15" viewBox="0 0 21 15" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <rect width="21" height="1.5" rx=".75" fill="#426287" />
-                    <rect x="8" y="6" width="13" height="1.5" rx=".75" fill="#426287" />
-                    <rect x="6" y="13" width="15" height="1.5" rx=".75" fill="#426287" />
-                </svg>
-            </button>
-
-            {/* Mobile Menu */}
-            <div className={`${open ? 'flex' : 'hidden'} absolute top-[60px] left-0 w-full bg-white shadow-md py-4 flex-col items-start gap-2 px-5 text-sm md:hidden`}>
-                   <button class="button-85 relative px-6 py-2 rounded-lg text-white bg-[#111] cursor-pointer"
-                    onClick={() => {
-                        if(user){
-                            navigate('/createpost')
-                        } else {
-                            navigate('/login')
-                        }
-                    }
-                        }>
-                   Report Issue
-                    </button>
-               <Link to="/home">Home</Link>
-                <Link to="/">Trending</Link>
-                <Link to="/">Leaderboard</Link>
-
-               {udet ? (
-                    <div className="flex items-center gap-2">
-                        <img
-                        src={udet.profilePicture || "/default-avatar.png"}
-                        alt="Profile"
-                        className="w-10 h-10 rounded-full cursor-pointer"
-                        onClick={() => navigate('/account')}
-                        />
-                        <span>{udet.username}</span>
-                    </div>
-                    ) : (
-                    <button
-                        onClick={() => navigate('/login')}
-                        className="cursor-pointer px-6 py-2 mt-2 bg-indigo-500 hover:bg-indigo-600 transition text-white rounded-full text-sm"
-                    >
-                        Login
-                    </button>
-                    )}
-
-
-
-            </div>
-
-        </nav>
-    )
-}
+export default NavBar;
