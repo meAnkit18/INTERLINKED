@@ -1,6 +1,7 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import Webcam from "react-webcam";
 
 function CreatePost({ fetchUserPosts }) {
   const [title, setTitle] = useState("");
@@ -9,9 +10,25 @@ function CreatePost({ fetchUserPosts }) {
   const [preview, setPreview] = useState(null);
   const [loading, setLoading] = useState(false);
   const [progress, setProgress] = useState(0);
+  const [useCamera, setUseCamera] = useState(false); // 👈 toggle upload vs camera
 
+  const webcamRef = useRef(null);
   const backendURL = import.meta.env.VITE_BACKEND_PORT;
-  const navigate = useNavigate(); // 👈 hook for navigation
+  const navigate = useNavigate();
+
+  // 📸 Capture photo from webcam
+  const capture = () => {
+    const imageSrc = webcamRef.current.getScreenshot();
+    if (imageSrc) {
+      fetch(imageSrc)
+        .then((res) => res.blob())
+        .then((blob) => {
+          const file = new File([blob], "capture.jpg", { type: "image/jpeg" });
+          setImage(file);
+          setPreview(imageSrc);
+        });
+    }
+  };
 
   const handlePostSubmit = async (e) => {
     e.preventDefault();
@@ -66,7 +83,6 @@ function CreatePost({ fetchUserPosts }) {
       setPreview(null);
       setProgress(0);
 
-      // 👇 Navigate to account page after success
       navigate("/account");
     } catch (err) {
       console.error("Error creating post:", err);
@@ -85,7 +101,9 @@ function CreatePost({ fetchUserPosts }) {
 
   return (
     <div className="container mt-22 mx-auto px-4 sm:px-6 md:px-10 lg:px-20">
-      <h2 className="text-2xl font-semibold mb-4 text-center">Report Issues That You Are Facing</h2>
+      <h2 className="text-2xl font-semibold mb-4 text-center">
+        Report Issues That You Are Facing
+      </h2>
       <form onSubmit={handlePostSubmit} className="space-y-4">
         <div>
           <label>Title:</label>
@@ -107,28 +125,72 @@ function CreatePost({ fetchUserPosts }) {
           />
         </div>
 
-        <label
-            htmlFor="file-upload"
-            className="cursor-pointer flex justify-center items-center gap-2 px-5 py-2.5 rounded-lg bg-gradient-to-r from-indigo-500 to-purple-600 text-white font-medium shadow-md hover:brightness-110 transition duration-150"
-            >
-            {/* 👉 Your custom SVG here */}
-            <img src="https://blogger.googleusercontent.com/img/a/AVvXsEi9UwU3oG7bGPK-_qdLHroYP9B2eKA6Ql5GVt1r4OZbZCbszaoJTDgdo4rvR19drU7H1uwIWf3uc1CgFmPZNoj2W3Bwkcbf_ErcNKbnm-aX6s1WzS4PUeZO5eW2FnfcScBm6BXiyd5Z0sa4d2HSIbIlAFs1AGi9SQJRTYTsefAStZyTR6RgTRl65ciOI3Q"
-            className="w-6 h-6"
-            alt="" srcset="" />
-
+        {/* Toggle Upload vs Camera */}
+        <div className="flex gap-3">
+          <button
+            type="button"
+            onClick={() => setUseCamera(false)}
+            className={`px-4 py-2 rounded ${
+              !useCamera ? "bg-indigo-600 text-white" : "bg-gray-200"
+            }`}
+          >
             Upload Image
+          </button>
+          <button
+            type="button"
+            onClick={() => setUseCamera(true)}
+            className={`px-4 py-2 rounded ${
+              useCamera ? "bg-indigo-600 text-white" : "bg-gray-200"
+            }`}
+          >
+            Use Camera
+          </button>
+        </div>
+
+        {/* Upload option */}
+        {!useCamera && (
+          <div>
+            <label
+              htmlFor="file-upload"
+              className="cursor-pointer flex justify-center items-center gap-2 px-5 py-2.5 rounded-lg bg-gradient-to-r from-indigo-500 to-purple-600 text-white font-medium shadow-md hover:brightness-110 transition duration-150"
+            >
+              <img
+                src="https://blogger.googleusercontent.com/img/a/AVvXsEi9UwU3oG7bGPK-_qdLHroYP9B2eKA6Ql5GVt1r4OZbZCbszaoJTDgdo4rvR19drU7H1uwIWf3uc1CgFmPZNoj2W3Bwkcbf_ErcNKbnm-aX6s1WzS4PUeZO5eW2FnfcScBm6BXiyd5Z0sa4d2HSIbIlAFs1AGi9SQJRTYTsefAStZyTR6RgTRl65ciOI3Q"
+                className="w-6 h-6"
+                alt=""
+              />
+              Upload Image
             </label>
-
             <input
-            id="file-upload"
-            type="file"
-            accept="image/*"
-            onChange={handleImageChange}
-            required
-            className="hidden"
+              id="file-upload"
+              type="file"
+              accept="image/*"
+              onChange={handleImageChange}
+              required={!image}
+              className="hidden"
             />
+          </div>
+        )}
 
+        {/* Camera option */}
+        {useCamera && (
+          <div className="flex flex-col items-center">
+            <Webcam
+              ref={webcamRef}
+              screenshotFormat="image/jpeg"
+              className="rounded-lg border"
+            />
+            <button
+              type="button"
+              onClick={capture}
+              className="mt-2 px-4 py-2 bg-green-600 text-white rounded"
+            >
+              Capture Photo
+            </button>
+          </div>
+        )}
 
+        {/* Preview */}
         {preview && (
           <div className="mt-2">
             <p className="text-sm text-gray-600">Preview:</p>
@@ -139,8 +201,6 @@ function CreatePost({ fetchUserPosts }) {
             />
           </div>
         )}
-
-        {/* {loading && <p>Uploading: {progress}%</p>} */}
 
         <button
           type="submit"
