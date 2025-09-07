@@ -1,76 +1,138 @@
 import React, { useState, useRef } from "react";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
 import Webcam from "react-webcam";
 
-function ReportPage() {
+function CreatePost({ fetchUserPosts }) {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [image, setImage] = useState(null);
   const [preview, setPreview] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [progress, setProgress] = useState(0);
   const [useCamera, setUseCamera] = useState(false);
-  const [facingMode, setFacingMode] = useState("user");
+  const [facingMode, setFacingMode] = useState("user"); // 👈 Default front camera
 
   const webcamRef = useRef(null);
+  const backendURL = import.meta.env.VITE_BACKEND_PORT;
+  const navigate = useNavigate();
 
-  // 📸 Capture photo
+  // 📸 Capture image from webcam
   const capture = () => {
     const imageSrc = webcamRef.current.getScreenshot();
     if (imageSrc) {
-      setPreview(imageSrc);
-      setImage(imageSrc);
+      fetch(imageSrc)
+        .then((res) => res.blob())
+        .then((blob) => {
+          const file = new File([blob], "capture.jpg", { type: "image/jpeg" });
+          setImage(file);
+          setPreview(imageSrc);
+        });
     }
   };
 
-  // 🔄 Switch camera
+  // 🔄 Switch between front and back cameras
   const switchCamera = () => {
-    setFacingMode((prev) =>
-      prev === "user" ? { exact: "environment" } : "user"
-    );
+    setFacingMode((prev) => (prev === "user" ? { exact: "environment" } : "user"));
   };
 
-  const handleSubmit = (e) => {
+  // 📝 Submit report
+  const handlePostSubmit = async (e) => {
     e.preventDefault();
-    alert("✅ Report submitted (UI only, no backend)");
-    setTitle("");
-    setDescription("");
-    setImage(null);
-    setPreview(null);
-    setUseCamera(false);
+    if (!image) return;
+
+    setLoading(true);
+    setProgress(0);
+
+    // Get current location
+    const getLocation = () =>
+      new Promise((resolve) => {
+        if (navigator.geolocation) {
+          navigator.geolocation.getCurrentPosition(
+            (pos) =>
+              resolve({ lat: pos.coords.latitude, lon: pos.coords.longitude }),
+            () => resolve({ lat: null, lon: null }),
+            { enableHighAccuracy: true, timeout: 10000 }
+          );
+        } else {
+          resolve({ lat: null, lon: null });
+        }
+      });
+
+    const { lat, lon } = await getLocation();
+
+    const formData = new FormData();
+    formData.append("title", title);
+    formData.append("description", description);
+    formData.append("image", image);
+    formData.append("latitude", lat);
+    formData.append("longitude", lon);
+
+    try {
+      const token = localStorage.getItem("token");
+      await axios.post(`${backendURL}/api/posts`, formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+          Authorization: `Bearer ${token}`,
+        },
+        onUploadProgress: (e) => {
+          const percent = Math.round((e.loaded * 100) / e.total);
+          setProgress(percent);
+        },
+      });
+
+      if (fetchUserPosts) fetchUserPosts();
+
+      // Reset form
+      setTitle("");
+      setDescription("");
+      setImage(null);
+      setPreview(null);
+      setProgress(0);
+
+      navigate("/account");
+    } catch (err) {
+      console.error("Error creating post:", err);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
-    <div className="min-h-screen bg-sky-50">
-      {/* Report Form */}
-      <div className="max-w-2xl mx-auto p-6 bg-white rounded-2xl shadow-lg mt-8">
-        <h2 className="text-3xl font-bold text-center text-sky-700 mb-6">
-          Report an Issue 🚨
+    <div className="min-h-screen bg-sky-50 pt-24 pb-12 px-4 sm:px-6 lg:px-8">
+      <div className="max-w-2xl mx-auto bg-white rounded-xl shadow-lg p-6">
+        <h2 className="text-2xl font-bold text-center text-sky-700 mb-6">
+          Report an Issue
         </h2>
 
-        <form onSubmit={handleSubmit} className="space-y-4">
+        <form onSubmit={handlePostSubmit} className="space-y-5">
+          {/* Title Input */}
           <input
             type="text"
             value={title}
             onChange={(e) => setTitle(e.target.value)}
-            placeholder="Issue Title"
+            placeholder="Enter issue title"
             required
-            className="w-full border border-sky-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-sky-400"
+            className="w-full border border-sky-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-sky-400"
           />
 
+          {/* Description */}
           <textarea
             value={description}
             onChange={(e) => setDescription(e.target.value)}
-            placeholder="Describe the issue..."
-            className="w-full border border-sky-300 rounded-lg px-3 py-2 h-28 focus:ring-2 focus:ring-sky-400"
+            placeholder="Describe the issue in detail"
+            rows="4"
+            required
+            className="w-full border border-sky-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-sky-400"
           />
 
-          {/* Toggle Upload vs Camera */}
-          <div className="flex gap-3">
+          {/* Toggle between Upload and Camera */}
+          <div className="flex gap-3 justify-center">
             <button
               type="button"
               onClick={() => setUseCamera(false)}
-              className={`px-4 py-2 rounded-lg ${
-                !useCamera
-                  ? "bg-sky-600 text-white"
-                  : "bg-gray-200 text-gray-700"
+              className={`px-4 py-2 rounded-lg text-sm font-medium transition ${
+                !useCamera ? "bg-sky-600 text-white" : "bg-gray-200"
               }`}
             >
               Upload Image
@@ -78,10 +140,8 @@ function ReportPage() {
             <button
               type="button"
               onClick={() => setUseCamera(true)}
-              className={`px-4 py-2 rounded-lg ${
-                useCamera
-                  ? "bg-sky-600 text-white"
-                  : "bg-gray-200 text-gray-700"
+              className={`px-4 py-2 rounded-lg text-sm font-medium transition ${
+                useCamera ? "bg-sky-600 text-white" : "bg-gray-200"
               }`}
             >
               Use Camera
@@ -90,25 +150,26 @@ function ReportPage() {
 
           {/* Camera Mode */}
           {useCamera && (
-            <div className="flex flex-col items-center gap-2">
+            <div className="flex flex-col items-center gap-3">
               <Webcam
                 ref={webcamRef}
                 screenshotFormat="image/jpeg"
                 videoConstraints={{ facingMode }}
-                className="rounded-lg border"
+                className="rounded-lg border w-full max-w-sm"
               />
-              <div className="flex gap-3 mt-2">
+
+              <div className="flex gap-3">
                 <button
                   type="button"
                   onClick={capture}
-                  className="px-4 py-2 bg-green-600 text-white rounded-lg"
+                  className="px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded-lg"
                 >
                   Capture
                 </button>
                 <button
                   type="button"
                   onClick={switchCamera}
-                  className="px-4 py-2 bg-yellow-500 text-white rounded-lg"
+                  className="px-4 py-2 bg-yellow-600 hover:bg-yellow-700 text-white rounded-lg"
                 >
                   Switch Camera
                 </button>
@@ -128,86 +189,39 @@ function ReportPage() {
                   setPreview(URL.createObjectURL(file));
                 }
               }}
-              className="w-full border border-sky-300 rounded-lg px-3 py-2"
+              required={!image}
+              className="w-full border border-sky-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-sky-400"
             />
           )}
 
           {/* Preview */}
           {preview && (
-            <div className="mt-2">
+            <div className="mt-3">
               <p className="text-sm text-gray-600">Preview:</p>
               <img
                 src={preview}
                 alt="preview"
-                className="mt-1 max-h-60 rounded-lg border"
+                className="mt-2 max-h-60 w-full object-contain rounded-lg border"
               />
             </div>
           )}
 
+          {/* Submit Button */}
           <button
             type="submit"
-            className="w-full bg-sky-700 hover:bg-sky-800 text-white py-2 rounded-lg font-medium"
+            disabled={!image || loading}
+            className={`w-full py-2 rounded-lg font-medium text-white ${
+              !image || loading
+                ? "bg-gray-400 cursor-not-allowed"
+                : "bg-sky-700 hover:bg-sky-800"
+            }`}
           >
-            Submit Report
+            {loading ? `Uploading... ${progress}%` : "Submit Report"}
           </button>
         </form>
       </div>
-
-      {/* Hero Logo + Name */}
-      <section className="text-center py-12">
-        <h1 className="text-4xl font-extrabold text-sky-800">Jan Samadhan</h1>
-        <p className="text-lg text-gray-600 mt-2">
-          Empowering citizens to raise their voice ✊
-        </p>
-      </section>
-
-      {/* Features Grid */}
-      <section className="max-w-5xl mx-auto px-6 py-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-        {[
-          { title: "Easy Reporting", desc: "File complaints in just minutes." },
-          {
-            title: "Photo Evidence",
-            desc: "Attach images or capture live proof.",
-          },
-          {
-            title: "Track Progress",
-            desc: "Stay updated on your report status.",
-          },
-          {
-            title: "Location Tagging",
-            desc: "Automatically pin complaint locations.",
-          },
-          {
-            title: "Community Impact",
-            desc: "Your report helps improve society.",
-          },
-          {
-            title: "Government Connect",
-            desc: "Bridge between citizens & authorities.",
-          },
-        ].map((f, i) => (
-          <div
-            key={i}
-            className="bg-white shadow-md rounded-lg p-6 hover:shadow-xl transition"
-          >
-            <h3 className="text-xl font-semibold text-sky-700">{f.title}</h3>
-            <p className="text-gray-600 mt-2">{f.desc}</p>
-          </div>
-        ))}
-      </section>
-
-      {/* Motivation Section */}
-      <section className="bg-sky-100 py-12 text-center px-6">
-        <h2 className="text-3xl font-bold text-sky-800">
-          Together, We Can Make a Difference 🌍
-        </h2>
-        <p className="mt-4 text-lg text-gray-700 max-w-2xl mx-auto">
-          Your one report can spark a change in your community. Take the step
-          today – let’s build a transparent and corruption-free system.
-        </p>
-      </section>
     </div>
   );
 }
 
-export default ReportPage;
+export default CreatePost;
