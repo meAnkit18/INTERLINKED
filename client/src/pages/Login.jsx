@@ -1,12 +1,12 @@
-import { useState } from 'react';
-import { motion } from 'framer-motion';
-import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
-import { useAppContext } from '../context/AppContext';
+import { useState } from "react";
+import { motion } from "framer-motion";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
+import { useAppContext } from "../context/AppContext";
 
-const Login = () => {
-  const [email, setEmail] = useState('');
-  const [otp, setOtp] = useState('');
+const Login = ({ setIsAuthenticated }) => {
+  const [email, setEmail] = useState("");
+  const [otp, setOtp] = useState("");
   const [step, setStep] = useState(1);
   const [load, setLoad] = useState(false);
   const navigate = useNavigate();
@@ -37,7 +37,10 @@ const Login = () => {
         dispatch({ type: "SET_USER", payload: res.data.user });
       }
 
-      navigate('/home');
+      // ✅ mark user as logged in
+      setIsAuthenticated(true);
+
+      navigate("/home");
     } catch (error) {
       alert("OTP verification failed");
       console.error(error);
@@ -49,30 +52,28 @@ const Login = () => {
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-sky-100 to-sky-300 px-4">
       <div className="flex flex-col md:flex-row w-full max-w-5xl shadow-2xl rounded-3xl overflow-hidden bg-white/90 backdrop-blur-md">
-        
-        {/* Left Side: Logo + Name + Tagline */}
-        <motion.div 
+        {/* Left Side: Logo + Tagline */}
+        <motion.div
           className="md:w-1/2 bg-sky-200 flex flex-col justify-center items-center p-10 relative"
           initial={{ x: -200, opacity: 0 }}
           animate={{ x: 0, opacity: 1 }}
           transition={{ duration: 1 }}
         >
-          <img 
-            src="https://www.pngmart.com/files/7/Community-PNG-Clipart.png" 
-            alt="Jan Samadhan Logo" 
+          <img
+            src="https://www.pngmart.com/files/7/Community-PNG-Clipart.png"
+            alt="Jan Samadhan Logo"
             className="h-28 w-28 mb-4 object-contain rounded-full shadow-md bg-white p-2"
           />
           <h1 className="text-4xl font-bold text-sky-900 mb-2 text-center">Jan Samadhan</h1>
           <p className="text-lg text-sky-800 italic text-center">
             Your Voice, Your Right, Your Solution
           </p>
-          {/* Optional decorative blobs */}
           <div className="absolute top-0 left-0 w-32 h-32 bg-sky-300 rounded-full opacity-30 animate-pulse -translate-x-10 -translate-y-10"></div>
           <div className="absolute bottom-0 right-0 w-48 h-48 bg-sky-400 rounded-full opacity-20 animate-pulse translate-x-16 translate-y-16"></div>
         </motion.div>
 
         {/* Right Side: Form */}
-        <motion.div 
+        <motion.div
           className="md:w-1/2 p-8 md:p-10 flex flex-col justify-center"
           initial={{ x: 200, opacity: 0 }}
           animate={{ x: 0, opacity: 1 }}
@@ -81,7 +82,9 @@ const Login = () => {
           {step === 1 ? (
             <div className="flex flex-col gap-4">
               <h2 className="text-2xl font-semibold text-center text-sky-700 mb-4">Get Started</h2>
-              <label htmlFor="email" className="text-gray-700 font-medium">Email</label>
+              <label htmlFor="email" className="text-gray-700 font-medium">
+                Email
+              </label>
               <input
                 id="email"
                 type="email"
