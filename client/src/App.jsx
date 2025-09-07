@@ -8,6 +8,7 @@ import Not404Pg from "./pages/Not404Pg";
 import AccoutDetails from "./pages/AccoutDetails";
 import Home from "./pages/Home";
 import PostDetails from "./pages/PostDetails";
+import ChatbotWidget from "./components/ChatbotWidget";
 
 // Components
 import NavBar from "./components/NavBar";
@@ -91,9 +92,14 @@ function App() {
         {/* 404 Fallback */}
         <Route path="*" element={<Not404Pg />} />
       </Routes>
+<<<<<<< HEAD
 
       {/* Footer always visible */}
       <Footer />
+=======
+      <ChatbotWidget/>
+      <Footer/>
+>>>>>>> 49f43b8a910e0fb3678827a8ac9ff27565aa56f5
     </>
   );
 }
