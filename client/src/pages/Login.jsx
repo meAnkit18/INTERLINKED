@@ -3,7 +3,6 @@ import { motion } from 'framer-motion';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { useAppContext } from '../context/AppContext';
-import logo from "../assets/logo.png"; // Your logo
 
 const Login = () => {
   const [email, setEmail] = useState('');
@@ -58,7 +57,11 @@ const Login = () => {
           animate={{ x: 0, opacity: 1 }}
           transition={{ duration: 1 }}
         >
-          <img src={logo} alt="Jan Samadhan Logo" className="h-24 w-24 mb-4 rounded-full shadow-md" />
+          <img 
+            src="https://www.pngmart.com/files/7/Community-PNG-Clipart.png" 
+            alt="Jan Samadhan Logo" 
+            className="h-28 w-28 mb-4 object-contain rounded-full shadow-md bg-white p-2"
+          />
           <h1 className="text-4xl font-bold text-sky-900 mb-2 text-center">Jan Samadhan</h1>
           <p className="text-lg text-sky-800 italic text-center">
             Your Voice, Your Right, Your Solution

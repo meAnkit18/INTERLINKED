@@ -1,7 +1,5 @@
-// src/components/NavBar.jsx
 import React, { useState, useEffect } from "react";
 import { useNavigate, Link } from "react-router-dom";
-import logo from "../assets/logo.png";
 
 const NavBar = () => {
   const [open, setOpen] = useState(false);
@@ -26,9 +24,9 @@ const NavBar = () => {
       {/* Logo + Tagline */}
       <div className="flex items-center gap-3">
         <img
-          src={logo}
+          src="https://www.pngmart.com/files/7/Community-PNG-Clipart.png"
           alt="Jan Samadhan Logo"
-          className="h-12 w-12 rounded-full shadow-sm"
+          className="h-14 w-14 object-contain rounded-full shadow-sm bg-white p-1"
         />
         <div className="flex flex-col">
           <Link
