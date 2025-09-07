@@ -1,5 +1,5 @@
 import { Routes, Route, Navigate } from "react-router-dom";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 // Pages
 import LandingPage from "./pages/LandingPage";
@@ -23,18 +23,36 @@ function ProtectedRoute({ isAuthenticated, children }) {
 }
 
 function App() {
-  // ⚡ Authentication state (later replace with Context or real auth)
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  // ✅ Auth state synced with localStorage
+  const [isAuthenticated, setIsAuthenticated] = useState(
+    !!localStorage.getItem("token")
+  );
+
+  // Keep state in sync with localStorage changes (logout/login in other tabs)
+  useEffect(() => {
+    const checkAuth = () => {
+      setIsAuthenticated(!!localStorage.getItem("token"));
+    };
+
+    window.addEventListener("storage", checkAuth);
+    return () => window.removeEventListener("storage", checkAuth);
+  }, []);
 
   return (
     <>
       {/* Navbar always visible */}
-      <NavBar isAuthenticated={isAuthenticated} setIsAuthenticated={setIsAuthenticated} />
+      <NavBar
+        isAuthenticated={isAuthenticated}
+        setIsAuthenticated={setIsAuthenticated}
+      />
 
       <Routes>
         {/* Public Routes */}
         <Route path="/" element={<LandingPage />} />
-        <Route path="/login" element={<Login setIsAuthenticated={setIsAuthenticated} />} />
+        <Route
+          path="/login"
+          element={<Login setIsAuthenticated={setIsAuthenticated} />}
+        />
 
         {/* Protected Routes */}
         <Route
