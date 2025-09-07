@@ -8,6 +8,7 @@ import  NavBar from "./components/NavBar";
 import Footer from "./components/Footer";
 import CreatePost from "./components/CreatePost";
 import PostDetails from "./pages/PostDetails";
+import ChatbotWidget from "./components/ChatbotWidget";
 
 
 function App() {
@@ -23,6 +24,7 @@ function App() {
         <Route path="/post/:id" element={<PostDetails />} />
         <Route path="*" element={<Not404Pg/>} />
       </Routes>
+      <ChatbotWidget/>
       <Footer/>
     </>
   );
