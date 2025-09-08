@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, Link } from "react-router-dom";
+import axios from "axios";
 
 const NavBar = () => {
   const [open, setOpen] = useState(false);
+  const [taglineIndex, setTaglineIndex] = useState(0);
+  const [user, setUser] = useState(null);
   const navigate = useNavigate();
 
-  const [taglineIndex, setTaglineIndex] = useState(0);
   const taglines = [
     "Your Voice, Your Solution",
     "आपकी आवाज, आपका समाधान",
@@ -19,16 +21,21 @@ const NavBar = () => {
     return () => clearInterval(interval);
   }, []);
 
-  const isLoggedIn = !!localStorage.getItem("token");
+  const token = localStorage.getItem("token");
+  const isLoggedIn = !!token;
+  const backendURL = import.meta.env.VITE_BACKEND_PORT;
 
-  const handleAuth = () => {
+  // Fetch user details
+  useEffect(() => {
     if (isLoggedIn) {
-      localStorage.removeItem("token");
-      navigate("/login");
-    } else {
-      navigate("/login");
+      axios
+        .get(`${backendURL}/api/auth/account`, {
+          headers: { Authorization: `Bearer ${token}` },
+        })
+        .then((res) => setUser(res.data))
+        .catch((err) => console.error("Error fetching user:", err));
     }
-  };
+  }, [isLoggedIn, backendURL, token]);
 
   return (
     <nav className="fixed top-0 left-0 w-full z-9999 flex items-center justify-between px-6 md:px-16 lg:px-24 py-4 shadow-md bg-sky-500 text-white transition-all">
@@ -37,7 +44,7 @@ const NavBar = () => {
         <img
           src="https://www.pngmart.com/files/7/Community-PNG-Clipart.png"
           alt="Jan Samadhan Logo"
-          className="h-15 w-15 object-contain rounded-full shadow-sm bg-white p-1"
+          className="h-14 w-14 object-contain rounded-full shadow-sm bg-white p-1"
         />
         <div className="flex flex-col leading-tight">
           <Link
@@ -50,25 +57,33 @@ const NavBar = () => {
         </div>
       </div>
 
-
       {/* Desktop Links */}
       <div className="hidden md:flex items-center gap-8 font-medium">
         <Link to="/" className="hover:text-sky-200 transition">
           Home
         </Link>
         <Link to="/report" className="hover:text-sky-200 transition">
-          Report
+          Trending
         </Link>
-        <Link to="/account" className="hover:text-sky-200 transition">
-          Account
+        <Link to="/leaderboard" className="hover:text-sky-200 transition">
+          Leaderboard
         </Link>
 
-        <button
-          onClick={handleAuth}
-          className="px-6 py-2 bg-white text-sky-600 rounded-full font-semibold hover:bg-sky-100 transition"
-        >
-          {isLoggedIn ? "Logout" : "Login"}
-        </button>
+        {isLoggedIn ? (
+          <img
+            src={user?.profilePicture || "/default-avatar.png"}
+            alt="Profile"
+            className="w-10 h-10 rounded-full cursor-pointer border-2 border-white"
+            onClick={() => navigate("/account")}
+          />
+        ) : (
+          <button
+            onClick={() => navigate("/login")}
+            className="px-6 py-2 bg-white text-sky-600 rounded-full font-semibold hover:bg-sky-100 transition"
+          >
+            Login
+          </button>
+        )}
       </div>
 
       {/* Mobile Menu Button */}
@@ -86,21 +101,38 @@ const NavBar = () => {
             Home
           </Link>
           <Link to="/report" className="hover:text-sky-200" onClick={() => setOpen(false)}>
-            Report
+            Trending
           </Link>
-          <Link to="/account" className="hover:text-sky-200" onClick={() => setOpen(false)}>
-            Account
+          <Link to="/leaderboard" className="hover:text-sky-200" onClick={() => setOpen(false)}>
+            Leaderboard
           </Link>
 
-          <button
-            onClick={() => {
-              handleAuth();
-              setOpen(false);
-            }}
-            className="px-6 py-2 bg-white text-sky-600 rounded-full font-semibold hover:bg-sky-100 transition"
-          >
-            {isLoggedIn ? "Logout" : "Login"}
-          </button>
+          {isLoggedIn ? (
+            <div
+              className="flex items-center gap-2 cursor-pointer"
+              onClick={() => {
+                navigate("/account");
+                setOpen(false);
+              }}
+            >
+              <img
+                src={user?.profilePicture || "/default-avatar.png"}
+                alt="Profile"
+                className="w-10 h-10 rounded-full border-2 border-white"
+              />
+              <span>{user?.username || "Account"}</span>
+            </div>
+          ) : (
+            <button
+              onClick={() => {
+                navigate("/login");
+                setOpen(false);
+              }}
+              className="px-6 py-2 bg-white text-sky-600 rounded-full font-semibold hover:bg-sky-100 transition"
+            >
+              Login
+            </button>
+          )}
         </div>
       )}
     </nav>
