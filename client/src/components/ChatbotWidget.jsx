@@ -102,7 +102,7 @@ export default function ChatbotWidget({
           className="rounded-full border-black px-4 py-3 bg-transparent font-medium hover:shadow-2xl active:scale-95 transition"
           aria-label="Open Legal Assistant Chatbot"
         >
-          <div className="h-10 w-10">
+          <div className="h-10 w-10 bg-sky-500 rounded-2xl">
             <img
               src={chatbotsvg}
               className="shadow-3xl"
@@ -115,7 +115,7 @@ export default function ChatbotWidget({
       {open && (
         <div className="w-[22rem] sm:w-[26rem] h-[34rem] bg-neutral-50 dark:bg-neutral-900 shadow-2xl rounded-2xl border border-neutral-200 dark:border-neutral-800 flex flex-col overflow-hidden">
           
-          <div className="p-4 bg-gradient-to-r from-indigo-500 to-purple-500 text-white">
+          <div className="p-4 bg-gradient-to-r from-sky-500 to-sky-300 text-white">
             <div className="flex items-start justify-between">
               <div>
                 <h3 className="text-lg font-semibold">{title}</h3>
@@ -141,7 +141,7 @@ export default function ChatbotWidget({
               <div key={m.id} className={`flex ${m.role === "user" ? "justify-end" : "justify-start"}`}>
                 <div className={`max-w-[80%] rounded-2xl px-3 py-2 text-sm leading-relaxed shadow ${
                   m.role === "user"
-                    ? "bg-indigo-600 text-white"
+                    ? "bg-sky-500 text-white"
                     : "bg-neutral-100 dark:bg-neutral-800 border border-neutral-200 dark:border-neutral-700 text-neutral-800 dark:text-neutral-100"
                 }`}>
                   {m.content}
@@ -172,7 +172,7 @@ export default function ChatbotWidget({
               <button
                 onClick={handleSend}
                 disabled={loading || !input.trim()}
-                className="p-2 rounded-xl bg-indigo-600 text-white disabled:opacity-50 disabled:cursor-not-allowed hover:bg-indigo-700 active:scale-95 transition"
+                className="p-2 rounded-xl bg-sky-500 text-white disabled:opacity-50 disabled:cursor-not-allowed hover:bg-indigo-700 active:scale-95 transition"
                 aria-label="Send message"
               >
                 <SendIcon />

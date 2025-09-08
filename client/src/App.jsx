@@ -9,6 +9,8 @@ import Footer from "./components/Footer";
 import CreatePost from "./components/CreatePost";
 import PostDetails from "./pages/PostDetails";
 import ChatbotWidget from "./components/ChatbotWidget";
+import Leaderboard from "./pages/Leaderboard";
+import Trending from "./pages/Trending";
 
 
 function App() {
@@ -22,6 +24,8 @@ function App() {
         <Route path="/home" element={<Home/>} />
         <Route path="/createpost" element={<CreatePost/>} />
         <Route path="/post/:id" element={<PostDetails />} />
+        <Route path="/leaderboard" element={<Leaderboard />} />
+        <Route path="/trending" element={<Trending />} />
         <Route path="*" element={<Not404Pg/>} />
       </Routes>
       <ChatbotWidget/>

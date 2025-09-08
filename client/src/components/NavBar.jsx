@@ -59,16 +59,16 @@ const NavBar = () => {
 
       {/* Desktop Links */}
       <div className="hidden md:flex items-center gap-8 font-medium">
-        <Link to="/" className="hover:text-sky-200 transition">
+        <Link to="/home" className="hover:text-sky-200 transition">
           Home
         </Link>
-        <Link to="/report" className="hover:text-sky-200 transition">
+        <Link to="/trending" className="hover:text-sky-200 transition">
           Trending
         </Link>
         <Link to="/leaderboard" className="hover:text-sky-200 transition">
           Leaderboard
         </Link>
-
+        <button type="button" class="text-gray-900 bg-gradient-to-r from-red-500 via-red-300 to-yellow-200 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-red-900 dark:focus:ring-red-400 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2" onClick={() => navigate("/createpost")}>Report Issue</button>
         {isLoggedIn ? (
           <img
             src={user?.profilePicture || "/default-avatar.png"}
@@ -106,7 +106,7 @@ const NavBar = () => {
           <Link to="/leaderboard" className="hover:text-sky-200" onClick={() => setOpen(false)}>
             Leaderboard
           </Link>
-
+          <button type="button" class="text-gray-900 bg-gradient-to-r from-red-500 via-red-300 to-yellow-200 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-red-100 dark:focus:ring-red-400 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2" onClick={() => navigate("/createpost")}>Report Issue</button>
           {isLoggedIn ? (
             <div
               className="flex items-center gap-2 cursor-pointer"
