@@ -1,60 +1,56 @@
-import { useState } from "react";
-import { motion } from "framer-motion";
-import axios from "axios";
-import { useNavigate } from "react-router-dom";
-import { useAppContext } from "../context/AppContext";
+import { useState } from 'react'
+import axios from 'axios'
+import { useNavigate } from 'react-router-dom'
+import { useAppContext } from '../context/AppContext'
+import { motion } from 'framer-motion'
 
-const Login = ({ setIsAuthenticated }) => {
-  const [email, setEmail] = useState("");
-  const [otp, setOtp] = useState("");
-  const [step, setStep] = useState(1); // OTP step
-  const [load, setLoad] = useState(false);
-  const navigate = useNavigate();
-  const { dispatch } = useAppContext();
+const Login = () => {
+  const [email, setEmail] = useState('')
+  const [otp, setOtp] = useState('')
+  const [step, setStep] = useState(1)
+  const [load, setLoad] = useState(false)
+  const navigate = useNavigate()
+  const backendURL = import.meta.env.VITE_BACKEND_PORT
+  const { dispatch } = useAppContext()
 
-  // ✅ backend API
-  const backendURL = import.meta.env.VITE_BACKEND_PORT || "http://localhost:5000";
-
-  // Send OTP
   const sendOtp = async () => {
-    if (!email) return alert("Enter your email!");
     try {
-      setLoad(true);
-      await axios.post(`${backendURL}/api/auth/send-otp`, { email });
-      setStep(2);
+      setLoad(true)
+      await axios.post(`${backendURL}/api/auth/send-otp`, { email })
+      setStep(2)
     } catch (error) {
-      alert("Failed to send OTP. Please try again.");
-      console.error(error);
+      alert('Failed to send OTP')
+      console.error(error)
     } finally {
-      setLoad(false);
+      setLoad(false)
     }
-  };
+  }
 
-  // Verify OTP
   const verifyOtp = async () => {
-    if (!otp) return alert("Enter OTP!");
     try {
-      setLoad(true);
-      const res = await axios.post(`${backendURL}/api/auth/verify-otp`, { email, otp });
-      const token = res.data.token;
+      setLoad(true)
+      const res = await axios.post(`${backendURL}/api/auth/verify-otp`, {
+        email,
+        otp,
+      })
+      const token = res.data.token
+      localStorage.setItem('token', token)
 
-      localStorage.setItem("token", token);
       if (res.data.user) {
-        dispatch({ type: "SET_USER", payload: res.data.user });
+        dispatch({ type: 'SET_USER', payload: res.data.user })
       }
 
-      setIsAuthenticated(true);
-      navigate("/home");
+      navigate('/home')
     } catch (error) {
-      alert("OTP verification failed. Please try again.");
-      console.error(error);
+      alert('OTP verification failed')
+      console.error(error)
     } finally {
-      setLoad(false);
+      setLoad(false)
     }
-  };
+  }
 
   return (
-    <div className="min-h-screen mt-3 flex items-center justify-center bg-gradient-to-br from-sky-100 to-sky-300 px-4">
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-sky-100 to-sky-300 px-4">
       <div className="flex flex-col md:flex-row w-full max-w-5xl shadow-2xl rounded-3xl overflow-hidden bg-white/90 backdrop-blur-md">
         {/* Left Side */}
         <motion.div
@@ -106,7 +102,7 @@ const Login = ({ setIsAuthenticated }) => {
                 onClick={sendOtp}
                 className="w-full py-3 mt-2 rounded-full bg-sky-600 text-white font-semibold shadow-md hover:bg-sky-700 hover:shadow-lg transition transform hover:-translate-y-0.5 active:scale-95"
               >
-                {load ? "Sending..." : "Send OTP"}
+                {load ? 'Sending...' : 'Send OTP'}
               </button>
             </div>
           ) : (
@@ -129,7 +125,7 @@ const Login = ({ setIsAuthenticated }) => {
                 onClick={verifyOtp}
                 className="w-full py-3 rounded-full bg-sky-600 text-white font-semibold shadow-md hover:bg-sky-700 hover:shadow-lg transition transform hover:-translate-y-0.5 active:scale-95"
               >
-                {load ? "Verifying..." : "Verify OTP"}
+                {load ? 'Verifying...' : 'Verify OTP'}
               </button>
               <button
                 onClick={() => setStep(1)}
@@ -142,7 +138,7 @@ const Login = ({ setIsAuthenticated }) => {
         </motion.div>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default Login;
+export default Login
