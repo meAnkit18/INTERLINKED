@@ -50,7 +50,7 @@ const Login = () => {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-sky-100 to-sky-300 px-4">
+    <div className="min-h-screen mt-2 flex items-center justify-center bg-gradient-to-br from-sky-100 to-sky-300 px-4">
       <div className="flex flex-col md:flex-row w-full max-w-5xl shadow-2xl rounded-3xl overflow-hidden bg-white/90 backdrop-blur-md">
         {/* Left Side */}
         <motion.div

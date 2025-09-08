@@ -97,10 +97,10 @@ const NavBar = () => {
       {/* Mobile Dropdown */}
       {open && (
         <div className="absolute top-full left-0 w-full bg-sky-500 text-white flex flex-col gap-4 px-6 py-4 shadow-md md:hidden">
-          <Link to="/" className="hover:text-sky-200" onClick={() => setOpen(false)}>
+          <Link to="/home" className="hover:text-sky-200" onClick={() => setOpen(false)}>
             Home
           </Link>
-          <Link to="/report" className="hover:text-sky-200" onClick={() => setOpen(false)}>
+          <Link to="/trending" className="hover:text-sky-200" onClick={() => setOpen(false)}>
             Trending
           </Link>
           <Link to="/leaderboard" className="hover:text-sky-200" onClick={() => setOpen(false)}>
