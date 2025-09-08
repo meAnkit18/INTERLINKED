@@ -30,7 +30,7 @@ const Footer = () => {
 
         <div className="space-y-4">
           <h4 className="text-lg font-semibold text-white">Contact Us</h4>
-          <p>123 Civic Street, Sector 10, New Delhi, India</p>
+          <p>KIET Group of Institution, Ghaziabad , India</p>
           <p>Email: support@jansamadhan.in</p>
           <p>Phone: +91 98765 43210</p>
         </div>

@@ -1,15 +1,62 @@
 import React from "react";
 import { motion } from "framer-motion";
 import NavBar from "../components/NavBar";
-import Footer from "../components/Footer";
+import FeedbackForm from "../components/FeedbackForm";
+import FAQSection from "../components/FAQSection";
 
 const LandingPage = () => {
-  const features = [
-    { emoji: "📣", title: "Transparency", desc: "Track civic issues in real-time.", bg: "bg-sky-100" },
-    { emoji: "🤖", title: "AI Verification", desc: "Smart AI ensures authenticity.", bg: "bg-sky-100" },
-    { emoji: "🔗", title: "Blockchain Security", desc: "Immutable tracking of requests.", bg: "bg-sky-100" },
-    { emoji: "🤝", title: "Community Engagement", desc: "Connect to solve issues together.", bg: "bg-sky-100" },
-  ];
+const features = [
+  {
+    emoji: "🤖",
+    title: "AI Verification",
+    desc: "Smart AI validates and categorizes reports to ensure authenticity and accuracy.",
+    bg: "bg-sky-100",
+  },
+  {
+    emoji: "🔗",
+    title: "Blockchain Security",
+    desc: "Secure, tamper-proof tracking of civic issues for transparency and trust.",
+    bg: "bg-sky-100",
+  },
+  {
+    emoji: "📍",
+    title: "Geo-Tagged Reports",
+    desc: "Pinpoint exact issue locations with integrated maps and GPS support.",
+    bg: "bg-sky-100",
+  },
+  {
+    emoji: "🕵️‍♂️",
+    title: "Anonymous Reporting",
+    desc: "Report issues without revealing your identity, ensuring privacy and safety.",
+    bg: "bg-sky-100",
+  },
+  {
+    emoji: "🔒",
+    title: "Privacy Protection",
+    desc: "Your data is encrypted and secured with modern privacy standards.",
+    bg: "bg-sky-100",
+  },
+  {
+    emoji: "🤝",
+    title: "Community Engagement",
+    desc: "Collaborate, vote, and comment to help resolve issues collectively.",
+    bg: "bg-sky-100",
+  },
+  {
+    emoji: "📱",
+    title: "Mobile-First Experience",
+    desc: "Enjoy a smooth, responsive experience on both web and mobile devices.",
+    bg: "bg-sky-100",
+  },
+  {
+    emoji: "💬",
+    title: "Citizen Feedback",
+    desc: "Share feedback to improve local services and city governance.",
+    bg: "bg-sky-100",
+  },
+
+];
+
 
   const aboutBenefits = [
     { emoji: "🎯", title: "Vision", desc: "Empowering citizens through transparency." },
@@ -31,24 +78,48 @@ const LandingPage = () => {
   ];
 
   // ✅ Indian profile pics (gender-wise)
-  const feedbacks = [
-    { name: "Rohit Sharma", feedback: "Excellent platform!", image: "https://randomuser.me/api/portraits/men/32.jpg" },
-    { name: "Priya Verma", feedback: "AI verification is reliable.", image: "https://randomuser.me/api/portraits/women/44.jpg" },
-    { name: "Anil Kumar", feedback: "Community engagement is amazing!", image: "https://randomuser.me/api/portraits/men/28.jpg" },
-    { name: "Neha Singh", feedback: "Easy to use and very responsive.", image: "https://randomuser.me/api/portraits/women/65.jpg" },
-    { name: "Vikas Yadav", feedback: "Real-time updates are impressive.", image: "https://randomuser.me/api/portraits/men/41.jpg" },
-    { name: "Simran Kaur", feedback: "Helps resolve issues quickly.", image: "https://randomuser.me/api/portraits/women/50.jpg" },
-  ];
+const feedbacks = [
+  {
+    name: "Rohit Sharma",
+    feedback:
+      "I reported a pothole in my neighborhood and it was fixed within a week! The whole process felt smooth and transparent.",
+    image: "https://imagedelivery.net/xaKlCos5cTg_1RWzIu_h-A/55f224cd-99a1-4b3b-4a15-c76d37505200/public",
+  },
+  {
+    name: "Priya Verma",
+    feedback:
+      "The AI verification really helps in keeping fake reports away. Submitting an issue from my phone was super easy.",
+    image: "https://tse1.mm.bing.net/th/id/OIP.rBt9k47iLdGN3AvuM0P4jgHaE8?cb=ucfimgc2&rs=1&pid=ImgDetMain&o=7&rm=3",
+  },
+  {
+    name: "Anil Kumar",
+    feedback:
+      "Community voting is a great idea! It's nice to see people coming together to solve problems in our locality.",
+    image: "https://img.freepik.com/premium-photo/face-young-handsome-indian-man_251136-20685.jpg?w=2000",
+  },
+  {
+    name: "Neha Singh",
+    feedback:
+      "Very user-friendly platform! I love how easily I can track the progress of the complaints I’ve submitted.",
+    image: "https://thumbs.dreamstime.com/b/headshot-portrait-smiling-young-indian-woman-worker-feel-overjoyed-workplace-profile-picture-happy-millennial-mixed-race-214574549.jpg",
+  },
+  {
+    name: "Vikas Yadav",
+    feedback:
+      "Real-time updates are a game changer! I can see exactly when my complaint is picked up and resolved.",
+    image: "https://i.pinimg.com/originals/1a/9c/e3/1a9ce39d8ebe126b427fb702131163b5.jpg",
+  },
+  {
+    name: "Simran Kaur",
+    feedback:
+      "The multi-language option is so helpful. I reported an issue in Hindi and it was processed without any problems.",
+    image: "https://cdn1.matadornetwork.com/blogs/1/2016/03/India17real.jpg",
+  },
+];
 
-  const faqs = [
-    { q: "What is Jan Samadhan?", a: "A civic platform to report issues and engage with community." },
-    { q: "How to report an issue?", a: "Use the 'Report Issue' button and fill the details." },
-    { q: "Is my data secure?", a: "Yes, we use AI verification and blockchain security." },
-    { q: "Can I track my report?", a: "Yes, real-time tracking is available." },
-    { q: "Is there a mobile app?", a: "Currently web-only, mobile app coming soon." },
-    { q: "How is community engagement handled?", a: "Users can comment, vote, and support issues." },
-  ];
 
+
+  
   return (
     <div className="bg-sky-50">
       <NavBar />
@@ -73,7 +144,7 @@ const LandingPage = () => {
             <img
               src="https://thumbs.dreamstime.com/b/illustration-urban-commuters-traveling-city-various-ways-urban-commuting-illustration-123447333.jpg"
               alt="Hero"
-              className="w-full max-w-md md:max-w-lg object-contain rounded-3xl shadow-2xl"
+              className="relative z-10 w-72 md:w-96 drop-shadow-xl"
             />
             <div className="absolute top-0 -right-16 w-48 h-48 bg-sky-200 rounded-full opacity-30 animate-pulse"></div>
             <div className="absolute bottom-0 -left-16 w-64 h-64 bg-sky-300 rounded-full opacity-20 animate-pulse"></div>
@@ -162,24 +233,11 @@ const LandingPage = () => {
         </div>
       </section>
 
-      {/* FAQ Section */}
-      <section className="container mx-auto px-6 md:px-12 py-24">
-        <h2 className="text-4xl font-bold text-center mb-12 text-sky-700">FAQs</h2>
-        <div className="grid md:grid-cols-2 gap-8">
-          {faqs.map((f, i) => (
-            <motion.div
-              key={i}
-              className="p-6 bg-white rounded-3xl shadow-lg hover:shadow-xl transition-all duration-300"
-              initial={{ opacity: 0, y: 50 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-            >
-              <h3 className="font-semibold text-sky-700 mb-2">{f.q}</h3>
-              <p className="text-gray-700">{f.a}</p>
-            </motion.div>
-          ))}
-        </div>
-      </section>
+     
+     <FAQSection/>
+      
+      <FeedbackForm />
+      
     </div>
   );
 };
