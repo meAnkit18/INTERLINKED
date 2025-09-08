@@ -10,14 +10,15 @@ function CreatePost({ fetchUserPosts }) {
   const [preview, setPreview] = useState(null);
   const [loading, setLoading] = useState(false);
   const [progress, setProgress] = useState(0);
-  const [useCamera, setUseCamera] = useState(false);
-  const [facingMode, setFacingMode] = useState("user"); // 👈 front camera default
+
+  const [mode, setMode] = useState("form"); 
+  const [facingMode, setFacingMode] = useState("user"); 
 
   const webcamRef = useRef(null);
   const backendURL = import.meta.env.VITE_BACKEND_PORT;
   const navigate = useNavigate();
 
-  // 📸 Capture photo
+  
   const capture = () => {
     const imageSrc = webcamRef.current.getScreenshot();
     if (imageSrc) {
@@ -27,13 +28,16 @@ function CreatePost({ fetchUserPosts }) {
           const file = new File([blob], "capture.jpg", { type: "image/jpeg" });
           setImage(file);
           setPreview(imageSrc);
+          setMode("preview");
         });
     }
   };
 
-  // 🔄 Switch front ↔ back camera
+  
   const switchCamera = () => {
-    setFacingMode((prev) => (prev === "user" ? { exact: "environment" } : "user"));
+    setFacingMode((prev) =>
+      prev === "user" ? { exact: "environment" } : "user"
+    );
   };
 
   const handlePostSubmit = async (e) => {
@@ -86,6 +90,7 @@ function CreatePost({ fetchUserPosts }) {
       setImage(null);
       setPreview(null);
       setProgress(0);
+      setMode("form");
 
       navigate("/account");
     } catch (err) {
@@ -96,120 +101,146 @@ function CreatePost({ fetchUserPosts }) {
   };
 
   return (
-    <div className="container mt-22 mx-auto px-4 sm:px-6 md:px-10 lg:px-20">
-      <h2 className="text-2xl font-semibold mb-4 text-center">
-        Report Issues That You Are Facing
-      </h2>
+    <div className="container mt-25 mx-auto px-4 sm:px-6 md:px-10 lg:px-20">
+      
+      {mode === "form" && (
+        <>
+          <h2 className="text-2xl font-semibold mb-4 text-center">
+            Report Issues Now 
+          </h2>
 
-      <form onSubmit={handlePostSubmit} className="space-y-4">
-        <input
-          type="text"
-          value={title}
-          onChange={(e) => setTitle(e.target.value)}
-          placeholder="Title"
-          required
-          className="w-full border rounded px-2 py-1"
-        />
-
-        <textarea
-          value={description}
-          onChange={(e) => setDescription(e.target.value)}
-          placeholder="Description"
-          className="w-full border rounded px-2 py-1"
-        />
-
-        {/* Toggle Upload vs Camera */}
-        <div className="flex gap-3">
-          <button
-            type="button"
-            onClick={() => setUseCamera(false)}
-            className={`px-4 py-2 rounded ${
-              !useCamera ? "bg-indigo-600 text-white" : "bg-gray-200"
-            }`}
-          >
-            Upload Image
-          </button>
-          <button
-            type="button"
-            onClick={() => setUseCamera(true)}
-            className={`px-4 py-2 rounded ${
-              useCamera ? "bg-indigo-600 text-white" : "bg-gray-200"
-            }`}
-          >
-            Use Camera
-          </button>
-        </div>
-
-        {/* Camera Mode */}
-        {useCamera && (
-          <div className="flex flex-col items-center gap-2">
-            <Webcam
-              ref={webcamRef}
-              screenshotFormat="image/jpeg"
-              videoConstraints={{ facingMode }}
-              className="rounded-lg border"
+          <form onSubmit={handlePostSubmit} className="space-y-4">
+            <input
+              type="text"
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
+              placeholder="Title"
+              required
+              className="w-full border rounded px-2 py-1"
             />
 
-            <div className="flex gap-3 mt-2">
+            <textarea
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
+              placeholder="Description"
+              className="w-full border rounded px-2 py-1"
+            />
+
+            
+            <div className="flex gap-3">
+              <label className="px-4 py-2 rounded bg-gray-200 cursor-pointer">
+                Upload Image
+                <input
+                  type="file"
+                  accept="image/*"
+                  onChange={(e) => {
+                    const file = e.target.files[0];
+                    if (file) {
+                      setImage(file);
+                      setPreview(URL.createObjectURL(file));
+                    }
+                  }}
+                  className="hidden"
+                />
+              </label>
+
               <button
                 type="button"
-                onClick={capture}
-                className="px-4 py-2 bg-green-600 text-white rounded"
+                onClick={() => setMode("camera")}
+                className="px-4 py-2 rounded bg-indigo-600 text-white"
               >
-                Capture
-              </button>
-              <button
-                type="button"
-                onClick={switchCamera}
-                className="px-4 py-2 bg-yellow-600 text-white rounded"
-              >
-                Switch Camera
+                Use Camera
               </button>
             </div>
-          </div>
-        )}
 
-        {/* Upload Mode */}
-        {!useCamera && (
-          <input
-            type="file"
-            accept="image/*"
-            onChange={(e) => {
-              const file = e.target.files[0];
-              if (file) {
-                setImage(file);
-                setPreview(URL.createObjectURL(file));
-              }
-            }}
-            required={!image}
-            className="w-full border rounded px-2 py-1"
+            
+            {preview && (
+              <div className="mt-2">
+                <p className="text-sm text-gray-600">Preview:</p>
+                <img
+                  src={preview}
+                  alt="preview"
+                  className="mt-1 max-h-60 rounded border"
+                />
+              </div>
+            )}
+
+            <button
+              type="submit"
+              disabled={!image || loading}
+              className={`px-4 py-2 rounded ${
+                !image || loading
+                  ? "bg-gray-400 cursor-not-allowed"
+                  : "bg-slate-700 hover:bg-slate-800 text-white"
+              }`}
+            >
+              {loading ? `Uploading... ${progress}%` : "Post"}
+            </button>
+          </form>
+        </>
+      )}
+
+      
+      {mode === "camera" && (
+        <div className="fixed inset-0 bg-black flex flex-col items-center justify-center z-50">
+          <Webcam
+            ref={webcamRef}
+            screenshotFormat="image/jpeg"
+            videoConstraints={{ facingMode }}
+            className="w-full h-full object-cover"
           />
-        )}
-
-        {/* Preview */}
-        {preview && (
-          <div className="mt-2">
-            <p className="text-sm text-gray-600">Preview:</p>
-            <img
-              src={preview}
-              alt="preview"
-              className="mt-1 max-h-60 rounded border"
-            />
+          <div className="absolute bottom-6 flex gap-4">
+            <button
+              type="button"
+              onClick={capture}
+              className="px-6 py-3 bg-green-600 text-white rounded-lg"
+            >
+              Capture
+            </button>
+            <button
+              type="button"
+              onClick={switchCamera}
+              className="px-6 py-3 bg-yellow-600 text-white rounded-lg"
+            >
+              Switch
+            </button>
+            <button
+              type="button"
+              onClick={() => setMode("form")}
+              className="px-6 py-3 bg-gray-700 text-white rounded-lg"
+            >
+              Cancel
+            </button>
           </div>
-        )}
+        </div>
+      )}
 
-        <button
-          type="submit"
-          disabled={!image || loading}
-          className={`px-4 py-2 rounded ${
-            !image || loading
-              ? "bg-gray-400 cursor-not-allowed"
-              : "bg-slate-700 hover:bg-slate-800 text-white"
-          }`}
-        >
-          {loading ? `Uploading... ${progress}%` : "Post"}
-        </button>
-      </form>
+      
+      {mode === "preview" && (
+        <div className="fixed inset-0 bg-black flex flex-col items-center justify-center z-50">
+          <img
+            src={preview}
+            alt="Captured"
+            className="w-full h-full object-contain"
+          />
+          <div className="absolute bottom-6 flex gap-4">
+            <button
+              type="button"
+              onClick={() => setMode("form")}
+              className="px-6 py-3 bg-green-600 text-white rounded-lg"
+            >
+              Confirm
+            </button>
+            <button
+              type="button"
+              onClick={() => setMode("camera")}
+              className="px-6 py-3 bg-red-600 text-white rounded-lg"
+            >
+              Retake
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

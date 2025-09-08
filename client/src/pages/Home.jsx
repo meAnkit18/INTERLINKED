@@ -40,23 +40,25 @@ export default function Home() {
       : posts.filter((post) => post.category === selectedCategory);
 
   return (
-    <div className="container mt-22 mx-auto px-4 sm:px-6 md:px-10 lg:px-20">
+    <div className="container  mt-25 mx-auto px-4 sm:px-6 md:px-10 lg:px-20">
       <MapView posts={posts}/>
-     <div className="flex flex-wrap gap-2 mb-4 mt-5">
-    {categories.map((cat, i) => (
-      <button
-        key={i}
-        onClick={() => setSelectedCategory(cat)}
-        className={`px-4 py-2 rounded-lg border transition 
-          ${selectedCategory === cat 
-            ? 'bg-slate-800 text-white bg-slate-800'  
-            : 'bg-white/20 text-gray-700 border-gray-300 hover:bg-gray-200'
-            }`}
-      >
-        {cat}
-      </button>
-    ))}
-  </div>
+    <div className="flex gap-2 mb-4 mt-5 overflow-x-auto whitespace-nowrap">
+  {categories.map((cat, i) => (
+    <button
+      key={i}
+      onClick={() => setSelectedCategory(cat)}
+      className={`px-4 py-2 rounded-lg border flex-shrink-0 transition 
+        ${selectedCategory === cat 
+          ? 'bg-slate-800 text-white'  
+          : 'bg-white/20 text-gray-700 border-gray-300 hover:bg-gray-200'
+        }`}
+    >
+      {cat}
+    </button>
+  ))}
+</div>
+
+
 
       {loading ? (
         <p>Loading posts...</p>

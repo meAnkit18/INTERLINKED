@@ -7,8 +7,8 @@ const NavBar = () => {
 
   const [taglineIndex, setTaglineIndex] = useState(0);
   const taglines = [
-    "Your Voice, Your Right, Your Solution",
-    "आपकी आवाज, आपका अधिकार, आपका समाधान",
+    "Your Voice, Your Solution",
+    "आपकी आवाज, आपका समाधान",
   ];
 
   // Rotate tagline
@@ -20,24 +20,25 @@ const NavBar = () => {
   }, []);
 
   return (
-    <nav className="fixed top-0 left-0 w-full z-50 flex items-center justify-between px-6 md:px-16 lg:px-24 py-4 shadow-md bg-sky-500 text-white transition-all">
+    <nav className="fixed top-0 left-0 w-full z-9999 flex items-center justify-between px-6 md:px-16 lg:px-24 py-4 shadow-md bg-sky-500 text-white transition-all">
       {/* Logo + Tagline */}
-      <div className="flex items-center gap-3">
+      <div className="flex items-center h-10 gap-2">
         <img
           src="https://www.pngmart.com/files/7/Community-PNG-Clipart.png"
           alt="Jan Samadhan Logo"
-          className="h-14 w-14 object-contain rounded-full shadow-sm bg-white p-1"
+          className="h-15 w-15 object-contain rounded-full shadow-sm bg-white p-1"
         />
-        <div className="flex flex-col">
+        <div className="flex flex-col leading-tight">
           <Link
             to="/"
-            className="text-2xl md:text-3xl font-bold text-white hover:text-sky-200 transition"
+            className="text-lg md:text-xl font-bold text-white hover:text-sky-200 transition"
           >
             Jan Samadhan
           </Link>
-          <span className="text-sm italic">{taglines[taglineIndex]}</span>
+          <span className="text-xs italic">{taglines[taglineIndex]}</span>
         </div>
       </div>
+
 
       {/* Desktop Links */}
       <div className="hidden md:flex items-center gap-8 font-medium">

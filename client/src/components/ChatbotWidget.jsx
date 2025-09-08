@@ -1,7 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import chatbotsvg from "../assets/chatbotsvg.svg";
 
-
 function SendIcon(props) {
   return (
     <svg viewBox="0 0 24 24" width={20} height={20} fill="none" stroke="currentColor" strokeWidth={2} {...props}>
@@ -22,9 +21,9 @@ function LoaderDots() {
 }
 
 export default function ChatbotWidget({
-  title = "Legal Assistant",
-  subtitle = "Simplified Legal Application Filing",
-  welcome = "Hello! I’m your legal assistant. I can help you file applications in your regional language. How can I assist you today?",
+  title = "Jan Samadhan AI",
+  subtitle = "",
+  welcome = "Hello! how can i help you?",
   modelName = "gemini-2.0-flash",
 }) {
   const apiKey = import.meta.env.VITE_GEMINI_API_KEY;
@@ -96,17 +95,17 @@ export default function ChatbotWidget({
   }
 
   return (
-    <div className="fixed bottom-8 right-1 z-50">
+    <div className="fixed bottom-8 right-1 z-9999">
       {!open && (
         <button
           onClick={() => setOpen(true)}
-          className=" rounded-full border-black px-4 py-3 bg-transparent font-medium hover:shadow-2xl active:scale-95 transition"
+          className="rounded-full border-black px-4 py-3 bg-transparent font-medium hover:shadow-2xl active:scale-95 transition"
           aria-label="Open Legal Assistant Chatbot"
         >
           <div className="h-10 w-10">
             <img
               src={chatbotsvg}
-              className="shadow-3xl "
+              className="shadow-3xl"
               alt="Chatbot"
             />
           </div>
@@ -114,8 +113,8 @@ export default function ChatbotWidget({
       )}
 
       {open && (
-        <div className="w-[22rem] sm:w-[26rem] h-[34rem] bg-white dark:bg-neutral-900 shadow-2xl rounded-2xl border border-neutral-200 dark:border-neutral-800 flex flex-col overflow-hidden">
-          {/* Header */}
+        <div className="w-[22rem] sm:w-[26rem] h-[34rem] bg-neutral-50 dark:bg-neutral-900 shadow-2xl rounded-2xl border border-neutral-200 dark:border-neutral-800 flex flex-col overflow-hidden">
+          
           <div className="p-4 bg-gradient-to-r from-indigo-500 to-purple-500 text-white">
             <div className="flex items-start justify-between">
               <div>
@@ -132,10 +131,10 @@ export default function ChatbotWidget({
             </div>
           </div>
 
-          {/* Messages */}
+          
           <div
             ref={listRef}
-            className="flex-1 overflow-y-auto p-4 space-y-3 bg-neutral-50/60 dark:bg-neutral-900"
+            className="flex-1 overflow-y-auto p-4 space-y-3 bg-neutral-50 dark:bg-neutral-900"
             aria-live="polite"
           >
             {messages.map(m => (
@@ -143,7 +142,7 @@ export default function ChatbotWidget({
                 <div className={`max-w-[80%] rounded-2xl px-3 py-2 text-sm leading-relaxed shadow ${
                   m.role === "user"
                     ? "bg-indigo-600 text-white"
-                    : "bg-white dark:bg-neutral-800 border border-neutral-200 dark:border-neutral-700 text-neutral-800 dark:text-neutral-100"
+                    : "bg-neutral-100 dark:bg-neutral-800 border border-neutral-200 dark:border-neutral-700 text-neutral-800 dark:text-neutral-100"
                 }`}>
                   {m.content}
                 </div>
@@ -151,7 +150,7 @@ export default function ChatbotWidget({
             ))}
             {loading && (
               <div className="flex justify-start">
-                <div className="max-w-[80%] rounded-2xl px-3 py-2 text-sm leading-relaxed shadow bg-white dark:bg-neutral-800 border border-neutral-200 dark:border-neutral-700 text-neutral-800 dark:text-neutral-100">
+                <div className="max-w-[80%] rounded-2xl px-3 py-2 text-sm leading-relaxed shadow bg-neutral-100 dark:bg-neutral-800 border border-neutral-200 dark:border-neutral-700 text-neutral-800 dark:text-neutral-100">
                   <LoaderDots />
                 </div>
               </div>
@@ -159,8 +158,8 @@ export default function ChatbotWidget({
             {error && <div className="text-xs text-red-600 dark:text-red-400">{error}</div>}
           </div>
 
-          {/* Input */}
-          <div className="p-3 border-t border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-900">
+          
+          <div className="p-3 border-t border-neutral-200 dark:border-neutral-800 bg-neutral-50 dark:bg-neutral-900">
             <div className="flex items-end gap-2">
               <textarea
                 value={input}
@@ -168,7 +167,7 @@ export default function ChatbotWidget({
                 onKeyDown={handleKeyDown}
                 rows={1}
                 placeholder="Type your legal issue or question..."
-                className="flex-1 resize-none rounded-xl border border-neutral-300 dark:border-neutral-700 bg-white dark:bg-neutral-800 text-sm px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500/60"
+                className="flex-1 resize-none rounded-xl border border-neutral-300 dark:border-neutral-700 bg-neutral-50 dark:bg-neutral-800 text-sm px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500/60 text-neutral-900 dark:text-neutral-100"
               />
               <button
                 onClick={handleSend}
@@ -179,9 +178,7 @@ export default function ChatbotWidget({
                 <SendIcon />
               </button>
             </div>
-            <p className="mt-2 text-[10px] text-neutral-500">
-              Tip: Press Enter to send. For a new line, use Shift+Enter.
-            </p>
+            
           </div>
         </div>
       )}

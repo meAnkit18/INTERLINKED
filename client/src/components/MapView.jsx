@@ -34,7 +34,7 @@ export default function MapView({ posts }) {
           <Marker key={i} position={[lat, lng]} icon={customIcon}>
             <Popup>
               {post.user && (
-                <div className="flex items-center gap-2 mt-3 mr-10 mb-5">
+                <div className="flex items-center  gap-2 mt-3 mr-10 mb-5">
                   {post.user.profilePicture && (
                     <img
                       src={post.user.profilePicture}
