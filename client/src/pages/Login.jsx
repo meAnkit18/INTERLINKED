@@ -5,11 +5,8 @@ import { useNavigate } from "react-router-dom";
 import { useAppContext } from "../context/AppContext";
 
 const Login = ({ setIsAuthenticated }) => {
-  const [mode, setMode] = useState("otp"); // "otp" or "dummy"
   const [email, setEmail] = useState("");
   const [otp, setOtp] = useState("");
-  const [dummyEmail, setDummyEmail] = useState("user@example.com");
-  const [dummyPassword, setDummyPassword] = useState("password123");
   const [step, setStep] = useState(1); // OTP step
   const [load, setLoad] = useState(false);
   const navigate = useNavigate();
@@ -26,7 +23,7 @@ const Login = ({ setIsAuthenticated }) => {
       await axios.post(`${backendURL}/api/auth/send-otp`, { email });
       setStep(2);
     } catch (error) {
-      alert("Failed to send OTP. Try Dummy Login below.");
+      alert("Failed to send OTP. Please try again.");
       console.error(error);
     } finally {
       setLoad(false);
@@ -49,26 +46,15 @@ const Login = ({ setIsAuthenticated }) => {
       setIsAuthenticated(true);
       navigate("/home");
     } catch (error) {
-      alert("OTP verification failed. Try Dummy Login.");
+      alert("OTP verification failed. Please try again.");
       console.error(error);
     } finally {
       setLoad(false);
     }
   };
 
-  // Dummy login (no backend)
-  const dummyLogin = () => {
-    if (!dummyEmail || !dummyPassword) return alert("Enter dummy credentials!");
-    alert("✅ Logged in with Dummy Credentials!");
-    const dummyUser = { name: "Test User", email: dummyEmail };
-    dispatch({ type: "SET_USER", payload: dummyUser });
-    localStorage.setItem("token", "dummy-jwt-token");
-    setIsAuthenticated(true);
-    navigate("/home");
-  };
-
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-sky-100 to-sky-300 px-4">
+    <div className="min-h-screen mt-3 flex items-center justify-center bg-gradient-to-br from-sky-100 to-sky-300 px-4">
       <div className="flex flex-col md:flex-row w-full max-w-5xl shadow-2xl rounded-3xl overflow-hidden bg-white/90 backdrop-blur-md">
         {/* Left Side */}
         <motion.div
@@ -89,13 +75,6 @@ const Login = ({ setIsAuthenticated }) => {
             Your Voice, Your Right, Your Solution
           </p>
 
-          {/* Dummy credentials hint */}
-          <div className="text-center mt-4 text-gray-700">
-            <p>Dummy Email: <strong>{dummyEmail}</strong></p>
-            <p>Dummy Password: <strong>{dummyPassword}</strong></p>
-            <p>Dummy OTP: <strong>123456</strong></p>
-          </div>
-
           <div className="absolute top-0 left-0 w-32 h-32 bg-sky-300 rounded-full opacity-30 animate-pulse -translate-x-10 -translate-y-10"></div>
           <div className="absolute bottom-0 right-0 w-48 h-48 bg-sky-400 rounded-full opacity-20 animate-pulse translate-x-16 translate-y-16"></div>
         </motion.div>
@@ -107,110 +86,56 @@ const Login = ({ setIsAuthenticated }) => {
           animate={{ x: 0, opacity: 1 }}
           transition={{ duration: 1 }}
         >
-          {/* Mode switch buttons */}
-          <div className="flex justify-center gap-4 mb-6">
-            <button
-              className={`px-4 py-2 rounded-full font-semibold ${
-                mode === "otp"
-                  ? "bg-sky-600 text-white"
-                  : "bg-white text-sky-600 border border-sky-400"
-              }`}
-              onClick={() => setMode("otp")}
-            >
-              OTP Login
-            </button>
-            <button
-              className={`px-4 py-2 rounded-full font-semibold ${
-                mode === "dummy"
-                  ? "bg-sky-600 text-white"
-                  : "bg-white text-sky-600 border border-sky-400"
-              }`}
-              onClick={() => setMode("dummy")}
-            >
-              Dummy Login
-            </button>
-          </div>
-
-          {/* OTP Login */}
-          {mode === "otp" ? (
-            step === 1 ? (
-              <div className="flex flex-col gap-4">
-                <h2 className="text-2xl font-semibold text-center text-sky-700 mb-4">
-                  Get Started
-                </h2>
-                <label htmlFor="email" className="text-gray-700 font-medium">
-                  Email
-                </label>
-                <input
-                  id="email"
-                  type="email"
-                  placeholder="Enter your email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  className="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-sky-400 focus:outline-none text-gray-800"
-                />
-                <button
-                  onClick={sendOtp}
-                  className="w-full py-3 mt-2 rounded-full bg-sky-600 text-white font-semibold shadow-md hover:bg-sky-700 hover:shadow-lg transition transform hover:-translate-y-0.5 active:scale-95"
-                >
-                  {load ? "Sending..." : "Send OTP"}
-                </button>
-              </div>
-            ) : (
-              <div className="flex flex-col gap-4">
-                <h2 className="text-2xl font-semibold text-sky-700 text-center mb-2">
-                  Verify OTP
-                </h2>
-                <p className="text-gray-600 text-sm text-center mb-4">
-                  Enter the 6-digit code sent to your email.
-                </p>
-                <input
-                  id="otp"
-                  type="text"
-                  placeholder="Enter OTP"
-                  value={otp}
-                  onChange={(e) => setOtp(e.target.value)}
-                  className="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-sky-400 focus:outline-none text-gray-800"
-                />
-                <button
-                  onClick={verifyOtp}
-                  className="w-full py-3 rounded-full bg-sky-600 text-white font-semibold shadow-md hover:bg-sky-700 hover:shadow-lg transition transform hover:-translate-y-0.5 active:scale-95"
-                >
-                  {load ? "Verifying..." : "Verify OTP"}
-                </button>
-                <button
-                  onClick={() => setStep(1)}
-                  className="w-full py-2 rounded-full bg-white text-sky-600 font-semibold border border-sky-400 hover:bg-sky-100 transition"
-                >
-                  Change Email
-                </button>
-              </div>
-            )
-          ) : (
-            /* Dummy Login */
+          {step === 1 ? (
             <div className="flex flex-col gap-4">
               <h2 className="text-2xl font-semibold text-center text-sky-700 mb-4">
-                Dummy Login
+                Get Started
               </h2>
-              <label className="text-gray-700 font-medium">Email</label>
+              <label htmlFor="email" className="text-gray-700 font-medium">
+                Email
+              </label>
               <input
+                id="email"
                 type="email"
-                value={dummyEmail}
-                onChange={(e) => setDummyEmail(e.target.value)}
-                className="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-sky-400 focus:outline-none text-gray-800"
-              />
-              <label className="text-gray-700 font-medium">Password</label>
-              <input
-                type="password"
-                value={dummyPassword}
-                onChange={(e) => setDummyPassword(e.target.value)}
+                placeholder="Enter your email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
                 className="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-sky-400 focus:outline-none text-gray-800"
               />
               <button
-                onClick={dummyLogin}
+                onClick={sendOtp}
+                className="w-full py-3 mt-2 rounded-full bg-sky-600 text-white font-semibold shadow-md hover:bg-sky-700 hover:shadow-lg transition transform hover:-translate-y-0.5 active:scale-95"
+              >
+                {load ? "Sending..." : "Send OTP"}
+              </button>
+            </div>
+          ) : (
+            <div className="flex flex-col gap-4">
+              <h2 className="text-2xl font-semibold text-sky-700 text-center mb-2">
+                Verify OTP
+              </h2>
+              <p className="text-gray-600 text-sm text-center mb-4">
+                Enter the 6-digit code sent to your email.
+              </p>
+              <input
+                id="otp"
+                type="text"
+                placeholder="Enter OTP"
+                value={otp}
+                onChange={(e) => setOtp(e.target.value)}
+                className="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-sky-400 focus:outline-none text-gray-800"
+              />
+              <button
+                onClick={verifyOtp}
                 className="w-full py-3 rounded-full bg-sky-600 text-white font-semibold shadow-md hover:bg-sky-700 hover:shadow-lg transition transform hover:-translate-y-0.5 active:scale-95"
               >
-                Login
+                {load ? "Verifying..." : "Verify OTP"}
+              </button>
+              <button
+                onClick={() => setStep(1)}
+                className="w-full py-2 rounded-full bg-white text-sky-600 font-semibold border border-sky-400 hover:bg-sky-100 transition"
+              >
+                Change Email
               </button>
             </div>
           )}
