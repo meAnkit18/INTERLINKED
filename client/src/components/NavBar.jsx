@@ -19,6 +19,17 @@ const NavBar = () => {
     return () => clearInterval(interval);
   }, []);
 
+  const isLoggedIn = !!localStorage.getItem("token");
+
+  const handleAuth = () => {
+    if (isLoggedIn) {
+      localStorage.removeItem("token");
+      navigate("/login");
+    } else {
+      navigate("/login");
+    }
+  };
+
   return (
     <nav className="fixed top-0 left-0 w-full z-9999 flex items-center justify-between px-6 md:px-16 lg:px-24 py-4 shadow-md bg-sky-500 text-white transition-all">
       {/* Logo + Tagline */}
@@ -45,22 +56,18 @@ const NavBar = () => {
         <Link to="/" className="hover:text-sky-200 transition">
           Home
         </Link>
-        <Link to="/about" className="hover:text-sky-200 transition">
-          About Us
+        <Link to="/report" className="hover:text-sky-200 transition">
+          Report
         </Link>
-        <Link to="/contact" className="hover:text-sky-200 transition">
-          Contact
-        </Link>
-        <Link to="/faqs" className="hover:text-sky-200 transition">
-          FAQs
+        <Link to="/account" className="hover:text-sky-200 transition">
+          Account
         </Link>
 
-        {/* ✅ Always Login Button */}
         <button
-          onClick={() => navigate("/login")}
+          onClick={handleAuth}
           className="px-6 py-2 bg-white text-sky-600 rounded-full font-semibold hover:bg-sky-100 transition"
         >
-          Login
+          {isLoggedIn ? "Logout" : "Login"}
         </button>
       </div>
 
@@ -75,44 +82,24 @@ const NavBar = () => {
       {/* Mobile Dropdown */}
       {open && (
         <div className="absolute top-full left-0 w-full bg-sky-500 text-white flex flex-col gap-4 px-6 py-4 shadow-md md:hidden">
-          <Link
-            to="/"
-            className="hover:text-sky-200"
-            onClick={() => setOpen(false)}
-          >
+          <Link to="/" className="hover:text-sky-200" onClick={() => setOpen(false)}>
             Home
           </Link>
-          <Link
-            to="/about"
-            className="hover:text-sky-200"
-            onClick={() => setOpen(false)}
-          >
-            About Us
+          <Link to="/report" className="hover:text-sky-200" onClick={() => setOpen(false)}>
+            Report
           </Link>
-          <Link
-            to="/contact"
-            className="hover:text-sky-200"
-            onClick={() => setOpen(false)}
-          >
-            Contact
-          </Link>
-          <Link
-            to="/faqs"
-            className="hover:text-sky-200"
-            onClick={() => setOpen(false)}
-          >
-            FAQs
+          <Link to="/account" className="hover:text-sky-200" onClick={() => setOpen(false)}>
+            Account
           </Link>
 
-          {/* ✅ Always Login Button on Mobile */}
           <button
             onClick={() => {
-              navigate("/login");
+              handleAuth();
               setOpen(false);
             }}
             className="px-6 py-2 bg-white text-sky-600 rounded-full font-semibold hover:bg-sky-100 transition"
           >
-            Login
+            {isLoggedIn ? "Logout" : "Login"}
           </button>
         </div>
       )}

@@ -40,9 +40,9 @@ export default function Home() {
       : posts.filter((post) => post.category === selectedCategory);
 
   return (
-    <div className="container  mt-25 mx-auto px-4 sm:px-6 md:px-10 lg:px-20">
+    <div className="container  mt-22 mx-auto px-4 sm:px-6 md:px-10 lg:px-20">
       <MapView posts={posts}/>
-    <div className="flex gap-2 mb-4 mt-5 overflow-x-auto whitespace-nowrap">
+    <div className="flex gap-2 mb-4 mt-5 overflow-x-auto  scroll-hidden">
   {categories.map((cat, i) => (
     <button
       key={i}

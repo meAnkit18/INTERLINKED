@@ -13,7 +13,7 @@ export default function MapView({ posts }) {
       center={[28.6139, 77.2090]}
       zoom={5}
       className="rounded-2xl shadow-lg"
-      style={{ height: "50vh", width: "100%" }}
+      style={{ height: "35vh", width: "100%" }}
     >
       <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
 
