@@ -6,7 +6,7 @@ const Leaderboard = () => {
   useEffect(() => {
     const fetchLeaderboard = async () => {
       try {
-        const res = await fetch('/api/leaderboard');
+        const res = await fetch(`${import.meta.env.VITE_BACKEND_PORT}/api/leaderboard`);
         if (!res.ok) throw new Error("Failed to fetch leaderboard");
         const data = await res.json();
         setLeaderboard(data || []);

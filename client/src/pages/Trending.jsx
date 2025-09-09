@@ -6,7 +6,7 @@ const Trending = () => {
   useEffect(() => {
     const fetchTrendingCategories = async () => {
       try {
-        const res = await fetch('/api/trending-categories');
+        const res = await fetch(`${import.meta.env.VITE_BACKEND_PORT}/api/trending-categories`);
         const data = await res.json();
         setTrendingCategories(data);
       } catch (error) {

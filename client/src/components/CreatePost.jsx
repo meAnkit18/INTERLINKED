@@ -33,6 +33,8 @@ function CreatePost({ fetchUserPosts }) {
     }
   };
 
+ 
+
   
   const switchCamera = () => {
     setFacingMode((prev) =>

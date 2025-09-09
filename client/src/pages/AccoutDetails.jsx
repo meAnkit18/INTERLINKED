@@ -117,7 +117,7 @@ const handleProfileUpdate = async () => {
     <div className='container mt-25 mx-auto px-4 sm:px-6 md:px-10 lg:px-20'>
       <h1 className='text-2xl font-semibold mb-4 text-center'>Profile</h1>
       <div className='flex items-center gap-4 mb-4 '>
-        {udet && <img src={udet.profilePicture} alt="Profile" className="h-30 w-30 rounded-full" />}
+        {udet && <img src={udet.profilePicture} alt="Profile" className="h-30 w-30 rounded-full object-cover" />}
         {isEditMode ? (
           <div>
             <input

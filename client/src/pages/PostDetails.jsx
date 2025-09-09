@@ -46,7 +46,7 @@ const PostDetails = () => {
             <img
               src={post.user.profilePicture}
               alt={post.user.username}
-              className="w-10 h-10 rounded-full mr-4"
+              className="w-10 h-10 rounded-full mr-4 object-cover"
             />
             <div>
               <p className="font-semibold">{post.user.username}</p>
