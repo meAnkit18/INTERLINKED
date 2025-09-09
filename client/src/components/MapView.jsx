@@ -38,8 +38,7 @@ export default function MapView({ posts }) {
       center={[28.6139, 77.209]}
       zoom={5}
       className="rounded-2xl shadow-lg"
-      style={{ height: "20vh", width: "50%" }}
-      // style={{ height: "35vh", width: "100%" }}
+      style={{ height: "35vh", width: "100%" }}
     >
       
       <FullscreenControl />

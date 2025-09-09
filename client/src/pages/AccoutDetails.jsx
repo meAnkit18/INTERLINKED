@@ -48,7 +48,7 @@ function AccoutDetails() {
       if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(
           (pos) => resolve({ lat: pos.coords.latitude, lon: pos.coords.longitude }),
-          () => resolve({ lat: null, lon: null }) // fallback if denied
+          () => resolve({ lat: null, lon: null }) 
         );
       } else {
         resolve({ lat: null, lon: null });
@@ -59,7 +59,7 @@ function AccoutDetails() {
   latitude = lat;
   longitude = lon;
 
-  // Prepare FormData
+  
   const formData = new FormData();
   formData.append("title", title);
   formData.append("description", description);
@@ -117,7 +117,7 @@ const handleProfileUpdate = async () => {
     <div className='container mt-25 mx-auto px-4 sm:px-6 md:px-10 lg:px-20'>
       <h1 className='text-2xl font-semibold mb-4 text-center'>Profile</h1>
       <div className='flex items-center gap-4 mb-4 '>
-        {udet && <img src={udet.profilePicture} alt="Profile" className="h-30 rounded-full" />}
+        {udet && <img src={udet.profilePicture} alt="Profile" className="h-30 w-30 rounded-full" />}
         {isEditMode ? (
           <div>
             <input
