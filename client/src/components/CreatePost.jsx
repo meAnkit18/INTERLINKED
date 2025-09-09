@@ -94,7 +94,7 @@ function CreatePost({ fetchUserPosts }) {
       setProgress(0);
       setMode("form");
 
-      // navigate("/account");
+      navigate("/account");
     } catch (err) {
       console.error("Error creating post:", err);
     } finally {
