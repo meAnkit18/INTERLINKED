@@ -9,28 +9,13 @@ import leaderboardRoutes from './routes/leaderboardRoutes.js'
 
 dotenv.config();
 const app = express();
-
-const allowedOrigins = [
-  "http://localhost:5173",               
-  "https://interlinked-beta.vercel.app",
-  "http://localhost", 
-  "null"
-];
-
 app.use(cors(
 {
-  origin: function (origin, callback) {
-    if (!origin || allowedOrigins.includes(origin)) {
-      callback(null, true);
-    } else {
-      callback(new Error("CORS not allowed for this origin: " + origin));
-    }
-  },
+  origin: true,
   methods: ["GET", "POST", "PUT", "DELETE"],
   allowedHeaders: ["Content-Type", "Authorization"],
   credentials: true
 }
-
 ));
 app.use(express.json());
 
