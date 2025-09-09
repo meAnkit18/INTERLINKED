@@ -7,10 +7,12 @@ const Leaderboard = () => {
     const fetchLeaderboard = async () => {
       try {
         const res = await fetch('/api/leaderboard');
+        if (!res.ok) throw new Error("Failed to fetch leaderboard");
         const data = await res.json();
-        setLeaderboard(data);
+        setLeaderboard(data || []);
       } catch (error) {
-        console.error(error);
+        console.error("Error fetching leaderboard:", error);
+        setLeaderboard([]); // fallback to empty
       }
     };
     fetchLeaderboard();
@@ -29,22 +31,30 @@ const Leaderboard = () => {
             </tr>
           </thead>
           <tbody>
-            {leaderboard.map((user, index) => (
-              <tr key={user._id} className="border-b">
-                <td className="px-4 py-2">{index + 1}</td>
-                <td className="px-4 py-2">
-                  <div className="flex items-center">
-                    <img
-                      src={user.user.profilePicture || 'https://via.placeholder.com/40'}
-                      alt={user.user.username}
-                      className="w-10 h-10 rounded-full mr-4"
-                    />
-                    <span>{user.user.username}</span>
-                  </div>
-                </td>
-                <td className="px-4 py-2">{user.postCount}</td>
-              </tr>
-            ))}
+            {leaderboard.map((user, index) => {
+              // normalize data (handles both nested "user" and flat)
+              const profile = user?.user || user;
+              const username = profile?.username || "Unknown";
+              const profilePicture = profile?.profilePicture || "https://via.placeholder.com/40";
+              const postCount = user?.postCount ?? 0;
+
+              return (
+                <tr key={user._id || index} className="border-b">
+                  <td className="px-4 py-2">{index + 1}</td>
+                  <td className="px-4 py-2">
+                    <div className="flex items-center">
+                      <img
+                        src={profilePicture}
+                        alt={username}
+                        className="w-10 h-10 rounded-full mr-4"
+                      />
+                      <span>{username}</span>
+                    </div>
+                  </td>
+                  <td className="px-4 py-2">{postCount}</td>
+                </tr>
+              );
+            })}
           </tbody>
         </table>
       </div>
