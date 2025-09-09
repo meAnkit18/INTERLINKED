@@ -13,7 +13,7 @@ const NavBar = () => {
     "आपकी आवाज, आपका समाधान",
   ];
 
-  // Rotate tagline
+
   useEffect(() => {
     const interval = setInterval(() => {
       setTaglineIndex((prev) => (prev + 1) % taglines.length);
@@ -25,7 +25,7 @@ const NavBar = () => {
   const isLoggedIn = !!token;
   const backendURL = import.meta.env.VITE_BACKEND_PORT;
 
-  // Fetch user details
+  
   useEffect(() => {
     if (isLoggedIn) {
       axios
@@ -39,7 +39,7 @@ const NavBar = () => {
 
   return (
     <nav className="fixed top-0 left-0 w-full z-9999 flex items-center justify-between px-6 md:px-16 lg:px-24 py-4 shadow-md bg-sky-500 text-white transition-all">
-      {/* Logo + Tagline */}
+    
       <div className="flex items-center h-10 gap-2">
         <img
           src="https://www.pngmart.com/files/7/Community-PNG-Clipart.png"
@@ -57,7 +57,7 @@ const NavBar = () => {
         </div>
       </div>
 
-      {/* Desktop Links */}
+     
       <div className="hidden md:flex items-center gap-8 font-medium">
         <Link to="/home" className="hover:text-sky-200 transition">
           Home
@@ -86,7 +86,7 @@ const NavBar = () => {
         )}
       </div>
 
-      {/* Mobile Menu Button */}
+     
       <button
         onClick={() => setOpen(!open)}
         className="md:hidden text-white focus:outline-none"
@@ -94,7 +94,7 @@ const NavBar = () => {
         ☰
       </button>
 
-      {/* Mobile Dropdown */}
+     
       {open && (
         <div className="absolute top-full left-0 w-full bg-sky-500 text-white flex flex-col gap-4 px-6 py-4 shadow-md md:hidden">
           <Link to="/home" className="hover:text-sky-200" onClick={() => setOpen(false)}>

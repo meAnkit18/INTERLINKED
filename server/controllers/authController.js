@@ -54,7 +54,7 @@ const username = `${baseUsername}${randomNum}`;
       await user.save()
     }
 
-    //generate jwt token
+    
     const token = jwt.sign(
       { id: user._id, email: user.email },
       process.env.JWT_SECRET,

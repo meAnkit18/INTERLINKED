@@ -11,7 +11,7 @@ const FeedbackForm = () => {
 
   const [feedbacksList, setFeedbacksList] = useState([]);
 
-  // Handle form field changes
+  
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({
@@ -20,7 +20,7 @@ const FeedbackForm = () => {
     });
   };
 
-  // Handle star rating
+  
   const handleRating = (ratingValue) => {
     setFormData({
       ...formData,
@@ -28,7 +28,7 @@ const FeedbackForm = () => {
     });
   };
 
-  // Handle form submission
+  
   const handleFeedbackSubmit = (e) => {
     e.preventDefault();
 
@@ -39,7 +39,7 @@ const FeedbackForm = () => {
 
     setFeedbacksList([...feedbacksList, formData]);
 
-    // Reset form
+  
     setFormData({
       name: "",
       location: "",
@@ -54,12 +54,12 @@ const FeedbackForm = () => {
         Share Your Feedback
       </h2>
 
-      {/* Feedback Form */}
+  
       <form
         onSubmit={handleFeedbackSubmit}
         className="bg-white shadow-xl rounded-2xl p-8 space-y-6"
       >
-        {/* Name */}
+  
         <div>
           <label className="block text-gray-700 font-medium mb-2">Name</label>
           <input
@@ -73,7 +73,7 @@ const FeedbackForm = () => {
         </div>
 
       
-         {/* Location */}
+  
         <div>
           <label className="block text-gray-700 font-medium mb-2">Location</label>
           <input
@@ -86,7 +86,7 @@ const FeedbackForm = () => {
           />
         </div>
 
-        {/* Feedback Textarea */}
+  
         <div>
           <label className="block text-gray-700 font-medium mb-2">Feedback</label>
           <textarea
@@ -98,7 +98,7 @@ const FeedbackForm = () => {
           ></textarea>
         </div>
 
-        {/* Star Rating */}
+  
         <div>
           <label className="block text-gray-700 font-medium mb-3">Rate Us</label>
           <div className="flex space-x-2">
@@ -118,7 +118,7 @@ const FeedbackForm = () => {
           </div>
         </div>
 
-        {/* Submit Button */}
+  
         <div className="flex justify-end">
           <button
             type="submit"
@@ -129,7 +129,7 @@ const FeedbackForm = () => {
         </div>
       </form>
 
-      {/* Display submitted feedbacks */}
+  
       {feedbacksList.length > 0 && (
         <div className="mt-8">
           <h3 className="text-xl font-semibold mb-4">Recent Feedbacks:</h3>

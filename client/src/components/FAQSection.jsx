@@ -31,7 +31,7 @@ const FAQSection = () => {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
           >
-            {/* Question */}
+           
             <button
               onClick={() => toggleFAQ(index)}
               className="w-full flex justify-between items-center p-5 text-left text-lg font-semibold text-sky-700 focus:outline-none"
@@ -42,7 +42,7 @@ const FAQSection = () => {
               </span>
             </button>
 
-            {/* Answer with animation */}
+           
             <AnimatePresence>
               {activeIndex === index && (
                 <motion.div

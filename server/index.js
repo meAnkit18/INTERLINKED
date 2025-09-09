@@ -10,11 +10,9 @@ import leaderboardRoutes from './routes/leaderboardRoutes.js'
 dotenv.config();
 const app = express();
 
-// Middleware
 app.use(cors());
 app.use(express.json());
 
-// DB connection
 connectDB();
 
 app.use('/api/auth', authRoutes)

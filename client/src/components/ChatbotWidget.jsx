@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import chatbotsvg from "../assets/chatbotsvg.svg"; // Your chatbot icon
+import chatbotsvg from "../assets/chatbotsvg.svg";
 
 function SendIcon(props) {
   return (
@@ -54,13 +54,13 @@ export default function ChatbotWidget({
   const [error, setError] = useState("");
   const listRef = useRef(null);
 
-  // Scroll to bottom when new messages are added
+  
   useEffect(() => {
     if (!listRef.current) return;
     listRef.current.scrollTop = listRef.current.scrollHeight;
   }, [messages, open]);
 
-  // Send message to backend and get AI response
+  
   async function sendMessage(userText) {
     const userMsg = { id: crypto.randomUUID(), role: "user", content: userText };
     setMessages((prev) => [...prev, userMsg]);
@@ -127,7 +127,7 @@ export default function ChatbotWidget({
 
   return (
     <div className="fixed bottom-8 right-4 z-9999">
-      {/* Floating Chat Button */}
+      
       {!open && (
         <button
           onClick={() => setOpen(true)}
@@ -140,10 +140,10 @@ export default function ChatbotWidget({
         </button>
       )}
 
-      {/* Chat Window */}
+      
       {open && (
         <div className="w-[22rem] sm:w-[26rem] h-[34rem] bg-white rounded-2xl shadow-2xl border border-sky-200 flex flex-col overflow-hidden">
-          {/* Header */}
+      
           <div className="p-4 bg-gradient-to-r from-sky-400 to-sky-500 text-white">
             <div className="flex items-start justify-between">
               <div>
@@ -160,7 +160,7 @@ export default function ChatbotWidget({
             </div>
           </div>
 
-          {/* Messages Section */}
+          
           <div
             ref={listRef}
             className="flex-1 overflow-y-auto p-4 space-y-3 bg-sky-50"
@@ -198,7 +198,7 @@ export default function ChatbotWidget({
             )}
           </div>
 
-          {/* Quick Action Buttons under welcome message */}
+          
           {messages.length === 1 && (
             <div className="p-4 grid grid-cols-2 gap-2 bg-sky-50 border-t border-sky-200">
               {[
@@ -218,7 +218,7 @@ export default function ChatbotWidget({
             </div>
           )}
 
-          {/* Input Area */}
+          
           <div className="p-3 border-t border-sky-200 bg-white">
             <div className="flex items-end gap-2">
               <textarea
