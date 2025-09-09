@@ -11,6 +11,7 @@ import PostDetails from "./pages/PostDetails";
 import ChatbotWidget from "./components/ChatbotWidget";
 import Leaderboard from "./pages/Leaderboard";
 import Trending from "./pages/Trending";
+import Sosimpage from "./pages/Sosimpage";
 
 
 function App() {
@@ -26,6 +27,7 @@ function App() {
         <Route path="/post/:id" element={<PostDetails />} />
         <Route path="/leaderboard" element={<Leaderboard />} />
         <Route path="/trending" element={<Trending />} />
+        <Route path="/sos" element={<Sosimpage/>} />
         <Route path="*" element={<Not404Pg/>} />
       </Routes>
       <ChatbotWidget/>
