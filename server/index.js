@@ -12,8 +12,9 @@ const app = express();
 
 const allowedOrigins = [
   "http://localhost:5173",               
-  "https://interlinked-beta.vercel.app", 
-  "null"                                 
+  "https://interlinked-beta.vercel.app",
+  "http://localhost", 
+  "null"
 ];
 
 app.use(cors(
