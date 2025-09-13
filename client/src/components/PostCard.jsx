@@ -1,6 +1,23 @@
+import { useState } from "react";
 import { Link } from "react-router-dom";
+import axios from "axios";
 
 export default function PostCard({ prop }) {
+  const [upvotes, setUpvotes] = useState(prop.upvotes?.length || 0);
+  const [downvotes, setDownvotes] = useState(prop.downvotes?.length || 0);
+
+  const handleVote = async (type) => {
+    try {
+      const res = await axios.post(`/api/posts/${prop._id}/${type}`, {}, {
+        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
+      });
+      setUpvotes(res.data.upvotes.length);
+      setDownvotes(res.data.downvotes.length);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
   return (
     <>
       <style>{`
@@ -10,8 +27,8 @@ export default function PostCard({ prop }) {
         }
       `}</style>
 
-      <Link to={`/post/${prop._id}`}>
-        <div className="w-full max-w-sm hover:-translate-y-0.5 transition duration-300 mb-6 sm:mb-10">
+      <div className="w-full max-w-sm hover:-translate-y-0.5 transition duration-300 mb-6 sm:mb-10">
+        <Link to={`/post/${prop._id}`}>
           <div className="w-full h-78 sm:h-64 md:h-80 overflow-hidden">
             <img
               className="h-full w-full object-cover rounded-xl"
@@ -37,8 +54,18 @@ export default function PostCard({ prop }) {
               {prop.user.username}
             </h3>
           </div>
+        </Link>
+
+        {/* Voting Buttons */}
+        <div className="flex gap-4 mt-3">
+          <button onClick={() => handleVote("upvote")} className="text-green-600">
+            👍 {upvotes}
+          </button>
+          <button onClick={() => handleVote("downvote")} className="text-red-600">
+            👎 {downvotes}
+          </button>
         </div>
-      </Link>
+      </div>
     </>
   );
 }

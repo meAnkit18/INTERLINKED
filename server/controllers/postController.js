@@ -183,3 +183,53 @@ export const getPostById = async (req, res) => {
       .json({ message: "Failed to get post", error: error.message });
   }
 };
+
+
+export const upvotePost = async (req, res) => {
+  try {
+    const post = await Post.findById(req.params.id);
+    if (!post) return res.status(404).json({ message: "Post not found" });
+
+    // Remove user from downvotes
+    post.downvotes = post.downvotes.filter(
+      userId => userId.toString() !== req.user.id
+    );
+
+    // Toggle upvote
+    if (post.upvotes.includes(req.user.id)) {
+      post.upvotes = post.upvotes.filter(userId => userId.toString() !== req.user.id);
+    } else {
+      post.upvotes.push(req.user.id);
+    }
+
+    await post.save();
+    res.json(post);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
+// Downvote
+export const downvotePost = async (req, res) => {
+  try {
+    const post = await Post.findById(req.params.id);
+    if (!post) return res.status(404).json({ message: "Post not found" });
+
+    // Remove user from upvotes
+    post.upvotes = post.upvotes.filter(
+      userId => userId.toString() !== req.user.id
+    );
+
+    // Toggle downvote
+    if (post.downvotes.includes(req.user.id)) {
+      post.downvotes = post.downvotes.filter(userId => userId.toString() !== req.user.id);
+    } else {
+      post.downvotes.push(req.user.id);
+    }
+
+    await post.save();
+    res.json(post);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};

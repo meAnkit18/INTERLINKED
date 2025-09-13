@@ -12,4 +12,9 @@ router.get('/', postController.getAllPosts);
 router.get('/:id', postController.getPostById);
 router.get('/user/:userId', postController.getUserPosts);
 
+router.post('/:id/upvote', requireAuth, postController.upvotePost);
+
+router.post('/:id/downvote', requireAuth, postController.downvotePost);
+
+
 export default router;
