@@ -38,6 +38,34 @@ export default function PostCard({ prop }) {
               src={prop.imageUrl}
               alt={prop.title}
             />
+            
+          </div>
+          <div className="flex justify-between">
+          <div className="flex gap-4 mt-3">
+          <button onClick={() => handleVote("upvote")} className="text-green-600">
+            <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEj1Y8Vjnx7XQlIfqXS7agDinx34EnBqlAz0WrBuEGm8EZWRaFeymQtSDrJRVubZruaPqqxAaMxy2TyB7PydOOHoQj-jUzppN16JE2JEyniTYCm_dp5ETh_WGYUespojefdVlQlOpR8HyuaNgJS_Hl42VvZwMX5cvucgDUEmOTwB78JM45JRDJs-Xf4Co90/s512/arrow.png" alt=""
+            className="h-5"
+            />
+            {upvotes}
+          </button>
+          <button onClick={() => handleVote("downvote")} className="text-red-600">
+             <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEj1Y8Vjnx7XQlIfqXS7agDinx34EnBqlAz0WrBuEGm8EZWRaFeymQtSDrJRVubZruaPqqxAaMxy2TyB7PydOOHoQj-jUzppN16JE2JEyniTYCm_dp5ETh_WGYUespojefdVlQlOpR8HyuaNgJS_Hl42VvZwMX5cvucgDUEmOTwB78JM45JRDJs-Xf4Co90/s512/arrow.png" alt=""
+            className="h-5 rotate-180"
+            />
+            {downvotes}
+          </button>
+        </div>
+         <div className="flex items-center gap-3 mt-3">
+            <img
+              src={prop.user.profilePicture}
+              className="h-6 w-6 sm:h-7 sm:w-7 rounded-full object-cover"
+              alt={prop.user.username}
+            />
+            <h3 className="text-sm sm:text-base text-slate-900 font-medium">
+              {prop.user.username}
+            </h3>
+        
+          </div>
           </div>
 
           <h3 className="text-sm sm:text-base text-slate-900 font-medium mt-2">
@@ -47,27 +75,10 @@ export default function PostCard({ prop }) {
             {prop.category}
           </h3>
 
-          <div className="flex items-center gap-3 mt-3">
-            <img
-              src={prop.user.profilePicture}
-              className="h-6 w-6 sm:h-7 sm:w-7 rounded-full object-cover"
-              alt={prop.user.username}
-            />
-            <h3 className="text-sm sm:text-base text-slate-900 font-medium">
-              {prop.user.username}
-            </h3>
-          </div>
+         
         </Link>
 
         {/* Voting Buttons */}
-        <div className="flex gap-4 mt-3">
-          <button onClick={() => handleVote("upvote")} className="text-green-600">
-            👍 {upvotes}
-          </button>
-          <button onClick={() => handleVote("downvote")} className="text-red-600">
-            👎 {downvotes}
-          </button>
-        </div>
       </div>
     </>
   );

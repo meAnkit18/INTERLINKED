@@ -82,6 +82,27 @@ const PostDetails = () => {
           </div>
 
           {/* Location */}
+          {/* Voting Buttons */}
+          <div className="flex gap-4 mt-3">
+            <button
+              onClick={() => handleVote("upvote")}
+              className="text-green-600 font-semibold"
+            >
+               <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEj1Y8Vjnx7XQlIfqXS7agDinx34EnBqlAz0WrBuEGm8EZWRaFeymQtSDrJRVubZruaPqqxAaMxy2TyB7PydOOHoQj-jUzppN16JE2JEyniTYCm_dp5ETh_WGYUespojefdVlQlOpR8HyuaNgJS_Hl42VvZwMX5cvucgDUEmOTwB78JM45JRDJs-Xf4Co90/s512/arrow.png" alt=""
+            className="h-5"
+            />
+               {post.upvotes?.length || 0}
+            </button>
+            <button
+              onClick={() => handleVote("downvote")}
+              className="text-red-600 font-semibold"
+            >
+               <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEj1Y8Vjnx7XQlIfqXS7agDinx34EnBqlAz0WrBuEGm8EZWRaFeymQtSDrJRVubZruaPqqxAaMxy2TyB7PydOOHoQj-jUzppN16JE2JEyniTYCm_dp5ETh_WGYUespojefdVlQlOpR8HyuaNgJS_Hl42VvZwMX5cvucgDUEmOTwB78JM45JRDJs-Xf4Co90/s512/arrow.png" alt=""
+            className="h-5 rotate-180"
+            />
+               {post.downvotes?.length || 0}
+            </button>
+          </div>
           <div className="flex flex-wrap gap-4 mb-4 text-sm md:text-base">
             <p className="text-gray-600">Latitude: {post.latitude}</p>
             <p className="text-gray-600">Longitude: {post.longitude}</p>
@@ -90,21 +111,6 @@ const PostDetails = () => {
           {/* Description */}
           <p className="text-gray-700 mb-4">{post.description}</p>
 
-          {/* Voting Buttons */}
-          <div className="flex gap-4 mt-3">
-            <button
-              onClick={() => handleVote("upvote")}
-              className="text-green-600 font-semibold"
-            >
-              👍 {post.upvotes?.length || 0}
-            </button>
-            <button
-              onClick={() => handleVote("downvote")}
-              className="text-red-600 font-semibold"
-            >
-              👎 {post.downvotes?.length || 0}
-            </button>
-          </div>
         </div>
       </div>
     </div>
