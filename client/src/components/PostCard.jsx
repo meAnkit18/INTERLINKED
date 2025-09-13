@@ -5,12 +5,15 @@ import axios from "axios";
 export default function PostCard({ prop }) {
   const [upvotes, setUpvotes] = useState(prop.upvotes?.length || 0);
   const [downvotes, setDownvotes] = useState(prop.downvotes?.length || 0);
+    const backendURL = import.meta.env.VITE_BACKEND_PORT;
 
   const handleVote = async (type) => {
     try {
-      const res = await axios.post(`/api/posts/${prop._id}/${type}`, {}, {
-        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
-      });
+    const res = await axios.post(
+  `${backendURL}/api/posts/${prop._id}/${type}`,
+  {},
+  { headers: { Authorization: `Bearer ${localStorage.getItem("token")}` } }
+);
       setUpvotes(res.data.upvotes.length);
       setDownvotes(res.data.downvotes.length);
     } catch (err) {
