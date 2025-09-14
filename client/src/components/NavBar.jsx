@@ -38,7 +38,7 @@ const NavBar = () => {
   }, [isLoggedIn, backendURL, token]);
 
   return (
-    <nav className="fixed top-0 left-0 w-full z-9999 flex items-center justify-between px-6 md:px-16 lg:px-24 py-4 shadow-md bg-sky-500 text-white transition-all">
+    <nav className="fixed top-0 left-0 w-full z-9999 flex items-center justify-between px-6 md:px-16 lg:px-24 py-4 shadow-md bg-teal-800 text-white transition-all">
     
       <div className="flex items-center h-10 gap-2">
         <img
@@ -49,7 +49,7 @@ const NavBar = () => {
         <div className="flex flex-col leading-tight">
           <Link
             to="/"
-            className="text-lg md:text-xl font-bold text-white hover:text-sky-200 transition"
+            className="text-lg md:text-xl font-bold text-white hover:text-teal-300 transition"
           >
             Jan Samadhan
           </Link>
@@ -59,13 +59,13 @@ const NavBar = () => {
 
      
       <div className="hidden md:flex items-center gap-8 font-medium">
-        <Link to="/home" className="hover:text-sky-200 transition">
+        <Link to="/home" className="hover:text-teal-300 transition">
           Home
         </Link>
-        <Link to="/trending" className="hover:text-sky-200 transition">
+        <Link to="/trending" className="hover:text-teal-300 transition">
           Trending
         </Link>
-        <Link to="/leaderboard" className="hover:text-sky-200 transition">
+        <Link to="/leaderboard" className="hover:text-teal-300 transition">
           Leaderboard
         </Link>
         {user?.admin === true && (
@@ -73,7 +73,7 @@ const NavBar = () => {
             Admin
           </Link>
         )}
-        <button type="button" class="text-gray-900 bg-gradient-to-r from-red-500 via-red-300 to-yellow-200 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-red-900 dark:focus:ring-red-400 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2" onClick={() => navigate("/createpost")}>Report Issue</button>
+        <button type="button" className="bg-white text-teal-800 hover:bg-teal-500 hover:text-white focus:ring-4 focus:outline-none focus:ring-teal-900 dark:focus:ring-teal-400 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2" onClick={() => navigate("/createpost")}>Report Issue</button>
         {isLoggedIn ? (
           <img
             src={user?.profilePicture || "/default-avatar.png"}
@@ -84,7 +84,8 @@ const NavBar = () => {
         ) : (
           <button
             onClick={() => navigate("/login")}
-            className="px-6 py-2 bg-white text-sky-600 rounded-full font-semibold hover:bg-sky-100 transition"
+            className=" bg-teal-500 text-white rounded-xl font-semibold hover:bg-white hover:text-teal-800 transition
+             focus:ring-4 focus:outline-none focus:ring-teal-900 dark:focus:ring-teal-400  text-sm px-5 py-2.5 text-center me-2 mb-2"
           >
             Login
           </button>
@@ -101,22 +102,22 @@ const NavBar = () => {
 
      
       {open && (
-        <div className="absolute top-full left-0 w-full bg-sky-500 text-white flex flex-col gap-4 px-6 py-4 shadow-md md:hidden">
-          <Link to="/home" className="hover:text-sky-200" onClick={() => setOpen(false)}>
+        <div className="absolute top-full left-0 w-full bg-teal-700 text-white flex flex-col gap-4 px-6 py-4 shadow-md md:hidden">
+          <Link to="/home" className="hover:text-teal-300" onClick={() => setOpen(false)}>
             Home
           </Link>
-          <Link to="/trending" className="hover:text-sky-200" onClick={() => setOpen(false)}>
+          <Link to="/trending" className="hover:text-teal-300" onClick={() => setOpen(false)}>
             Trending
           </Link>
-          <Link to="/leaderboard" className="hover:text-sky-200" onClick={() => setOpen(false)}>
+          <Link to="/leaderboard" className="hover:text-teal-300" onClick={() => setOpen(false)}>
             Leaderboard
-          </Link>
+          </Link> 
           {user?.admin === true && (
             <Link to="/admin" className="hover:text-yellow-200 transition">
               Admin
             </Link>
           )}
-          <button type="button" class="text-gray-900 bg-gradient-to-r from-red-500 via-red-300 to-yellow-200 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-red-100 dark:focus:ring-red-400 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2" onClick={() => navigate("/createpost")}>Report Issue</button>
+          <button type="button" className="bg-white text-teal-800 hover:bg-teal-500 hover:text-white focus:ring-4 focus:outline-none focus:ring-teal-900 dark:focus:ring-teal-400 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2" onClick={() => navigate("/createpost")}>Report Issue</button>
           {isLoggedIn ? (
             <div
               className="flex items-center gap-2 cursor-pointer"
@@ -125,11 +126,7 @@ const NavBar = () => {
                 setOpen(false);
               }}
             >
-              <img
-                src={user?.profilePicture || "/default-avatar.png"}
-                alt="Profile"
-                className="w-10 h-10 rounded-full border-2 border-white"
-              />
+              
               <span>{user?.username || "Account"}</span>
             </div>
           ) : (
@@ -138,7 +135,7 @@ const NavBar = () => {
                 navigate("/login");
                 setOpen(false);
               }}
-              className="px-6 py-2 bg-white text-sky-600 rounded-full font-semibold hover:bg-sky-100 transition"
+              className=" bg-teal-500 text-white hover:text-teal-800 hover:bg-white focus:ring-4 focus:outline-none focus:ring-teal-900 dark:focus:ring-teal-400 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2"
             >
               Login
             </button>
