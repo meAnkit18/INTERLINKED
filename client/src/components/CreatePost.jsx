@@ -11,11 +11,11 @@ function CreatePost({ fetchUserPosts }) {
   const [loading, setLoading] = useState(false);
   const [progress, setProgress] = useState(0);
 
-  const [mode, setMode] = useState("form"); 
-  const [facingMode, setFacingMode] = useState("user"); 
+  const [mode, setMode] = useState("form"); // form | camera | preview
+  const [facingMode, setFacingMode] = useState("user"); // user | environment
 
   const webcamRef = useRef(null);
-  const backendURL = import.meta.env.VITE_BACKEND_PORT; // ✅ Correct URL
+  const backendURL = import.meta.env.VITE_BACKEND_PORT;
   const navigate = useNavigate();
 
   const capture = () => {
@@ -113,6 +113,7 @@ function CreatePost({ fetchUserPosts }) {
   return (
     <div className="min-h-screen bg-gradient-to-br from-teal-50 to-teal-100">
       <div className="container mx-auto px-4 sm:px-6 md:px-10 lg:px-20 pt-24 pb-12">
+        {/* ===== FORM MODE ===== */}
         {mode === "form" && (
           <div className="max-w-2xl mx-auto">
             <div className="bg-white rounded-2xl shadow-xl p-8 border border-teal-100">
@@ -120,12 +121,16 @@ function CreatePost({ fetchUserPosts }) {
                 <h2 className="text-3xl font-bold text-gray-800 mb-2">
                   Report Issues Now
                 </h2>
-                <p className="text-gray-600">Help improve your community by reporting issues</p>
+                <p className="text-gray-600">
+                  Help improve your community by reporting issues
+                </p>
               </div>
 
               <form onSubmit={handlePostSubmit} className="space-y-6">
                 <div>
-                  <label className="block text-sm font-semibold text-gray-700">Issue Title</label>
+                  <label className="block text-sm font-semibold text-gray-700">
+                    Issue Title
+                  </label>
                   <input
                     type="text"
                     value={title}
@@ -137,7 +142,9 @@ function CreatePost({ fetchUserPosts }) {
                 </div>
 
                 <div>
-                  <label className="block text-sm font-semibold text-gray-700">Description</label>
+                  <label className="block text-sm font-semibold text-gray-700">
+                    Description
+                  </label>
                   <textarea
                     value={description}
                     onChange={(e) => setDescription(e.target.value)}
@@ -148,7 +155,9 @@ function CreatePost({ fetchUserPosts }) {
                 </div>
 
                 <div>
-                  <label className="block text-sm font-semibold text-gray-700">Add Photo Evidence</label>
+                  <label className="block text-sm font-semibold text-gray-700">
+                    Add Photo Evidence
+                  </label>
                   <div className="flex flex-col sm:flex-row gap-3 mt-2">
                     <label className="flex-1 px-6 py-3 rounded-xl bg-teal-50 border-2 border-teal-200 cursor-pointer text-center font-medium text-teal-700">
                       Upload from Gallery
@@ -178,8 +187,14 @@ function CreatePost({ fetchUserPosts }) {
 
                 {preview && (
                   <div className="mt-4">
-                    <label className="block text-sm font-semibold text-gray-700">Photo Preview</label>
-                    <img src={preview} alt="preview" className="w-full h-64 object-cover rounded-xl mt-2" />
+                    <label className="block text-sm font-semibold text-gray-700">
+                      Photo Preview
+                    </label>
+                    <img
+                      src={preview}
+                      alt="preview"
+                      className="w-full h-64 object-cover rounded-xl mt-2"
+                    />
                   </div>
                 )}
 
@@ -199,7 +214,67 @@ function CreatePost({ fetchUserPosts }) {
           </div>
         )}
 
-        {/* Camera & Preview Modes remain same as your previous code */}
+        {/* ===== CAMERA MODE ===== */}
+        {mode === "camera" && (
+          <div className="fixed inset-0 bg-black flex flex-col items-center justify-center z-50">
+            <Webcam
+              ref={webcamRef}
+              screenshotFormat="image/jpeg"
+              videoConstraints={{ facingMode }}
+              className="w-full h-full object-cover"
+            />
+            <div className="absolute bottom-6 flex gap-4">
+              <button
+                type="button"
+                onClick={capture}
+                className="px-6 py-3 bg-green-600 text-white rounded-lg"
+              >
+                Capture
+              </button>
+              <button
+                type="button"
+                onClick={switchCamera}
+                className="px-6 py-3 bg-yellow-600 text-white rounded-lg"
+              >
+                Switch
+              </button>
+              <button
+                type="button"
+                onClick={() => setMode("form")}
+                className="px-6 py-3 bg-gray-700 text-white rounded-lg"
+              >
+                Cancel
+              </button>
+            </div>
+          </div>
+        )}
+
+        {/* ===== PREVIEW MODE ===== */}
+        {mode === "preview" && (
+          <div className="fixed inset-0 bg-black flex flex-col items-center justify-center z-50">
+            <img
+              src={preview}
+              alt="Captured"
+              className="w-full h-full object-contain"
+            />
+            <div className="absolute bottom-6 flex gap-4">
+              <button
+                type="button"
+                onClick={() => setMode("form")}
+                className="px-6 py-3 bg-green-600 text-white rounded-lg"
+              >
+                Confirm
+              </button>
+              <button
+                type="button"
+                onClick={() => setMode("camera")}
+                className="px-6 py-3 bg-red-600 text-white rounded-lg"
+              >
+                Retake
+              </button>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );
