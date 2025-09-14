@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import MapView from "../components/MapView";
 
 export default function AdminDashboard() {
   const [posts, setPosts] = useState([]);
@@ -7,7 +8,7 @@ export default function AdminDashboard() {
   const [selectedCategory, setSelectedCategory] = useState("All");
   const backendURL = import.meta.env.VITE_BACKEND_PORT;
 
-  // Fetch posts from backend
+  
   useEffect(() => {
     const fetchPosts = async () => {
       try {
@@ -23,10 +24,10 @@ export default function AdminDashboard() {
     fetchPosts();
   }, []);
 
-  // Get unique categories
+  
   const categories = ["All", ...new Set(posts.map((post) => post.category))];
 
-  // Filter posts by category
+  
   const filteredPosts =
     selectedCategory === "All"
       ? posts
@@ -34,28 +35,39 @@ export default function AdminDashboard() {
 
   
   const handleStatusChange = async (id, newStatus) => {
-    try {
-      const res = await axios.put(
-  `${backendURL}/api/admin/posts/${id}/status`,
-  { status: newStatus }
-);
-
+  setPosts((prev) =>
+    prev.map((post) =>
+      post._id === id ? { ...post, status: newStatus } : post
+    )
+  );
+  try {
+    const res = await axios.put(`${backendURL}/api/admin/posts/${id}/status`, {
+      status: newStatus,
+    });
+    if (res.data.status !== newStatus) {
       setPosts((prev) =>
         prev.map((post) =>
           post._id === id ? { ...post, status: res.data.status } : post
         )
       );
-    } catch (error) {
-      console.error("Error updating status:", error);
     }
-  };
+  } catch (error) {
+    console.error("Error updating status:", error);
+    setPosts((prev) =>
+      prev.map((post) =>
+        post._id === id ? { ...post, status: post.status } : post
+      )
+    );
+  }
+};
+
 
   return (
-    <div className="container mt-22 mx-auto px-4 py-6">
-      <h1 className="text-2xl font-bold mb-6">Admin Dashboard</h1>
-
-      {/* Category Filters */}
-      <div className="flex gap-2 mb-4 overflow-x-auto">
+    <div className="container mt-17 mx-auto px-4 py-6">
+      <h1 className="text-2xl text-center font-bold mb-2">Admin Dashboard</h1>
+        <MapView posts={posts}/>
+  
+      <div className="flex gap-2  my-4 overflow-x-auto">
         {categories.map((cat, i) => (
           <button
             key={i}
@@ -72,7 +84,7 @@ export default function AdminDashboard() {
         ))}
       </div>
 
-      {/* Posts Table */}
+  
       {loading ? (
         <p>Loading reports...</p>
       ) : (
@@ -106,16 +118,15 @@ export default function AdminDashboard() {
                   <td className="border p-2">{post.status || "Pending"}</td>
                   <td className="border p-2">
                     <select
-                      value={post.status || "Pending"}
-                      onChange={(e) =>
-                        handleStatusChange(post._id, e.target.value)
-                      }
-                      className="border p-1 rounded"
-                    >
-                      <option value="Pending">Pending</option>
-                      <option value="In Progress">In Progress</option>
-                      <option value="Resolved">Resolved</option>
-                    </select>
+                        value={post.status || "Pending"}
+                        onChange={(e) => handleStatusChange(post._id, e.target.value)}
+                        className="border p-1 rounded"
+                        >
+                        <option value="Pending">Pending</option>
+                        <option value="In Progress">In Progress</option>
+                        <option value="Resolved">Resolved</option>
+                        </select>
+
                   </td>
                 </tr>
               ))}
