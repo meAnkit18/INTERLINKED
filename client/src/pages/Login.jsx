@@ -15,11 +15,11 @@ const Login = () => {
   useEffect(() => {
     const ua = navigator.userAgent || navigator.vendor || window.opera;
 
-    // Detect common WebView patterns (Android + iOS)
+    // Detect if running inside WebView
     if (
       /\bwv\b/i.test(ua) || // Android WebView
-      /FBAN|FBAV|Instagram|Line|Messenger/i.test(ua) || // Social WebViews
-      (window.ReactNativeWebView !== undefined) // React Native WebView
+      /FBAN|FBAV|Instagram|Line|Messenger/i.test(ua) || // Social app webviews
+      window.ReactNativeWebView !== undefined // React Native WebView
     ) {
       setIsWebView(true);
     }
@@ -60,9 +60,9 @@ const Login = () => {
 
   return (
     <div className="mt-22 flex items-center justify-center h-screen bg-gradient-to-br from-teal-50 via-white to-teal-100 overflow-hidden">
-      {/* 🔹 Animated background shapes */}
-      <div className="absolute w-72 h-72 bg-teal-200 rounded-full opacity-30 blur-3xl animate-pulse -top-16 -left-16"></div>
-      <div className="absolute w-96 h-96 bg-teal-300 rounded-full opacity-20 blur-2xl animate-ping bottom-[-120px] right-[-120px]"></div>
+      {/* 🔹 Static background shapes (no animation) */}
+      <div className="absolute w-72 h-72 bg-teal-200 rounded-full opacity-30 blur-3xl -top-16 -left-16"></div>
+      <div className="absolute w-96 h-96 bg-teal-300 rounded-full opacity-20 blur-2xl bottom-[-120px] right-[-120px]"></div>
 
       <div className="">
         <div className="relative bg-teal-50 backdrop-blur-md shadow-2xl rounded-3xl p-10 w-full max-w-md text-center border border-teal-200 hover:shadow-teal-300 transition-all duration-300">
@@ -80,7 +80,7 @@ const Login = () => {
             Your Voice • Your Solution
           </p>
 
-          {/* 🔹 Show Google login only if NOT WebView */}
+          {/* Show Google login only if NOT WebView */}
           {!isWebView && (
             <div className="flex justify-center">
               <GoogleLogin
@@ -93,7 +93,7 @@ const Login = () => {
             </div>
           )}
 
-          {/* 🔹 Always show form if WebView */}
+          {/* Always show email/password form in WebView */}
           {(isWebView || window.innerWidth < 768) && (
             <form onSubmit={handleSubmit} className="space-y-4 mt-6">
               <input
