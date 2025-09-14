@@ -143,7 +143,7 @@ export default function ChatbotWidget({ title = "Jan Samadhan", subtitle = "Your
   return (
     <div className="fixed bottom-8 right-4 z-50">
       {!open && (
-        <button onClick={() => setOpen(true)} className="rounded-full p-4 bg-gradient-to-r from-teal-400 to-teal-500 shadow-lg hover:shadow-2xl transition transform hover:scale-105 focus:outline-none" aria-label="Open Chatbot">
+        <button onClick={() => setOpen(true)} className="rounded-full p-4 bg-gradient-to-r from-sky-400 to-sky-500 shadow-lg hover:shadow-2xl transition transform hover:scale-105 focus:outline-none" aria-label="Open Chatbot">
           <div className="h-10 w-10">
             <img src={chatbotsvg} alt="Chatbot" className="h-10 w-10" />
           </div>
@@ -151,9 +151,9 @@ export default function ChatbotWidget({ title = "Jan Samadhan", subtitle = "Your
       )}
 
       {open && (
-        <div className="w-[22rem] sm:w-[26rem] h-[34rem] bg-white rounded-2xl shadow-2xl border border-teal-200 flex flex-col overflow-hidden">
+        <div className="w-[22rem] sm:w-[26rem] h-[34rem] bg-white rounded-2xl shadow-2xl border border-sky-200 flex flex-col overflow-hidden">
          
-          <div className="p-4 bg-gradient-to-r from-teal-400 to-teal-500 text-white flex justify-between items-start">
+          <div className="p-4 bg-gradient-to-r from-sky-400 to-sky-500 text-white flex justify-between items-start">
             <div>
               <h3 className="text-lg font-semibold">{title}</h3>
               <p className="text-xs opacity-90">{subtitle}</p>
@@ -164,8 +164,8 @@ export default function ChatbotWidget({ title = "Jan Samadhan", subtitle = "Your
           </div>
 
 
-          <div className="p-2 bg-teal-50 border-b border-teal-200">
-            <select value={language} onChange={(e) => setLanguage(e.target.value)} className="w-full p-2 rounded border border-teal-300 text-sm">
+          <div className="p-2 bg-sky-50 border-b border-sky-200">
+            <select value={language} onChange={(e) => setLanguage(e.target.value)} className="w-full p-2 rounded border border-sky-300 text-sm">
               <option value="en">English</option>
               <option value="hi">Hindi</option>
               <option value="sat">Santhali</option>
@@ -175,17 +175,17 @@ export default function ChatbotWidget({ title = "Jan Samadhan", subtitle = "Your
           </div>
 
         
-          <div ref={listRef} className="flex-1 overflow-y-auto p-4 space-y-3 bg-teal-50" aria-live="polite">
+          <div ref={listRef} className="flex-1 overflow-y-auto p-4 space-y-3 bg-sky-50" aria-live="polite">
             {messages.map((m) => (
               <div key={m.id} className={`flex ${m.role === "user" ? "justify-end" : "justify-start"}`}>
-                <div className={`max-w-[80%] rounded-2xl px-3 py-2 text-sm leading-relaxed shadow ${m.role === "user" ? "bg-teal-500 text-white" : "bg-white border border-teal-200 text-teal-900"}`}>
+                <div className={`max-w-[80%] rounded-2xl px-3 py-2 text-sm leading-relaxed shadow ${m.role === "user" ? "bg-sky-500 text-white" : "bg-white border border-sky-200 text-sky-900"}`}>
                   {m.content}
                 </div>
               </div>
             ))}
             {loading && (
               <div className="flex justify-start">
-                <div className="max-w-[80%] rounded-2xl px-3 py-2 text-sm leading-relaxed shadow bg-white border border-teal-200 text-teal-800">
+                <div className="max-w-[80%] rounded-2xl px-3 py-2 text-sm leading-relaxed shadow bg-white border border-sky-200 text-sky-800">
                   <LoaderDots />
                 </div>
               </div>
@@ -195,9 +195,9 @@ export default function ChatbotWidget({ title = "Jan Samadhan", subtitle = "Your
 
        
           {messages.length === 1 && (
-            <div className="p-4 grid grid-cols-2 gap-2 bg-teal-50 border-t border-teal-200">
+            <div className="p-4 grid grid-cols-2 gap-2 bg-sky-50 border-t border-sky-200">
               {[{ label: `📝 ${t.report}`, value: t.report }, { label: `🔍 ${t.track}`, value: t.track }, { label: `❓ ${t.faqs}`, value: t.faqs }, { label: `👤 ${t.account}`, value: t.account }].map((action) => (
-                <button key={action.value} onClick={() => sendMessage(action.value)} className="px-3 py-2 rounded-full bg-teal-100 text-teal-800 text-sm hover:bg-teal-200 transition">
+                <button key={action.value} onClick={() => sendMessage(action.value)} className="px-3 py-2 rounded-full bg-sky-100 text-sky-800 text-sm hover:bg-sky-200 transition">
                   {action.label}
                 </button>
               ))}
@@ -205,10 +205,10 @@ export default function ChatbotWidget({ title = "Jan Samadhan", subtitle = "Your
           )}
 
        
-          <div className="p-3 border-t border-teal-200 bg-white">
+          <div className="p-3 border-t border-sky-200 bg-white">
             <div className="flex items-end gap-2">
-              <textarea value={input} onChange={(e) => setInput(e.target.value)} onKeyDown={handleKeyDown} rows={1} placeholder={t.placeholder} className="flex-1 resize-none rounded-xl border border-teal-300 bg-white text-sm px-3 py-2 focus:outline-none focus:ring-2 focus:ring-teal-400" />
-              <button onClick={handleSend} disabled={loading || !input.trim()} className="p-2 rounded-xl bg-teal-500 text-white disabled:opacity-50 disabled:cursor-not-allowed hover:bg-teal-600 active:scale-95 transition" aria-label="Send message">
+              <textarea value={input} onChange={(e) => setInput(e.target.value)} onKeyDown={handleKeyDown} rows={1} placeholder={t.placeholder} className="flex-1 resize-none rounded-xl border border-sky-300 bg-white text-sm px-3 py-2 focus:outline-none focus:ring-2 focus:ring-sky-400" />
+              <button onClick={handleSend} disabled={loading || !input.trim()} className="p-2 rounded-xl bg-sky-500 text-white disabled:opacity-50 disabled:cursor-not-allowed hover:bg-sky-600 active:scale-95 transition" aria-label="Send message">
                 <SendIcon />
               </button>
             </div>
