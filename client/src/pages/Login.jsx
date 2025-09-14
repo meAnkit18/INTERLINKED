@@ -91,32 +91,32 @@ const Login = () => {
           </a>
         </p>
       </div>
-      <div className="relative bg-teal-50 backdrop-blur-md shadow-2xl rounded-3xl p-10 w-full max-w-md text-center border border-teal-200 hover:shadow-teal-300 transition-all duration-300">
-        <form onSubmit={handleSubmit} className="space-y-4 mt-6">
-      <input
-        type="email"
-        placeholder="Email"
-        className="w-full px-4 py-2 border rounded-md"
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-        required
-      />
-      <input
-        type="password"
-        placeholder="Password"
-        className="w-full px-4 py-2 border rounded-md"
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
-        required
-      />
-      <button
-        type="submit"
-        className="w-full bg-teal-600 text-white py-2 rounded-md hover:bg-teal-700 transition"
-      >
-        Continue
-      </button>
-    </form>
-      </div>
+      <div className="relative block md:hidden">
+  <form onSubmit={handleSubmit} className="space-y-4 mt-6">
+    <input
+      type="email"
+      placeholder="Email"
+      className="w-full px-4 py-2 border rounded-md"
+      value={email}
+      onChange={(e) => setEmail(e.target.value)}
+      required
+    />
+    <input
+      type="password"
+      placeholder="Password"
+      className="w-full px-4 py-2 border rounded-md"
+      value={password}
+      onChange={(e) => setPassword(e.target.value)}
+      required
+    />
+    <button
+      type="submit"
+      className="w-full bg-teal-600 text-white py-2 rounded-md hover:bg-teal-700 transition"
+    >
+      Continue
+    </button>
+  </form>
+</div>
 </div>
     </div>
   );
