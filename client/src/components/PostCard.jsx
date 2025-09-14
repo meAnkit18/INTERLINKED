@@ -62,6 +62,9 @@ export default function PostCard({ prop }) {
           <h3 className="text-xs sm:text-sm md:text-base text-blue-500">
             {prop.category}
           </h3>
+          <h3 className="text-xs sm:text-sm md:text-base text-blue-500">
+            {prop.status}
+          </h3>
         </div>
         
           </div>

@@ -68,6 +68,11 @@ const NavBar = () => {
         <Link to="/leaderboard" className="hover:text-sky-200 transition">
           Leaderboard
         </Link>
+        {user?.admin === true && (
+          <Link to="/admin" className="hover:text-yellow-200 transition">
+            Admin
+          </Link>
+        )}
         <button type="button" class="text-gray-900 bg-gradient-to-r from-red-500 via-red-300 to-yellow-200 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-red-900 dark:focus:ring-red-400 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2" onClick={() => navigate("/createpost")}>Report Issue</button>
         {isLoggedIn ? (
           <img
@@ -106,6 +111,11 @@ const NavBar = () => {
           <Link to="/leaderboard" className="hover:text-sky-200" onClick={() => setOpen(false)}>
             Leaderboard
           </Link>
+          {user?.admin === true && (
+            <Link to="/admin" className="hover:text-yellow-200 transition">
+              Admin
+            </Link>
+          )}
           <button type="button" class="text-gray-900 bg-gradient-to-r from-red-500 via-red-300 to-yellow-200 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-red-100 dark:focus:ring-red-400 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2" onClick={() => navigate("/createpost")}>Report Issue</button>
           {isLoggedIn ? (
             <div

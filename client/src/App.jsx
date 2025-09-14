@@ -12,6 +12,7 @@ import ChatbotWidget from "./components/ChatbotWidget";
 import Leaderboard from "./pages/Leaderboard";
 import Trending from "./pages/Trending";
 import Sosimpage from "./pages/Sosimpage";
+import AdminDashboard from "./pages/AdminDashboard";
 
 
 function App() {
@@ -28,6 +29,7 @@ function App() {
         <Route path="/leaderboard" element={<Leaderboard />} />
         <Route path="/trending" element={<Trending />} />
         <Route path="/sos" element={<Sosimpage/>} />
+        <Route path="/admin" element={<AdminDashboard/>} />
         <Route path="*" element={<Not404Pg/>} />
       </Routes>
       <ChatbotWidget/>

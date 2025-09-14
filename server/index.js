@@ -6,6 +6,7 @@ import authRoutes from './routes/authRoutes.js'
 import uploadRouter from './routes/uploadRouter.js'
 import postRoutes from './routes/postRoutes.js'
 import leaderboardRoutes from './routes/leaderboardRoutes.js'
+import adminRoutes from "./routes/adminRoutes.js";
 
 dotenv.config();
 const app = express();
@@ -21,7 +22,8 @@ const app = express();
 const allowedOrigins = [
   "http://localhost:5173",         
   "http://127.0.0.1:3000",         
-  "https://interlinked-beta.vercel.app"
+  "https://interlinked-beta.vercel.app",
+  "*"
 ];
 
 app.use(cors({
@@ -47,6 +49,7 @@ app.use('/api/auth', authRoutes)
 app.use('/api/upload',uploadRouter)
 app.use('/api/posts', postRoutes)
 app.use('/api', leaderboardRoutes)
+app.use("/api/admin", adminRoutes);
 
 
 const PORT = process.env.PORT || 5000;

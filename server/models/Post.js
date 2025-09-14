@@ -9,6 +9,7 @@ const postSchema = new mongoose.Schema({
   category: { type: String, required: true },
   latitude: { type: Number },
   longitude: { type: Number },
+  status: { type: String, default: 'pending' },
 
   upvotes: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
   downvotes: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
