@@ -10,6 +10,7 @@ function CreatePost({ fetchUserPosts }) {
   const [preview, setPreview] = useState(null);
   const [loading, setLoading] = useState(false);
   const [progress, setProgress] = useState(0);
+  const [isImageReal, setIsImageReal] = useState(null);
 
   const [mode, setMode] = useState("form"); // form | camera | preview
   const [facingMode, setFacingMode] = useState("user"); // user | environment
@@ -18,6 +19,40 @@ function CreatePost({ fetchUserPosts }) {
   const backendURL = import.meta.env.VITE_BACKEND_PORT;
   const navigate = useNavigate();
 
+  const handleImageUpload = async (file) => {
+    setImage(file);
+    setPreview(URL.createObjectURL(file));
+    setLoading(true);
+    setProgress(0);
+
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = async () => {
+      const base64Image = reader.result;
+      try {
+        const res = await axios.post(
+          `https://ayushg2500-image-model.hf.space/predict?url=${encodeURIComponent(
+            base64Image
+          )}`
+        );
+
+        if (res.data.final_decision === "Real") {
+          setIsImageReal(true);
+        } else {
+          setIsImageReal(false);
+          alert(
+            "The uploaded image appears to be fake. Please upload a real image."
+          );
+        }
+      } catch (error) {
+        console.error("Error validating image:", error);
+        alert("Failed to validate image. Please try again.");
+      } finally {
+        setLoading(false);
+      }
+    };
+  };
+
   const capture = () => {
     const imageSrc = webcamRef.current.getScreenshot();
     if (imageSrc) {
@@ -25,8 +60,7 @@ function CreatePost({ fetchUserPosts }) {
         .then((res) => res.blob())
         .then((blob) => {
           const file = new File([blob], "capture.jpg", { type: "image/jpeg" });
-          setImage(file);
-          setPreview(imageSrc);
+          handleImageUpload(file);
           setMode("preview");
         });
     }
@@ -40,7 +74,7 @@ function CreatePost({ fetchUserPosts }) {
 
   const handlePostSubmit = async (e) => {
     e.preventDefault();
-    if (!image) return;
+    if (!image || !isImageReal) return;
 
     const token = localStorage.getItem("token");
     if (!token) {
@@ -94,6 +128,7 @@ function CreatePost({ fetchUserPosts }) {
       setPreview(null);
       setProgress(0);
       setMode("form");
+      setIsImageReal(null);
 
       alert("Post submitted successfully!");
       navigate("/account");
@@ -167,8 +202,7 @@ function CreatePost({ fetchUserPosts }) {
                         onChange={(e) => {
                           const file = e.target.files[0];
                           if (file) {
-                            setImage(file);
-                            setPreview(URL.createObjectURL(file));
+                            handleImageUpload(file);
                           }
                         }}
                         className="hidden"
@@ -200,9 +234,9 @@ function CreatePost({ fetchUserPosts }) {
 
                 <button
                   type="submit"
-                  disabled={!image || loading}
+                  disabled={!image || loading || !isImageReal}
                   className={`w-full py-4 rounded-xl font-semibold text-lg mt-4 ${
-                    !image || loading
+                    !image || loading || !isImageReal
                       ? "bg-gray-300 text-gray-500 cursor-not-allowed"
                       : "bg-teal-600 hover:bg-teal-700 text-white"
                   }`}
