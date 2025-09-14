@@ -58,7 +58,8 @@ const Login = () => {
   };
 
   return (
-    <div className="mt-22 flex items-center justify-center h-screen bg-gradient-to-br from-teal-50 via-white to-teal-100 overflow-hidden">
+   <div className="mt-22 flex items-center justify-center h-screen bg-gradient-to-br from-teal-50 via-white to-teal-100 overflow-visible">
+
       {/* 🔹 Static background shapes */}
       <div className="absolute w-72 h-72 bg-teal-200 rounded-full opacity-30 blur-3xl -top-16 -left-16"></div>
       <div className="absolute w-96 h-96 bg-teal-300 rounded-full opacity-20 blur-2xl bottom-[-120px] right-[-120px]"></div>
