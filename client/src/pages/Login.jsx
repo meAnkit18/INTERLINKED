@@ -2,11 +2,14 @@ import { GoogleLogin } from "@react-oauth/google";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { useAppContext } from "../context/AppContext";
+import { useState } from "react";
 
 const Login = () => {
   const navigate = useNavigate();
   const { dispatch } = useAppContext();
   const backendURL = import.meta.env.VITE_BACKEND_PORT;
+    const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
   const handleGoogleLogin = async (credentialResponse) => {
     try {
@@ -24,11 +27,29 @@ const Login = () => {
     }
   };
 
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const res = await axios.post(`${backendURL}/api/auth/email-login`, {
+        email,
+        password,
+      });
+
+      const { token, user } = res.data;
+      localStorage.setItem("token", token);
+      dispatch({ type: "SET_USER", payload: user });
+      navigate("/home");
+    } catch (err) {
+      alert(err.response?.data?.message || "Login failed");
+    }
+  };
+
   return (
-    <div className="relative flex items-center justify-center h-screen bg-gradient-to-br from-teal-50 via-white to-teal-100 overflow-hidden">
+    <div className=" mt-22 flex items-center justify-center h-screen bg-gradient-to-br from-teal-50 via-white to-teal-100 overflow-hidden">
       {/* 🔹 Animated background shapes */}
       <div className="absolute w-72 h-72 bg-teal-200 rounded-full opacity-30 blur-3xl animate-pulse -top-16 -left-16"></div>
       <div className="absolute w-96 h-96 bg-teal-300 rounded-full opacity-20 blur-2xl animate-ping bottom-[-120px] right-[-120px]"></div>
+<div className="">
 
       {/* 🔹 Login Card */}
       <div className="relative bg-teal-50 backdrop-blur-md shadow-2xl rounded-3xl p-10 w-full max-w-md text-center border border-teal-200 hover:shadow-teal-300 transition-all duration-300">
@@ -70,6 +91,33 @@ const Login = () => {
           </a>
         </p>
       </div>
+      <div className="relative bg-teal-50 backdrop-blur-md shadow-2xl rounded-3xl p-10 w-full max-w-md text-center border border-teal-200 hover:shadow-teal-300 transition-all duration-300">
+        <form onSubmit={handleSubmit} className="space-y-4 mt-6">
+      <input
+        type="email"
+        placeholder="Email"
+        className="w-full px-4 py-2 border rounded-md"
+        value={email}
+        onChange={(e) => setEmail(e.target.value)}
+        required
+      />
+      <input
+        type="password"
+        placeholder="Password"
+        className="w-full px-4 py-2 border rounded-md"
+        value={password}
+        onChange={(e) => setPassword(e.target.value)}
+        required
+      />
+      <button
+        type="submit"
+        className="w-full bg-teal-600 text-white py-2 rounded-md hover:bg-teal-700 transition"
+      >
+        Continue
+      </button>
+    </form>
+      </div>
+</div>
     </div>
   );
 };

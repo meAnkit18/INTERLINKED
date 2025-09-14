@@ -100,7 +100,7 @@ function CreatePost({ fetchUserPosts }) {
     } catch (err) {
       if (err.response && err.response.status === 401) {
         alert("Unauthorized! Please login again.");
-        navigate("/login");
+        navigate("/home");
       } else {
         console.error("Error creating post:", err);
         alert("Failed to create post. Please try again.");
