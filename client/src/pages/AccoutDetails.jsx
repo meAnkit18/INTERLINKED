@@ -5,7 +5,7 @@ import PostCard from '../components/PostCard';
 
 function AccoutDetails() {
   const { user, dispatch } = useAppContext();
-  const [posts, setPosts] = useState([]);
+  const [posts, setPosts] = useState([]); // ✅ initialized as array
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [image, setImage] = useState(null);
@@ -24,68 +24,70 @@ function AccoutDetails() {
   const fetchUserPosts = async () => {
     try {
       const token = localStorage.getItem('token');
+
+      // Fetch user posts
       const res = await axios.get(`${backendURL}/api/posts/user/${user._id}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
-       const rese = await axios.get(`${backendURL}/api/auth/account`, {
-              headers: { Authorization: `Bearer ${token}` },
-            });
-            setUdet(rese.data);
-      setPosts(res.data);
+
+      // Fetch account details
+      const rese = await axios.get(`${backendURL}/api/auth/account`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      setUdet(rese.data);
+
+      // ✅ Safely set posts as array
+      const postsArray = Array.isArray(res.data) ? res.data : res.data.data || [];
+      setPosts(postsArray);
     } catch (err) {
       console.error('Error fetching user posts:', err);
+      setPosts([]); // fallback to empty array
     }
   };
 
   const handlePostSubmit = async (e) => {
-  e.preventDefault();
+    e.preventDefault();
 
-  let latitude = null;
-  let longitude = null;
+    const getLocation = () =>
+      new Promise((resolve) => {
+        if (navigator.geolocation) {
+          navigator.geolocation.getCurrentPosition(
+            (pos) => resolve({ lat: pos.coords.latitude, lon: pos.coords.longitude }),
+            () => resolve({ lat: null, lon: null })
+          );
+        } else {
+          resolve({ lat: null, lon: null });
+        }
+      });
 
-  const getLocation = () =>
-    new Promise((resolve) => {
-      if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(
-          (pos) => resolve({ lat: pos.coords.latitude, lon: pos.coords.longitude }),
-          () => resolve({ lat: null, lon: null }) 
-        );
-      } else {
-        resolve({ lat: null, lon: null });
-      }
-    });
+    const { lat, lon } = await getLocation();
 
-  const { lat, lon } = await getLocation();
-  latitude = lat;
-  longitude = lon;
+    const formData = new FormData();
+    formData.append("title", title);
+    formData.append("description", description);
+    formData.append("image", image);
+    formData.append("latitude", lat);
+    formData.append("longitude", lon);
 
-  
-  const formData = new FormData();
-  formData.append("title", title);
-  formData.append("description", description);
-  formData.append("image", image);
-  formData.append("latitude", latitude);
-  formData.append("longitude", longitude);
+    try {
+      const token = localStorage.getItem("token");
+      await axios.post(`${backendURL}/api/posts`, formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+          Authorization: `Bearer ${token}`,
+        },
+      });
 
-  try {
-    const token = localStorage.getItem("token");
-    await axios.post(`${backendURL}/api/posts`, formData, {
-      headers: {
-        "Content-Type": "multipart/form-data",
-        Authorization: `Bearer ${token}`,
-      },
-    });
+      fetchUserPosts();
+      setTitle("");
+      setDescription("");
+      setImage(null);
+    } catch (err) {
+      console.error("Error creating post:", err);
+    }
+  };
 
-    fetchUserPosts();
-    setTitle("");
-    setDescription("");
-    setImage(null);
-  } catch (err) {
-    console.error("Error creating post:", err);
-  }
-};
-
-const handleProfileUpdate = async () => {
+  const handleProfileUpdate = async () => {
     const formData = new FormData();
     formData.append('username', newUsername);
     if (newProfilePicture) {
@@ -108,9 +110,6 @@ const handleProfileUpdate = async () => {
     }
   };
 
-
-
-
   if (!user) return <p>Loading user info...</p>;
 
   return (
@@ -127,27 +126,24 @@ const handleProfileUpdate = async () => {
               onChange={(e) => setNewUsername(e.target.value)}
               className="border p-2 mb-2 w-full"
             />
-             <label
-                htmlFor="file-upload"
-                className="cursor-pointer flex justify-center items-center gap-2 px-5 py-2.5 rounded-lg bg-gradient-to-r from-indigo-500 to-purple-600 text-white font-medium shadow-md hover:brightness-110 transition duration-150"
-              >
-                {/* 👉 Custom SVG or Icon */}
-                <img
-                  src="https://blogger.googleusercontent.com/img/a/AVvXsEi9UwU3oG7bGPK-_qdLHroYP9B2eKA6Ql5GVt1r4OZbZCbszaoJTDgdo4rvR19drU7H1uwIWf3uc1CgFmPZNoj2W3Bwkcbf_ErcNKbnm-aX6s1WzS4PUeZO5eW2FnfcScBm6BXiyd5Z0sa4d2HSIbIlAFs1AGi9SQJRTYTsefAStZyTR6RgTRl65ciOI3Q"
-                  className="w-6 h-6"
-                  alt="upload-icon"
-                />
-                Upload Image
-              </label>
-
-              <input
-                id="file-upload"
-                type="file"
-                accept="image/*"
-                onChange={(e) => setNewProfilePicture(e.target.files[0])}
-                className="hidden"
+            <label
+              htmlFor="file-upload"
+              className="cursor-pointer flex justify-center items-center gap-2 px-5 py-2.5 rounded-lg bg-gradient-to-r from-teal-500 to-purple-600 text-white font-medium shadow-md hover:brightness-110 transition duration-150"
+            >
+              <img
+                src="https://blogger.googleusercontent.com/img/a/AVvXsEi9UwU3oG7bGPK-_qdLHroYP9B2eKA6Ql5GVt1r4OZbZCbszaoJTDgdo4rvR19drU7H1uwIWf3uc1CgFmPZNoj2W3Bwkcbf_ErcNKbnm-aX6s1WzS4PUeZO5eW2FnfcScBm6BXiyd5Z0sa4d2HSIbIlAFs1AGi9SQJRTYTsefAStZyTR6RgTRl65ciOI3Q"
+                className="w-6 h-6"
+                alt="upload-icon"
               />
-
+              Upload Image
+            </label>
+            <input
+              id="file-upload"
+              type="file"
+              accept="image/*"
+              onChange={(e) => setNewProfilePicture(e.target.files[0])}
+              className="hidden"
+            />
             <button onClick={handleProfileUpdate} className="bg-slate-800 text-white px-4 py-2 rounded mt-2 mr-2">
               Save
             </button>
@@ -165,14 +161,16 @@ const handleProfileUpdate = async () => {
           </div>
         )}
       </div>
-      
-        <h2 className='text-2xl font-semibold mb-4 text-center'>My Reported Issues</h2>
-    <div
-        className='grid sm:grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4'
-        >
-        {posts.reverse().map((post) => (
-      <PostCard key={post._id} prop={post}/>
-        ))}
+
+      <h2 className='text-2xl font-semibold mb-4 text-center'>My Reported Issues</h2>
+      <div className='grid sm:grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4'>
+        {Array.isArray(posts) && posts.length > 0 ? (
+          posts.slice().reverse().map((post) => (
+            <PostCard key={post._id} prop={post}/>
+          ))
+        ) : (
+          <p>No posts yet.</p>
+        )}
       </div>
     </div>
   );

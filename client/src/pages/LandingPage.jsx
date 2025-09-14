@@ -3,69 +3,107 @@ import { motion } from "framer-motion";
 import NavBar from "../components/NavBar";
 import FeedbackForm from "../components/FeedbackForm";
 import FAQSection from "../components/FAQSection";
+import { 
+  Eye, 
+  Lightbulb, 
+  Users, 
+  CheckCircle, 
+  Zap, 
+  MessageCircle ,
+  Brain, 
+  Shield, 
+  MapPin, 
+  UserX, 
+  Lock,  
+  Smartphone, 
+  MessageSquare 
+} from "lucide-react";
 
 const LandingPage = () => {
 const features = [
-  {
-    emoji: "🤖",
-    title: "AI Verification",
-    desc: "Smart AI validates and categorizes reports to ensure authenticity and accuracy.",
-    bg: "bg-sky-100",
-  },
-  {
-    emoji: "🔗",
-    title: "Blockchain Security",
-    desc: "Secure, tamper-proof tracking of civic issues for transparency and trust.",
-    bg: "bg-sky-100",
-  },
-  {
-    emoji: "📍",
-    title: "Geo-Tagged Reports",
-    desc: "Pinpoint exact issue locations with integrated maps and GPS support.",
-    bg: "bg-sky-100",
-  },
-  {
-    emoji: "🕵️‍♂️",
-    title: "Anonymous Reporting",
-    desc: "Report issues without revealing your identity, ensuring privacy and safety.",
-    bg: "bg-sky-100",
-  },
-  {
-    emoji: "🔒",
-    title: "Privacy Protection",
-    desc: "Your data is encrypted and secured with modern privacy standards.",
-    bg: "bg-sky-100",
-  },
-  {
-    emoji: "🤝",
-    title: "Community Engagement",
-    desc: "Collaborate, vote, and comment to help resolve issues collectively.",
-    bg: "bg-sky-100",
-  },
-  {
-    emoji: "📱",
-    title: "Mobile-First Experience",
-    desc: "Enjoy a smooth, responsive experience on both web and mobile devices.",
-    bg: "bg-sky-100",
-  },
-  {
-    emoji: "💬",
-    title: "Citizen Feedback",
-    desc: "Share feedback to improve local services and city governance.",
-    bg: "bg-sky-100",
-  },
-
+ {
+   title: "AI Verification",
+   desc: "Smart AI validates and categorizes reports to ensure authenticity and accuracy.",
+   bg: "bg-teal-100",
+   icon: Brain,
+ },
+ {
+   title: "Blockchain Security",
+   desc: "Secure, tamper-proof tracking of civic issues for transparency and trust.",
+   bg: "bg-teal-100",
+   icon: Shield,
+ },
+ {
+   title: "Geo-Tagged Reports",
+   desc: "Pinpoint exact issue locations with integrated maps and GPS support.",
+   bg: "bg-teal-100",
+   icon: MapPin,
+ },
+ {
+   title: "Anonymous Reporting",
+   desc: "Report issues without revealing your identity, ensuring privacy and safety.",
+   bg: "bg-teal-100",
+   icon: UserX,
+ },
+ {
+   title: "Privacy Protection",
+   desc: "Your data is encrypted and secured with modern privacy standards.",
+   bg: "bg-teal-100",
+   icon: Lock,
+ },
+ {
+   title: "Community Engagement",
+   desc: "Collaborate, vote, and comment to help resolve issues collectively.",
+   bg: "bg-teal-100",
+   icon: Users,
+ },
+ {
+   title: "Mobile-First Experience",
+   desc: "Enjoy a smooth, responsive experience on both web and mobile devices.",
+   bg: "bg-teal-100",
+   icon: Smartphone,
+ },
+ {
+   title: "Citizen Feedback",
+   desc: "Share feedback to improve local services and city governance.",
+   bg: "bg-teal-100",
+   icon: MessageSquare,
+ },
 ];
 
 
-  const aboutBenefits = [
-    { emoji: "🎯", title: "Vision", desc: "Empowering citizens through transparency." },
-    { emoji: "💡", title: "Innovation", desc: "Leveraging tech for civic improvements." },
-    { emoji: "🌐", title: "Accessibility", desc: "Easy-to-use platform for everyone." },
-    { emoji: "⚖️", title: "Accountability", desc: "Every action is traceable." },
-    { emoji: "🛠️", title: "Efficiency", desc: "Resolve issues faster with AI & community." },
-    { emoji: "💬", title: "Feedback Driven", desc: "Continuous improvement based on feedback." },
-  ];
+const aboutBenefits = [
+ { 
+   title: "Vision", 
+   desc: "Empowering citizens through transparency.", 
+   icon: Eye 
+ },
+ { 
+   title: "Innovation", 
+   desc: "Leveraging tech for civic improvements.", 
+   icon: Lightbulb 
+ },
+ { 
+   title: "Accessibility", 
+   desc: "Easy-to-use platform for everyone.", 
+   icon: UserX 
+ },
+ { 
+   title: "Accountability", 
+   desc: "Every action is traceable.", 
+   icon: CheckCircle 
+ },
+ { 
+   title: "Efficiency", 
+   desc: "Resolve issues faster with AI & community.", 
+   icon: Zap 
+ },
+ { 
+   title: "Feedback Driven", 
+   desc: "Continuous improvement based on feedback.", 
+   icon: MessageCircle 
+ },
+];
 
   // ✅ Anime avatars for team
   const teamMembers = [
@@ -121,52 +159,140 @@ const feedbacks = [
 
   
   return (
-    <div className="bg-sky-50">
+    <div className="bg-teal-50">
       <NavBar />
 
-      {/* Hero Section */}
-      <section className="relative bg-sky-50 overflow-hidden">
-        <div className="max-w-7xl mx-auto px-6 md:px-12 py-24 flex flex-col-reverse md:flex-row items-center gap-12">
-          <motion.div initial={{ opacity: 0, x: -50 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 1 }} className="w-full md:w-1/2">
-            <div className="bg-white bg-opacity-90 p-8 md:p-12 rounded-3xl shadow-2xl backdrop-blur-sm transform hover:scale-[1.02] transition-all duration-300">
-              <h1 className="text-4xl md:text-5xl font-extrabold mb-6 text-sky-700">Jan Samadhan - Empower Your Voice</h1>
-              <p className="text-lg md:text-xl text-gray-700 mb-6 leading-relaxed">
-                A civic platform where every citizen's voice is heard. Report issues, connect with the community, and experience transparent governance.
-              </p>
-              <div className="flex flex-wrap gap-4">
-                <button className="px-6 py-3 bg-sky-600 text-white rounded-full font-semibold shadow-md hover:bg-sky-700 hover:shadow-lg transition transform hover:-translate-y-1">Join Now</button>
-                <button className="px-6 py-3 bg-white text-sky-600 rounded-full font-semibold shadow-md hover:bg-sky-100 hover:shadow-lg transition transform hover:-translate-y-1 border border-sky-300">Report Issue</button>
-              </div>
-            </div>
-          </motion.div>
-
-          <motion.div initial={{ opacity: 0, x: 50 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 1 }} className="w-full md:w-1/2 flex justify-center relative">
-            <img
-              src="https://thumbs.dreamstime.com/b/illustration-urban-commuters-traveling-city-various-ways-urban-commuting-illustration-123447333.jpg"
-              alt="Hero"
-              className="relative z-10 w-72 md:w-96 drop-shadow-xl"
-            />
-            <div className="absolute top-0 -right-16 w-48 h-48 bg-sky-200 rounded-full opacity-30 animate-pulse"></div>
-            <div className="absolute bottom-0 -left-16 w-64 h-64 bg-sky-300 rounded-full opacity-20 animate-pulse"></div>
-          </motion.div>
+     {/* Hero Section */}
+<section className="bg-teal-50 py-16 mt-10 md:py-20">
+  <div className="max-w-6xl mx-auto px-4 md:px-8">
+    <div className="grid md:grid-cols-2 gap-12 items-center">
+      
+      {/* Content Section */}
+      <motion.div 
+        initial={{ opacity: 0, x: -30 }} 
+        animate={{ opacity: 1, x: 0 }} 
+        transition={{ duration: 0.8 }} 
+        className="space-y-6"
+      >
+        {/* Small badge */}
+        <div className="inline-block">
+          <span className="bg-teal-100 text-teal-800 px-3  p-3 rounded-full text-sm font-medium">
+            🏛️ Civic Platform
+          </span>
         </div>
-      </section>
+
+        {/* Main heading - more natural sizing */}
+        <h1 className="text-3xl md:text-5xl font-bold text-gray-900 leading-tight">
+          Jan Samadhan
+          <br />
+          <span className="text-teal-600">Make Your Voice Heard</span>
+        </h1>
+
+        {/* Simpler description */}
+        <p className="text-lg text-gray-600 leading-relaxed max-w-lg">
+          Report civic issues, track their progress, and connect with your local government. 
+          Simple, transparent, and effective.
+        </p>
+
+        {/* Just key features, not overwhelming */}
+        <div className="space-y-3">
+          <div className="flex items-center text-gray-700">
+            <div className="w-2 h-2 bg-teal-500 rounded-full mr-3"></div>
+            <span>Report issues with photos and location</span>
+          </div>
+          <div className="flex items-center text-gray-700">
+            <div className="w-2 h-2 bg-teal-500 rounded-full mr-3"></div>
+            <span>Track resolution progress in real-time</span>
+          </div>
+          <div className="flex items-center text-gray-700">
+            <div className="w-2 h-2 bg-teal-500 rounded-full mr-3"></div>
+            <span>Connect directly with local authorities</span>
+          </div>
+        </div>
+
+        {/* Simple, standard buttons */}
+        <div className="flex flex-col sm:flex-row gap-3 pt-4">
+          <button className="bg-teal-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-teal-700 transition-colors">
+            Get Started
+          </button>
+          <button className="border border-teal-600 text-teal-600 px-6 py-3 rounded-lg font-semibold hover:bg-teal-50 transition-colors">
+            Learn More
+          </button>
+        </div>
+
+        {/* Realistic stats */}
+        <div className="flex items-center gap-6 pt-6 border-t border-gray-200">
+          <div>
+            <div className="text-2xl font-bold text-gray-900">2,847</div>
+            <div className="text-sm text-gray-600">Issues Resolved</div>
+          </div>
+          <div>
+            <div className="text-2xl font-bold text-gray-900">1,200+</div>
+            <div className="text-sm text-gray-600">Active Users</div>
+          </div>
+          <div>
+            <div className="text-2xl font-bold text-gray-900">72h</div>
+            <div className="text-sm text-gray-600">Avg Response</div>
+          </div>
+        </div>
+      </motion.div>
+
+      {/* Image Section - cleaner, less fancy */}
+      <motion.div 
+        initial={{ opacity: 0, x: 30 }} 
+        animate={{ opacity: 1, x: 0 }} 
+        transition={{ duration: 0.8 }} 
+        className="relative"
+      >
+        <div className="relative">
+          <img
+            src="https://thumbs.dreamstime.com/b/illustration-urban-commuters-traveling-city-various-ways-urban-commuting-illustration-123447333.jpg"
+            alt="Urban community illustration"
+            className="w-full max-w-lg mx-auto rounded-xl shadow-lg"
+          />
+          
+          {/* Simple notification overlay - more realistic */}
+          <div className="absolute top-4 right-4 bg-white rounded-lg p-3 shadow-md border border-gray-100 max-w-48">
+            <div className="flex items-center gap-2 mb-1">
+              <div className="w-2 h-2 bg-green-500 rounded-full"></div>
+              <span className="text-xs font-medium text-gray-700">Issue Reported</span>
+            </div>
+            <p className="text-xs text-gray-600">Pothole on MG Road has been reported and assigned to local authority.</p>
+          </div>
+          
+          {/* Another realistic notification */}
+          <div className="absolute bottom-6 left-4 bg-white rounded-lg p-3 shadow-md border border-gray-100 max-w-44">
+            <div className="flex items-center gap-2 mb-1">
+              <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
+              <span className="text-xs font-medium text-gray-700">In Progress</span>
+            </div>
+            <p className="text-xs text-gray-600">Street light repair work started yesterday.</p>
+          </div>
+        </div>
+
+        {/* Subtle background element */}
+        <div className="absolute -top-8 -right-8 w-24 h-24 bg-teal-100 rounded-full opacity-50 -z-10"></div>
+        <div className="absolute -bottom-4 -left-4 w-16 h-16 bg-cyan-100 rounded-full opacity-40 -z-10"></div>
+      </motion.div>
+    </div>
+  </div>
+</section>
 
       {/* Features */}
-      <section className="container mx-auto px-6 md:px-12 py-24">
-        <h2 className="text-4xl font-bold text-center mb-12 text-sky-700">What We Do</h2>
+       <section className="container mx-auto px-6 md:px-12 py-24">
+        <h2 className="text-4xl font-bold text-center mb-12 text-teal-700">What We Do</h2>
         <div className="grid md:grid-cols-4 gap-8">
           {features.map((f, i) => (
             <motion.div
               key={i}
-              className={`p-6 rounded-3xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105 ${f.bg}`}
+              className={`p-6 rounded-3xl shadow-lg  transition-all duration-300 transform -105 ${f.bg}`}
               whileHover={{ scale: 1.05 }}
               initial={{ opacity: 0, y: 50 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
             >
-              <div className="text-4xl mb-4">{f.emoji}</div>
-              <h3 className="text-xl font-semibold mb-2 text-sky-700">{f.title}</h3>
+              <div className="text-4xl bg-transparent text-teal-900 mb-4"><f.icon /></div>
+              <h3 className="text-xl font-semibold mb-2 text-teal-700">{f.title}</h3>
               <p className="text-gray-700">{f.desc}</p>
             </motion.div>
           ))}
@@ -175,18 +301,18 @@ const feedbacks = [
 
       {/* About Section */}
       <section className="container mx-auto px-6 md:px-12 py-24">
-        <h2 className="text-4xl font-bold text-center mb-12 text-sky-700">About Jan Samadhan</h2>
+        <h2 className="text-4xl font-bold text-center mb-12 text-teal-700">About Jan Samadhan</h2>
         <div className="grid md:grid-cols-3 gap-8">
           {aboutBenefits.map((b, i) => (
             <motion.div
               key={i}
-              className="p-6 rounded-3xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105 bg-white"
+              className="p-6 rounded-3xl shadow-lg hover:shadow-xl transition-all duration-300 transform -105 bg-white"
               initial={{ opacity: 0, y: 50 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
             >
-              <div className="text-5xl mb-4">{b.emoji}</div>
-              <h3 className="text-xl font-semibold mb-2 text-sky-700">{b.title}</h3>
+              <div className="text-5xl mb-4 bg-transparent text-teal-900"><b.icon /></div>
+              <h3 className="text-xl font-semibold mb-2 text-teal-700">{b.title}</h3>
               <p className="text-gray-700">{b.desc}</p>
             </motion.div>
           ))}
@@ -195,18 +321,18 @@ const feedbacks = [
 
       {/* Team Section */}
       <section className="container mx-auto px-6 md:px-12 py-24">
-        <h2 className="text-4xl font-bold text-center mb-12 text-sky-700">Meet Our Team</h2>
+        <h2 className="text-4xl font-bold text-center mb-12 text-teal-700">Meet Our Team</h2>
         <div className="grid md:grid-cols-3 gap-8">
           {teamMembers.map((m, i) => (
             <motion.div
               key={i}
-              className="p-6 rounded-3xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105 bg-white flex flex-col items-center text-center"
+              className="p-6 rounded-3xl shadow-lg hover:shadow-xl transition-all duration-300 transform -105 bg-white flex flex-col items-center text-center"
               initial={{ opacity: 0, y: 50 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
             >
               <img src={m.image} alt={m.name} className="w-28 h-28 rounded-full mb-4 shadow-md" />
-              <h3 className="text-xl font-semibold text-sky-700">{m.name}</h3>
+              <h3 className="text-xl font-semibold text-teal-700">{m.name}</h3>
               <p className="text-gray-700">{m.role}</p>
             </motion.div>
           ))}
@@ -215,18 +341,18 @@ const feedbacks = [
 
       {/* Feedback Section */}
       <section className="container mx-auto px-6 md:px-12 py-24">
-        <h2 className="text-4xl font-bold text-center mb-12 text-sky-700">What Users Say</h2>
+        <h2 className="text-4xl font-bold text-center mb-12 text-teal-700">What Users Say</h2>
         <div className="grid md:grid-cols-3 gap-8">
           {feedbacks.map((f, i) => (
             <motion.div
               key={i}
-              className="p-6 rounded-3xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105 bg-white flex flex-col items-center text-center"
+              className="p-6 rounded-3xl shadow-lg hover:shadow-xl transition-all duration-300 transform -105 bg-white flex flex-col items-center text-center"
               initial={{ opacity: 0, y: 50 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
             >
               <img src={f.image} alt={f.name} className="w-20 h-20 rounded-full mb-4 shadow-md" />
-              <h3 className="text-xl font-semibold text-sky-700">{f.name}</h3>
+              <h3 className="text-xl font-semibold text-teal-700">{f.name}</h3>
               <p className="text-gray-700">{f.feedback}</p>
             </motion.div>
           ))}

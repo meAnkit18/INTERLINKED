@@ -23,7 +23,7 @@ export default function PostCard({ prop }) {
           <h3 className="text-sm sm:text-base text-slate-900 font-medium mt-2">
             {prop.title}
           </h3>
-          <h3 className="text-xs sm:text-sm md:text-base text-blue-500">
+          <h3 className="text-xs sm:text-sm md:text-base text-teal-500">
             {prop.category}
           </h3>
 
