@@ -15,10 +15,9 @@ const Login = () => {
   useEffect(() => {
     const ua = navigator.userAgent || navigator.vendor || window.opera;
 
-    // Detect if running inside WebView
     if (
       /\bwv\b/i.test(ua) || // Android WebView
-      /FBAN|FBAV|Instagram|Line|Messenger/i.test(ua) || // Social app webviews
+      /FBAN|FBAV|Instagram|Line|Messenger/i.test(ua) || // Social app WebViews
       window.ReactNativeWebView !== undefined // React Native WebView
     ) {
       setIsWebView(true);
@@ -60,7 +59,7 @@ const Login = () => {
 
   return (
     <div className="mt-22 flex items-center justify-center h-screen bg-gradient-to-br from-teal-50 via-white to-teal-100 overflow-hidden">
-      {/* 🔹 Static background shapes (no animation) */}
+      {/* 🔹 Static background shapes */}
       <div className="absolute w-72 h-72 bg-teal-200 rounded-full opacity-30 blur-3xl -top-16 -left-16"></div>
       <div className="absolute w-96 h-96 bg-teal-300 rounded-full opacity-20 blur-2xl bottom-[-120px] right-[-120px]"></div>
 
@@ -80,9 +79,9 @@ const Login = () => {
             Your Voice • Your Solution
           </p>
 
-          {/* Show Google login only if NOT WebView */}
+          {/* Google Login (only if not WebView) */}
           {!isWebView && (
-            <div className="flex justify-center">
+            <div className="flex justify-center mb-6">
               <GoogleLogin
                 onSuccess={handleGoogleLogin}
                 onError={() => alert("Google Login Failed")}
@@ -93,33 +92,31 @@ const Login = () => {
             </div>
           )}
 
-          {/* Always show email/password form in WebView */}
-          {(isWebView || window.innerWidth < 768) && (
-            <form onSubmit={handleSubmit} className="space-y-4 mt-6">
-              <input
-                type="email"
-                placeholder="Email"
-                className="w-full px-4 py-2 border rounded-md"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                required
-              />
-              <input
-                type="password"
-                placeholder="Password"
-                className="w-full px-4 py-2 border rounded-md"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                required
-              />
-              <button
-                type="submit"
-                className="w-full bg-teal-600 text-white py-2 rounded-md hover:bg-teal-700 transition"
-              >
-                Continue
-              </button>
-            </form>
-          )}
+          {/* Email/Password Form - ALWAYS visible */}
+          <form onSubmit={handleSubmit} className="space-y-4">
+            <input
+              type="email"
+              placeholder="Email"
+              className="w-full px-4 py-2 border rounded-md"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+            />
+            <input
+              type="password"
+              placeholder="Password"
+              className="w-full px-4 py-2 border rounded-md"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+            />
+            <button
+              type="submit"
+              className="w-full bg-teal-600 text-white py-2 rounded-md hover:bg-teal-700 transition"
+            >
+              Continue
+            </button>
+          </form>
 
           <p className="mt-6 text-sm text-gray-600">
             By continuing, you agree to our{" "}
