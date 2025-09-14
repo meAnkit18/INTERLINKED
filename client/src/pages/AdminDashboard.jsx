@@ -1,14 +1,15 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import MapView from "../components/MapView";
+import { useNavigate } from "react-router-dom"; 
 
 export default function AdminDashboard() {
+  const navigate = useNavigate();
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [selectedCategory, setSelectedCategory] = useState("All");
   const backendURL = import.meta.env.VITE_BACKEND_PORT;
 
-  
   useEffect(() => {
     const fetchPosts = async () => {
       try {
@@ -20,54 +21,46 @@ export default function AdminDashboard() {
         setLoading(false);
       }
     };
-
     fetchPosts();
   }, []);
 
-  
   const categories = ["All", ...new Set(posts.map((post) => post.category))];
-
-  
   const filteredPosts =
     selectedCategory === "All"
       ? posts
       : posts.filter((post) => post.category === selectedCategory);
 
-  
   const handleStatusChange = async (id, newStatus) => {
-  setPosts((prev) =>
-    prev.map((post) =>
-      post._id === id ? { ...post, status: newStatus } : post
-    )
-  );
-  try {
-    const res = await axios.put(`${backendURL}/api/admin/posts/${id}/status`, {
-      status: newStatus,
-    });
-    if (res.data.status !== newStatus) {
-      setPosts((prev) =>
-        prev.map((post) =>
-          post._id === id ? { ...post, status: res.data.status } : post
-        )
-      );
-    }
-  } catch (error) {
-    console.error("Error updating status:", error);
+    const originalPosts = [...posts];
     setPosts((prev) =>
       prev.map((post) =>
-        post._id === id ? { ...post, status: post.status } : post
+        post._id === id ? { ...post, status: newStatus } : post
       )
     );
-  }
-};
-
+    try {
+      const res = await axios.put(`${backendURL}/api/admin/posts/${id}/status`, {
+        status: newStatus,
+      });
+      if (res.data.status !== newStatus) {
+        setPosts((prev) =>
+          prev.map((post) =>
+            post._id === id ? { ...post, status: res.data.status } : post
+          )
+        );
+      }
+    } catch (error) {
+      console.error("Error updating status:", error);
+      setPosts(originalPosts);
+    }
+  };
 
   return (
     <div className="container mt-17 mx-auto px-4 py-6">
       <h1 className="text-2xl text-center font-bold mb-2">Admin Dashboard</h1>
-        <MapView posts={posts}/>
-  
-      <div className="flex gap-2  my-4 overflow-x-auto">
+      <MapView posts={posts} />
+
+
+      <div className="flex gap-2 my-4 overflow-x-auto">
         {categories.map((cat, i) => (
           <button
             key={i}
@@ -84,7 +77,7 @@ export default function AdminDashboard() {
         ))}
       </div>
 
-  
+      
       {loading ? (
         <p>Loading reports...</p>
       ) : (
@@ -97,6 +90,7 @@ export default function AdminDashboard() {
                 <th className="border p-2">Category</th>
                 <th className="border p-2">Location</th>
                 <th className="border p-2">Status</th>
+                <th className="border p-2">Genuine / Suspicious</th>
                 <th className="border p-2">Actions</th>
               </tr>
             </thead>
@@ -117,16 +111,34 @@ export default function AdminDashboard() {
                   </td>
                   <td className="border p-2">{post.status || "Pending"}</td>
                   <td className="border p-2">
+                    {post.upvotes && post.downvotes
+                      ? post.upvotes.length > post.downvotes.length
+                        ? "Genuine"
+                        : post.downvotes.length > post.upvotes.length
+                        ? "Suspicious"
+                        : "Neutral"
+                      : "Neutral"}
+                  </td>
+                  <td className="border p-2 flex justify-center gap-2">
                     <select
-                        value={post.status || "Pending"}
-                        onChange={(e) => handleStatusChange(post._id, e.target.value)}
-                        className="border p-1 rounded"
-                        >
-                        <option value="Pending">Pending</option>
-                        <option value="In Progress">In Progress</option>
-                        <option value="Resolved">Resolved</option>
-                        </select>
-
+                      value={post.status || "Pending"}
+                      onChange={(e) =>
+                        handleStatusChange(post._id, e.target.value)
+                      }
+                      className="border p-1 rounded"
+                    >
+                      <option value="Pending">Pending</option>
+                      <option value="In Progress">In Progress</option>
+                      <option value="Resolved">Resolved</option>
+                    </select>
+                    <button
+                      className="bg-blue-500 text-white px-2 py-1 rounded hover:bg-blue-600"
+                      onClick={() =>
+                        navigate(`/post/${post._id}`, { state: { post } })
+                      }
+                    >
+                      View Details
+                    </button>
                   </td>
                 </tr>
               ))}

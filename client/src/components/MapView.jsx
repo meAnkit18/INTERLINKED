@@ -71,7 +71,7 @@ export default function MapView({ posts }) {
     <MapContainer
       center={[28.7520873, 77.4988836]}
       zoom={12}
-      className="rounded-2xl shadow-lg"
+      className="rounded-2xl shadow-lg z-0"
       style={{ height: "40vh", width: "100%" }}
     >
       <CategoryFilter category={category} setCategory={setCategory} categories={categories} />
