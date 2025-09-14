@@ -15,7 +15,20 @@ router.delete("/users/:id", adminController.deleteUser);
 
 
 router.get("/posts", adminController.getAllPosts);
-router.put("/posts/:id/status", adminController.updatePostStatus);
+router.put('/admin/posts/:id/status', async (req, res) => {
+  try {
+    const post = await Post.findByIdAndUpdate(
+      req.params.id,
+      { status: req.body.status },
+      { new: true }
+    );
+    res.json(post);
+  } catch (err) {
+    console.error(err);
+    res.status(500).send('Server error');
+  }
+});
+
 router.delete("/posts/:id", adminController.deletePost);
 
 export default router;

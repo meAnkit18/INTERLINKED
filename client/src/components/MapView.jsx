@@ -72,7 +72,7 @@ export default function MapView({ posts }) {
       center={[28.7520873, 77.4988836]}
       zoom={12}
       className="rounded-2xl shadow-lg"
-      style={{ height: "50vh", width: "100%" }}
+      style={{ height: "40vh", width: "100%" }}
     >
       <CategoryFilter category={category} setCategory={setCategory} categories={categories} />
       <FullscreenControl />
