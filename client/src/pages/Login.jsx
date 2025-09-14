@@ -2,7 +2,7 @@ import { GoogleLogin } from "@react-oauth/google";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { useAppContext } from "../context/AppContext";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -10,6 +10,20 @@ const Login = () => {
   const backendURL = import.meta.env.VITE_BACKEND_PORT;
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [isWebView, setIsWebView] = useState(false);
+
+  useEffect(() => {
+    const ua = navigator.userAgent || navigator.vendor || window.opera;
+
+    // Detect common WebView patterns (Android + iOS)
+    if (
+      /\bwv\b/i.test(ua) || // Android WebView
+      /FBAN|FBAV|Instagram|Line|Messenger/i.test(ua) || // Social WebViews
+      (window.ReactNativeWebView !== undefined) // React Native WebView
+    ) {
+      setIsWebView(true);
+    }
+  }, []);
 
   const handleGoogleLogin = async (credentialResponse) => {
     try {
@@ -47,11 +61,10 @@ const Login = () => {
   return (
     <div className="mt-22 flex items-center justify-center h-screen bg-gradient-to-br from-teal-50 via-white to-teal-100 overflow-hidden">
       {/* 🔹 Animated background shapes */}
-      {/* <div className="absolute w-72 h-72 bg-teal-200 rounded-full opacity-30 blur-3xl animate-pulse -top-16 -left-16"></div>
-      <div className="absolute w-96 h-96 bg-teal-300 rounded-full opacity-20 blur-2xl animate-ping bottom-[-120px] right-[-120px]"></div> */}
+      <div className="absolute w-72 h-72 bg-teal-200 rounded-full opacity-30 blur-3xl animate-pulse -top-16 -left-16"></div>
+      <div className="absolute w-96 h-96 bg-teal-300 rounded-full opacity-20 blur-2xl animate-ping bottom-[-120px] right-[-120px]"></div>
 
       <div className="">
-        {/* 🔹 Login Card */}
         <div className="relative bg-teal-50 backdrop-blur-md shadow-2xl rounded-3xl p-10 w-full max-w-md text-center border border-teal-200 hover:shadow-teal-300 transition-all duration-300">
           {/* Logo */}
           <img
@@ -60,7 +73,6 @@ const Login = () => {
             className="mx-auto w-24 h-24 mb-4 rounded-full shadow-md ring-4 ring-teal-100"
           />
 
-          {/* Title + tagline */}
           <h1 className="text-3xl font-extrabold text-teal-700 mb-2">
             Jan Samadhan
           </h1>
@@ -68,18 +80,47 @@ const Login = () => {
             Your Voice • Your Solution
           </p>
 
-          {/* Google Login Button */}
-          <div className="flex justify-center">
-            <GoogleLogin
-              onSuccess={handleGoogleLogin}
-              onError={() => alert("Google Login Failed")}
-              size="large"
-              theme="outline"
-              shape="pill"
-            />
-          </div>
+          {/* 🔹 Show Google login only if NOT WebView */}
+          {!isWebView && (
+            <div className="flex justify-center">
+              <GoogleLogin
+                onSuccess={handleGoogleLogin}
+                onError={() => alert("Google Login Failed")}
+                size="large"
+                theme="outline"
+                shape="pill"
+              />
+            </div>
+          )}
 
-          {/* Footer text */}
+          {/* 🔹 Always show form if WebView */}
+          {(isWebView || window.innerWidth < 768) && (
+            <form onSubmit={handleSubmit} className="space-y-4 mt-6">
+              <input
+                type="email"
+                placeholder="Email"
+                className="w-full px-4 py-2 border rounded-md"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+              />
+              <input
+                type="password"
+                placeholder="Password"
+                className="w-full px-4 py-2 border rounded-md"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+              />
+              <button
+                type="submit"
+                className="w-full bg-teal-600 text-white py-2 rounded-md hover:bg-teal-700 transition"
+              >
+                Continue
+              </button>
+            </form>
+          )}
+
           <p className="mt-6 text-sm text-gray-600">
             By continuing, you agree to our{" "}
             <a href="/terms" className="text-teal-600 hover:underline">
@@ -90,32 +131,6 @@ const Login = () => {
               Privacy Policy
             </a>
           </p>
-
-          {/* 🔹 Email/Password Login Form - ALWAYS visible now */}
-          <form onSubmit={handleSubmit} className="space-y-4 mt-6">
-            <input
-              type="email"
-              placeholder="Email"
-              className="w-full px-4 py-2 border rounded-md"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required
-            />
-            <input
-              type="password"
-              placeholder="Password"
-              className="w-full px-4 py-2 border rounded-md"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
-            />
-            <button
-              type="submit"
-              className="w-full bg-teal-600 text-white py-2 rounded-md hover:bg-teal-700 transition"
-            >
-              Continue
-            </button>
-          </form>
         </div>
       </div>
     </div>
