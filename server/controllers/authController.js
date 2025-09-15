@@ -120,3 +120,53 @@ export const updateUser = async (req, res) => {
     res.status(500).json({ message: "Failed to update profile", error: err.message });
   }
 };
+
+
+export const loginOrRegister = async (req, res) => {
+  try {
+    const { email, password } = req.body;
+
+    if (!email || !password)
+      return res.status(400).json({ message: "Email & password required" });
+
+    let user = await User.findOne({ email });
+
+    if (user) {
+      // user exists → check password
+      const isMatch = await user.matchPassword(password);
+      if (!isMatch) {
+        return res.status(401).json({ message: "Invalid password" });
+      }
+    } else {
+      // user does not exist → create new
+      user = new User({
+        username: email.split("@")[0],
+        profilePicture:
+          "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjWHVaY-wRjLvQDY-FhyphenhyphenPKYH9Gb1Kz9nUz2Bu4zeEpRXDCfjBE7jyANtu_ZOxpzZD6tMoG3H62XDO5IrYZhPqBn3E0nnuD6IRvA6AcdNHHNsN3h_A6FsU0s4D7XSi8NzxIi50CHKrk_p4xVT1K4fgyDhIp1b9RycsVAd7-KrmbzXCzdcA7D2CDf3eocDwQ/s512/profile-user.png",
+        email,
+        password,
+      });
+      await user.save();
+    }
+
+    // generate JWT
+    const token = jwt.sign(
+      { id: user._id, email: user.email },
+      process.env.JWT_SECRET,
+      { expiresIn: "7d" }
+    );
+
+    res.status(200).json({
+      message: "Login/Register successful",
+      token,
+      user: {
+        id: user._id,
+        email: user.email,
+        username: user.username,
+        profilePicture: user.profilePicture,
+      },
+    });
+  } catch (err) {
+    res.status(500).json({ message: "Server error", error: err.message });
+  }
+};
