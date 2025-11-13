@@ -39,23 +39,11 @@ function CreatePost({ fetchUserPosts }) {
         },
       });
 
-      const imageUrl = uploadRes.data.imageURL;
-
-      const validationRes = await axios.get(
-        `https://ayushg2500-image-model.hf.space/predict?url=${imageUrl}`
-      );
-
-      if (validationRes.data.final_decision === "Real") {
-        setIsImageReal(true);
-      } else {
-        setIsImageReal(false);
-        alert(
-          "The uploaded image appears to be fake. Please upload a real image."
-        );
-      }
+      // TODO: Re-enable AI model validation later
+      setIsImageReal(true);
     } catch (error) {
-      console.error("Error during image upload and validation:", error);
-      alert("Failed to upload or validate image. Please try again.");
+      console.error("Error during image upload:", error);
+      alert("Failed to upload image. Please try again.");
     } finally {
       setLoading(false);
     }
