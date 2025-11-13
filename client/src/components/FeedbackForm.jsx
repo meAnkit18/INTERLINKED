@@ -1,6 +1,12 @@
 
+import emailjs from '@emailjs/browser';
+import React, { useState,useRef } from "react";
+
+
+
 import React, { useState } from "react";
 import { motion } from "framer-motion";
+
 
 const FeedbackForm = () => {
   const [formData, setFormData] = useState({
@@ -31,15 +37,51 @@ const FeedbackForm = () => {
   };
 
   
-  const handleFeedbackSubmit = (e) => {
-    e.preventDefault();
 
-    if (!formData.name || !formData.email || !formData.feedback || formData.rating === 0) {
-      alert("Please fill all fields and provide a rating.");
-      return;
-    }
+const handleFeedbackSubmit = (e) => {
+  e.preventDefault();
 
-    setFeedbacksList([...feedbacksList, formData]);
+  if (!formData.name || !formData.email || !formData.feedback || formData.rating === 0) {
+    alert("Please fill all fields and provide a rating.");
+    return;
+  }
+
+  // send to EmailJS
+  emailjs.send(
+     import.meta.env.VITE_EMAILJS_SERVICE_ID,
+  import.meta.env.VITE_EMAILJS_TEMPLATE_ID,
+
+    {
+      name: formData.name,
+      email: formData.email,
+      location: formData.location || "Not provided",
+      feedback: formData.feedback,
+      rating: formData.rating,
+    },
+    import.meta.env.VITE_EMAILJS_PUBLIC_KEY
+  )
+  .then(() => {
+    alert("Thank you! Your feedback was sent successfully.");
+  })
+  .catch((err) => {
+    console.error("EmailJS error:", err);
+    alert("Oops! Something went wrong.");
+  });
+
+  // add locally for UI
+  setFeedbacksList([...feedbacksList, formData]);
+
+  // reset form
+  setFormData({
+    name: "",
+    email: "",
+    location: "",
+    feedback: "",
+    rating: 0,
+  });
+};
+
+
 
   
     setFormData({
@@ -50,6 +92,7 @@ const FeedbackForm = () => {
       rating: 0,
     });
   };
+
 
   return (
     <section className="py-16 px-6 md:px-12 max-w-5xl mx-auto bg-gradient-to-b from-teal-50 to-cyan-50 min-h-screen">

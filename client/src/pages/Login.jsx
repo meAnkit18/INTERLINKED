@@ -40,6 +40,30 @@ const Login = () => {
     }
   };
 
+
+  return (
+    <div className="relative flex items-center justify-center h-screen bg-gradient-to-br from-teal-50 via-white to-teal-100 overflow-hidden">
+      {/* 🔹 Animated background shapes */}
+      <div className="absolute w-72 h-72 bg-teal-200 rounded-full opacity-30 blur-3xl animate-pulse -top-16 -left-16"></div>
+      <div className="absolute w-96 h-96 bg-teal-300 rounded-full opacity-20 blur-2xl animate-ping bottom-[-120px] right-[-120px]"></div>
+
+      {/* 🔹 Login Card */}
+      <div className="relative bg-teal-50 backdrop-blur-md shadow-2xl rounded-3xl p-10 w-full max-w-md text-center border border-teal-200 hover:shadow-teal-300 transition-all duration-300">
+        {/* Logo */}
+        <img
+          src="https://www.pngmart.com/files/7/Community-PNG-Clipart.png"
+          alt="Jan Samadhan Logo"
+          className="mx-auto w-24 h-24 mb-4 rounded-full shadow-md ring-4 ring-teal-100"
+        />
+
+        {/* Title + tagline */}
+        <h1 className="text-3xl font-extrabold text-teal-700 mb-2">
+          Jan Samadhan
+        </h1>
+        <p className="text-gray-700 mb-8 text-lg italic font-medium">
+          Your Voice • Your Solution
+        </p>
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
@@ -64,6 +88,7 @@ const Login = () => {
       <div className="absolute w-72 h-72 bg-teal-200 rounded-full opacity-30 blur-3xl -top-16 -left-16"></div>
       <div className="absolute w-96 h-96 bg-teal-300 rounded-full opacity-20 blur-2xl bottom-[-120px] right-[-120px]"></div>
 
+
       <div className="">
         <div className="relative bg-teal-50 backdrop-blur-md shadow-2xl rounded-3xl p-10 w-full max-w-md text-center border border-teal-200 hover:shadow-teal-300 transition-all duration-300">
           {/* Logo */}
@@ -72,6 +97,19 @@ const Login = () => {
             alt="Jan Samadhan Logo"
             className="mx-auto w-24 h-24 mb-4 rounded-full shadow-md ring-4 ring-teal-100"
           />
+
+
+        {/* Footer text */}
+        <p className="mt-6 text-sm text-gray-600">
+          By continuing, you agree to our{" "}
+          <a href="/terms" className="text-teal-600 hover:underline">
+            Terms
+          </a>{" "}
+          &{" "}
+          <a href="/privacy" className="text-teal-600 hover:underline">
+            Privacy Policy
+          </a>
+        </p>
 
           <h1 className="text-3xl font-extrabold text-teal-700 mb-2">
             Jan Samadhan
@@ -130,6 +168,7 @@ const Login = () => {
             </a>
           </p>
         </div>
+
       </div>
     </div>
   );

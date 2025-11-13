@@ -16,7 +16,7 @@ function CreatePost({ fetchUserPosts }) {
   const [facingMode, setFacingMode] = useState("user"); // user | environment
 
   const webcamRef = useRef(null);
-  const backendURL = import.meta.env.VITE_BACKEND_PORT;
+  const backendURL = import.meta.env.VITE_BACKEND_PORT; // ✅ Correct URL
   const navigate = useNavigate();
 
   const handleImageUpload = async (file) => {
@@ -49,6 +49,7 @@ function CreatePost({ fetchUserPosts }) {
     }
   };
 
+
   const capture = () => {
     const imageSrc = webcamRef.current.getScreenshot();
     if (imageSrc) {
@@ -71,6 +72,12 @@ function CreatePost({ fetchUserPosts }) {
   const handlePostSubmit = async (e) => {
     e.preventDefault();
     if (!image || !isImageReal) return;
+
+    const token = localStorage.getItem("token");
+    if (!token) {
+      alert("You must be logged in to submit a post!");
+      return;
+    }
 
     const token = localStorage.getItem("token");
     if (!token) {
@@ -131,7 +138,11 @@ function CreatePost({ fetchUserPosts }) {
     } catch (err) {
       if (err.response && err.response.status === 401) {
         alert("Unauthorized! Please login again.");
+
+        navigate("/login");
+
         navigate("/home");
+
       } else {
         console.error("Error creating post:", err);
         alert("Failed to create post. Please try again.");
@@ -144,7 +155,9 @@ function CreatePost({ fetchUserPosts }) {
   return (
     <div className="min-h-screen bg-gradient-to-br from-teal-50 to-teal-100">
       <div className="container mx-auto px-4 sm:px-6 md:px-10 lg:px-20 pt-24 pb-12">
+
         {/* ===== FORM MODE ===== */}
+
         {mode === "form" && (
           <div className="max-w-2xl mx-auto">
             <div className="bg-white rounded-2xl shadow-xl p-8 border border-teal-100">
@@ -152,16 +165,24 @@ function CreatePost({ fetchUserPosts }) {
                 <h2 className="text-3xl font-bold text-gray-800 mb-2">
                   Report Issues Now
                 </h2>
+
+                <p className="text-gray-600">Help improve your community by reporting issues</p>
+
                 <p className="text-gray-600">
                   Help improve your community by reporting issues
                 </p>
+
               </div>
 
               <form onSubmit={handlePostSubmit} className="space-y-6">
                 <div>
+
+                  <label className="block text-sm font-semibold text-gray-700">Issue Title</label>
+
                   <label className="block text-sm font-semibold text-gray-700">
                     Issue Title
                   </label>
+
                   <input
                     type="text"
                     value={title}
@@ -173,9 +194,13 @@ function CreatePost({ fetchUserPosts }) {
                 </div>
 
                 <div>
+
+                  <label className="block text-sm font-semibold text-gray-700">Description</label>
+
                   <label className="block text-sm font-semibold text-gray-700">
                     Description
                   </label>
+
                   <textarea
                     value={description}
                     onChange={(e) => setDescription(e.target.value)}
@@ -186,9 +211,13 @@ function CreatePost({ fetchUserPosts }) {
                 </div>
 
                 <div>
+
+                  <label className="block text-sm font-semibold text-gray-700">Add Photo Evidence</label>
+
                   <label className="block text-sm font-semibold text-gray-700">
                     Add Photo Evidence
                   </label>
+
                   <div className="flex flex-col sm:flex-row gap-3 mt-2">
                     <label className="flex-1 px-6 py-3 rounded-xl bg-teal-50 border-2 border-teal-200 cursor-pointer text-center font-medium text-teal-700">
                       Upload from Gallery
@@ -198,6 +227,10 @@ function CreatePost({ fetchUserPosts }) {
                         onChange={(e) => {
                           const file = e.target.files[0];
                           if (file) {
+
+                            setImage(file);
+                            setPreview(URL.createObjectURL(file));
+
                             handleImageUpload(file);
                           }
                         }}
@@ -217,6 +250,10 @@ function CreatePost({ fetchUserPosts }) {
 
                 {preview && (
                   <div className="mt-4">
+
+                    <label className="block text-sm font-semibold text-gray-700">Photo Preview</label>
+                    <img src={preview} alt="preview" className="w-full h-64 object-cover rounded-xl mt-2" />
+
                     <label className="block text-sm font-semibold text-gray-700">
                       Photo Preview
                     </label>
@@ -225,14 +262,21 @@ function CreatePost({ fetchUserPosts }) {
                       alt="preview"
                       className="w-full h-64 object-cover rounded-xl mt-2"
                     />
+
                   </div>
                 )}
 
                 <button
                   type="submit"
+
+                  disabled={!image || loading}
+                  className={`w-full py-4 rounded-xl font-semibold text-lg mt-4 ${
+                    !image || loading
+
                   disabled={!image || loading || !isImageReal}
                   className={`w-full py-4 rounded-xl font-semibold text-lg mt-4 ${
                     !image || loading || !isImageReal
+
                       ? "bg-gray-300 text-gray-500 cursor-not-allowed"
                       : "bg-teal-600 hover:bg-teal-700 text-white"
                   }`}
@@ -241,6 +285,12 @@ function CreatePost({ fetchUserPosts }) {
                 </button>
               </form>
             </div>
+
+          </div>
+        )}
+
+        {/* Camera & Preview Modes remain same as your previous code */}
+
           </div>
         )}
 
@@ -305,6 +355,7 @@ function CreatePost({ fetchUserPosts }) {
             </div>
           </div>
         )}
+
       </div>
     </div>
   );
