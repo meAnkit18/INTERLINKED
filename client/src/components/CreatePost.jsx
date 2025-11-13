@@ -162,21 +162,12 @@ function CreatePost({ fetchUserPosts }) {
 
                 <p className="text-gray-600">Help improve your community by reporting issues</p>
 
-                <p className="text-gray-600">
-                  Help improve your community by reporting issues
-                </p>
-
               </div>
 
               <form onSubmit={handlePostSubmit} className="space-y-6">
                 <div>
 
                   <label className="block text-sm font-semibold text-gray-700">Issue Title</label>
-
-                  <label className="block text-sm font-semibold text-gray-700">
-                    Issue Title
-                  </label>
-
                   <input
                     type="text"
                     value={title}
@@ -190,11 +181,6 @@ function CreatePost({ fetchUserPosts }) {
                 <div>
 
                   <label className="block text-sm font-semibold text-gray-700">Description</label>
-
-                  <label className="block text-sm font-semibold text-gray-700">
-                    Description
-                  </label>
-
                   <textarea
                     value={description}
                     onChange={(e) => setDescription(e.target.value)}
@@ -207,11 +193,6 @@ function CreatePost({ fetchUserPosts }) {
                 <div>
 
                   <label className="block text-sm font-semibold text-gray-700">Add Photo Evidence</label>
-
-                  <label className="block text-sm font-semibold text-gray-700">
-                    Add Photo Evidence
-                  </label>
-
                   <div className="flex flex-col sm:flex-row gap-3 mt-2">
                     <label className="flex-1 px-6 py-3 rounded-xl bg-teal-50 border-2 border-teal-200 cursor-pointer text-center font-medium text-teal-700">
                       Upload from Gallery
@@ -247,15 +228,6 @@ function CreatePost({ fetchUserPosts }) {
 
                     <label className="block text-sm font-semibold text-gray-700">Photo Preview</label>
                     <img src={preview} alt="preview" className="w-full h-64 object-cover rounded-xl mt-2" />
-
-                    <label className="block text-sm font-semibold text-gray-700">
-                      Photo Preview
-                    </label>
-                    <img
-                      src={preview}
-                      alt="preview"
-                      className="w-full h-64 object-cover rounded-xl mt-2"
-                    />
 
                   </div>
                 )}
