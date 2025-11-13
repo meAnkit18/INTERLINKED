@@ -1,10 +1,6 @@
 
 import emailjs from '@emailjs/browser';
-import React, { useState,useRef } from "react";
-
-
-
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import { motion } from "framer-motion";
 
 
@@ -80,18 +76,6 @@ const handleFeedbackSubmit = (e) => {
     rating: 0,
   });
 };
-
-
-
-  
-    setFormData({
-      name: "",
-      email: "",
-      location: "",
-      feedback: "",
-      rating: 0,
-    });
-  };
 
 
   return (
