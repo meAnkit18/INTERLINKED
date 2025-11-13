@@ -79,12 +79,6 @@ function CreatePost({ fetchUserPosts }) {
       return;
     }
 
-    const token = localStorage.getItem("token");
-    if (!token) {
-      alert("You must be logged in to submit a post!");
-      return;
-    }
-
     setLoading(true);
     setProgress(0);
 
@@ -268,15 +262,9 @@ function CreatePost({ fetchUserPosts }) {
 
                 <button
                   type="submit"
-
-                  disabled={!image || loading}
-                  className={`w-full py-4 rounded-xl font-semibold text-lg mt-4 ${
-                    !image || loading
-
                   disabled={!image || loading || !isImageReal}
                   className={`w-full py-4 rounded-xl font-semibold text-lg mt-4 ${
                     !image || loading || !isImageReal
-
                       ? "bg-gray-300 text-gray-500 cursor-not-allowed"
                       : "bg-teal-600 hover:bg-teal-700 text-white"
                   }`}
@@ -285,11 +273,6 @@ function CreatePost({ fetchUserPosts }) {
                 </button>
               </form>
             </div>
-
-          </div>
-        )}
-
-        {/* Camera & Preview Modes remain same as your previous code */}
 
           </div>
         )}
